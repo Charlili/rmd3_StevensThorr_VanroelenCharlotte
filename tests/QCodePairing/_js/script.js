@@ -69,7 +69,7 @@ const initScanner = () => {
     if (err) throw err;
 
     // -!- TODO: Implement socketId validation
-    socket.emit('setPaired', result);
+    //socket.emit('setPaired', result);
 
     blnScanned = true;
 
@@ -85,7 +85,7 @@ const initScanner = () => {
 
 const setStatus = status => {
 
-  socket.emit('setStatus', status);
+  //socket.emit('setStatus', status);
 
 };
 

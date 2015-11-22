@@ -11,6 +11,7 @@ import {mobileCheck, removeByClassName} from './helpers/util';
 
 import Video from './modules/Video';
 import Status from '../models/Status';
+import DeviceTypes from '../models/DeviceTypes';
 
 let socket, qr;
 let $video, $meta, $vidElem;
@@ -18,21 +19,46 @@ let blnScanned = false;
 
 const initSocket = () => {
 
-  socket = io('http://localhost:3000');
+  socket = io('192.168.0.178:3000');
 
   if(mobileCheck()){
-    socket.emit('setDeviceType', 'Mobile');
-    socket.on('connect', initScanner);
+    socket.emit('setDeviceType', DeviceTypes.mobile);
+    socket.on('connect', initMobile);
   }else{
-    socket.emit('setDeviceType', 'Desktop');
-    socket.on('connect', createQR);
+    socket.emit('setDeviceType', DeviceTypes.desktop);
+    socket.on('connect', initDesktop);
   }
+
+  setStatus(Status.not_ready);
+
+};
+
+const setStatus = status => {
+
+  socket.emit('setStatus', status);
+
+};
+
+/* --- Desktop ------------------------------------------------------ */
+
+const initDesktop = () => {
+
+  console.log('[Desktop] Intialising for Desktop');
+
+  $meta = document.querySelector('.meta');
+
+  // -!- Update to Templating later ---
+  removeByClassName('.mobileView');
+
+  createQR();
 
   setStatus(Status.ready);
 
 };
 
 const createQR = () => {
+
+  console.log('[Desktop] Creating QR Code');
 
   let $qrcode = document.querySelector('.QRCode');
   $qrcode.setAttribute('src', `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${socket.id}`);
@@ -42,88 +68,23 @@ const createQR = () => {
 
   setStatus('searching');
 
-  socket.on('scannedByPhone', pairedHandler);
+  socket.on('paired', phonePairedHandler);
 
 };
 
-const pairedHandler = () => {
+const phonePairedHandler = pairedId => {
 
   console.log('[Desktop] Paired with Phone');
 
+  socket.emit('setPaired', pairedId);
+
   setStatus('paired');
 
-  $meta.innerText = `Socket_ID: ${socket.id} // Paired with phone`;
+  $meta.innerText = `Socket_ID: ${socket.id} // Paired with: ${pairedId}`;
 
 };
 
-const initScanner = () => {
-
-  console.log('[Mobile] Intialising Scanner');
-
-  setStatus('searching');
-
-  $meta.innerText = `Searching...`;
-
-  qr.decodeFromVideo($vidElem, (err, result) => {
-
-    if (err) throw err;
-
-    // -!- TODO: Implement socketId validation
-    //socket.emit('setPaired', result);
-
-    blnScanned = true;
-
-    $meta.innerText = `Scanned: ${result}`;
-
-  }, true);
-
-  if(blnScanned === false){
-    setTimeout(initScanner, 200);
-  }
-
-};
-
-const setStatus = status => {
-
-  //socket.emit('setStatus', status);
-
-};
-
-const userStream = stream => {
-
-  qr = new QCodeDecoder();
-
-  $meta = document.querySelector('.meta');
-  $video = new Video(document.querySelector('.you'));
-  $video.showStream(stream);
-  $vidElem = $video.getVideoElem();
-
-  //initSocket();
-  initScanner();
-
-};
-
-const initBackCamera = (sourceInfos) => {
-
-  let videoSourceID;
-
-  // Loop over videosources to always get the back-camera of the phone
-  for (let i = 0; i !== sourceInfos.length; ++i) {
-    let sourceInfo = sourceInfos[i];
-    if (sourceInfo.kind === 'video') {
-      videoSourceID = sourceInfo.id;
-    }
-  }
-
-  //console.log(videoSourceID);
-
-  navigator.getUserMedia(
-    {video: {optional: [{sourceId: videoSourceID}]}},
-    userStream,
-    console.error
-  );
-
-};
+/* --- Mobile ------------------------------------------------------ */
 
 const initMobile = () => {
 
@@ -142,33 +103,89 @@ const initMobile = () => {
 
   MediaStreamTrack.getSources(initBackCamera);
 
-  //setStatus('ready');
+};
+
+const initBackCamera = (sourceInfos) => {
+
+  console.log('[Mobile] Intialising Back Camera');
+
+  let videoSourceID;
+
+  // Loop over videosources to always get the back-camera of the phone
+  for (let i = 0; i !== sourceInfos.length; ++i) {
+    let sourceInfo = sourceInfos[i];
+    if (sourceInfo.kind === 'video') {
+      videoSourceID = sourceInfo.id;
+    }
+  }
+
+  navigator.getUserMedia(
+    {video: {optional: [{sourceId: videoSourceID}]}},
+    userStream,
+    console.error
+  );
+
+  setStatus(Status.ready);
 
 };
 
-const initDesktop = () => {
+const userStream = stream => {
 
-  console.log('[Desktop] Intialising for Desktop');
+  console.log('[Mobile] Intialising Userstreaam');
+
+  qr = new QCodeDecoder();
 
   $meta = document.querySelector('.meta');
+  $video = new Video(document.querySelector('.you'));
+  $video.showStream(stream);
+  $vidElem = $video.getVideoElem();
 
-  // -!- Update to Templating later ---
-  removeByClassName('.mobileView');
-
-  //setStatus('ready');
-
-  initSocket();
+  initScanner();
 
 };
 
-const init = () => {
+const initScanner = () => {
 
-  if(mobileCheck()){
-    initMobile();
-  }else{
-    initDesktop();
+  console.log('[Mobile] Intialising Scanner');
+
+  setStatus('searching');
+
+  $meta.innerText = `Searching...`;
+
+  qr.decodeFromVideo($vidElem, (err, result) => {
+
+    if (err) throw err;
+
+    // -!- TODO: Implement socketId validation
+    socket.emit('setPaired', result);
+
+    blnScanned = true;
+
+    socket.on('paired', desktopPairedHandler);
+
+    $meta.innerText = `Scanned: ${result}`;
+
+  }, true);
+
+  if(blnScanned === false){
+    setTimeout(initScanner, 200);
   }
 
 };
 
-init();
+const desktopPairedHandler = pairedId => {
+
+  $meta.innerText = `Paired with: ${pairedId}`;
+
+};
+
+/* --- Other ------------------------------------------------------ */
+
+/*const init = () => {
+
+  initSocket();
+
+};*/
+
+//init();
+initSocket();

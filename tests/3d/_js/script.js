@@ -24,17 +24,18 @@ const initSocket = () => {
   //passcode = 1000;
   socket = io('http://192.168.0.198:3000');
 
-  if(!mobileCheck()){
-    helper.innerHTML = "initSocket desktop";
-    socket.emit('setDeviceType', 'Desktop');
-    socket.on('connect', setMobile);
-  }else{
+  if(mobileCheck()){
     helper.innerHTML = "initSocket mobile";
     socket.emit('setDeviceType', 'Mobile');
+    socket.on('connect', setMobile);
+  }else{
+    helper.innerHTML = "initSocket desktop";
+    socket.emit('setDeviceType', 'Desktop');
     socket.emit('setCode', passcode);
     socket.on('connect', setComputer);
   }
-  socket.on('paired', pairedHandler);
+  socket.on('pairedDesktop', pairedDesktopHandler);
+  socket.on('pairedMobile', pairedMobileHandler);
   setStatus(Status.ready);
 
 };
@@ -47,6 +48,7 @@ const setMobile = () => {
   let input = document.createElement('input');
   input.type = 'text';
   input.placeholder = 'Enter code here.';
+  input.class = 'inputCode';
   main.appendChild(input);
   input.addEventListener( 'blur', enteredInput, false );
 
@@ -66,14 +68,19 @@ const setComputer = () => {
 
 };
 
-const pairedHandler = () => {
+const pairedDesktopHandler = () => {
 
   console.log('[Desktop] Paired with Phone');
 
   setStatus('paired');
   helper.innerHTML = `Paired together!`;
+  setup3D();
 
-  $meta.innerText = `Socket_ID: ${socket.id} // Paired with phone`;
+};
+
+const pairedMobileHandler = () => {
+  //mobile stuff
+  removeByClassName('.inputCode');
 
 };
 
@@ -110,76 +117,15 @@ const setStatus = status => {
 
 };
 
-/*const userStream = stream => {
-
-  //qr = new QCodeDecoder();
-
-  //$meta = document.querySelector('.meta');
-  //$video = new Video(document.querySelector('.you'));
-  //$video.showStream(stream);
-  //$vidElem = $video.getVideoElem();
-
-  //initSocket();
-  initScanner();
-
-};*/
-
-const initBackCamera = (sourceInfos) => {
-
-  let videoSourceID;
-
-  // Loop over videosources to always get the back-camera of the phone
-  for (let i = 0; i !== sourceInfos.length; ++i) {
-    let sourceInfo = sourceInfos[i];
-    if (sourceInfo.kind === 'video') {
-      videoSourceID = sourceInfo.id;
-    }
-  }
-
-  //console.log(videoSourceID);
-
-  navigator.getUserMedia(
-    {video: {optional: [{sourceId: videoSourceID}]}},
-    userStream,
-    console.error
-  );
-
-};
-
-const initMobile = () => {
-
-
-  initSocket();
-  //setStatus('ready');
-
-};
-
-const initDesktop = () => {
-
-  console.log('[Desktop] Intialising for Desktop');
-
-
-  //setStatus('ready');
-
-  initSocket();
-
-};
-
 const init = () => {
-
 
   helper = document.querySelector('.main p');
   helper.innerHTML = "initFunction";
   initSocket();
-  /*if(mobileCheck()){
-    initMobile();
-  }else{
-    initDesktop();
-  }*/
 
 };
 
-init();
+
 
 function setup3D(){
   init3D();
@@ -308,3 +254,5 @@ function render() {
   camera.lookAt( scene.position );
   renderer.render( scene, camera );
 }
+
+init();

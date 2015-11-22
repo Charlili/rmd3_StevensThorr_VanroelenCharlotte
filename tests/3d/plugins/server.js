@@ -46,7 +46,8 @@ module.exports.register = (server, options, next) => {
               newClient.pairedId = client.socketId;
               client.pairedId = newClient.socketId;
               //console.log(clients);
-              io.to(newClient.pairedId).emit('paired', socket.id);
+              io.to(newClient.pairedId).emit('pairedDesktop', socket.id);
+              io.to(newClient.socketId).emit('pairedMobile', socket.id);
               //io.emit('paired',socket.id);
               return false;
             }else{

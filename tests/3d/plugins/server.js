@@ -41,15 +41,15 @@ module.exports.register = (server, options, next) => {
         console.log(codeMobile);
         if(clients.length > 0){
           clients.forEach(client => {
-            if(client.code === codeMobile){
+            if(client.code === codeMobile && !client.pairedId){
               console.log('right code');
               newClient.pairedId = client.socketId;
               client.pairedId = newClient.socketId;
               //console.log(clients);
               io.to(newClient.pairedId).emit('pairedDesktop', socket.id);
-              io.to(newClient.socketId).emit('pairedMobile', socket.id);
+              io.emit('pairedMobile', socket.id);
               //io.emit('paired',socket.id);
-              return false;
+
             }else{
               console.log('wrong code');
             }
@@ -73,6 +73,12 @@ module.exports.register = (server, options, next) => {
       //console.log(code);
       newClient.code = code;
       console.log(newClient);
+
+    });
+
+    socket.on('clickedUI', increment => {
+      //console.log(code);
+      io.to(newClient.pairedId).emit('clickedUI', increment);
 
     });
 

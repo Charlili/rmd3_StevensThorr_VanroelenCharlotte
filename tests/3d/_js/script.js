@@ -12,7 +12,7 @@ import {mobileCheck, removeByClassName} from './helpers/util';
 import Status from '../models/Status';
 let helper;
 let socket, qr, passcode;
-let $video, $meta, $vidElem;
+let $meta, $vidElem;
 let blnScanned = false;
 
 
@@ -22,17 +22,18 @@ const initSocket = () => {
   passcode = Math.floor((Math.random()*8999)+1000);
   console.log(passcode);
   //passcode = 1000;
-  socket = io('http://192.168.0.198:3000');
+  socket = io('http://192.168.0.200:3000');
 
   if(mobileCheck()){
-    helper.innerHTML = "initSocket mobile";
+    helper.innerHTML = 'initSocket mobile';
     socket.emit('setDeviceType', 'Mobile');
     socket.on('connect', setMobile);
   }else{
-    helper.innerHTML = "initSocket desktop";
+    helper.innerHTML = 'initSocket desktop';
     socket.emit('setDeviceType', 'Desktop');
     socket.emit('setCode', passcode);
     socket.on('connect', setComputer);
+    socket.on('clickedUI',rotateX);
   }
   socket.on('pairedDesktop', pairedDesktopHandler);
   socket.on('pairedMobile', pairedMobileHandler);
@@ -44,13 +45,21 @@ const setMobile = () => {
   setStatus('searching');
 
   let main = document.querySelector('.main');
-  main.style.backgroundColor = "lightblue";
+  main.style.backgroundColor = 'lightblue';
   let input = document.createElement('input');
   input.type = 'text';
   input.placeholder = 'Enter code here.';
-  input.class = 'inputCode';
+  input.className = 'inputCode';
   main.appendChild(input);
   input.addEventListener( 'blur', enteredInput, false );
+
+};
+
+const setComputer = () => {
+  console.log(socket);
+  helper.innerHTML = `Please fill in this code: ${passcode}`;
+  console.log(`Creating codehtml and code is ${passcode}`);
+  setStatus('searching');
 
 };
 
@@ -58,15 +67,7 @@ const enteredInput = (e) => {
   console.log(e.target.value);
   socket.emit('checkCode', parseInt(e.target.value));
 };
-const setComputer = () => {
-  console.log(socket);
-  helper.innerHTML = `Please fill in this code: ${passcode}`;
-  console.log(`Creating codehtml and code is ${passcode}`);
-  setStatus('searching');
 
-  //socket.on('scannedByPhone', pairedHandler);
-
-};
 
 const pairedDesktopHandler = () => {
 
@@ -81,6 +82,23 @@ const pairedDesktopHandler = () => {
 const pairedMobileHandler = () => {
   //mobile stuff
   removeByClassName('.inputCode');
+  helper.innerHTML = 'Paired together!!!!';
+
+  let up = document.createElement('div');
+  up.innerHTML = 'up';
+  up.addEventListener( 'click', () => {
+    socket.emit('clickedUI', -.5);
+  }, false );
+  let down = document.createElement('div');
+  down.innerHTML = 'down';
+  down.addEventListener( 'click', () => {
+    socket.emit('clickedUI', -.5);
+  }, false );
+  document.querySelector('.main').appendChild(up);
+  document.querySelector('.main').appendChild(down);
+
+
+
 
 };
 
@@ -120,7 +138,7 @@ const setStatus = status => {
 const init = () => {
 
   helper = document.querySelector('.main p');
-  helper.innerHTML = "initFunction";
+  helper.innerHTML = 'initFunction';
   initSocket();
 
 };
@@ -223,7 +241,9 @@ function onKeyDown(e){
 
 function rotateX(rot){
   console.log('rotating');
+  //gaat redelijk traag?
   object3D.rotation.x += rot;
+  //animate();
 }
 
 function onWindowResize() {

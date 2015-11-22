@@ -22,12 +22,10 @@ module.exports.register = (server, options, next) => {
       });
     }
 
-    //let newClient = Object.assign({}, Client);
     let newClient = new Client(maxID + 1, 'Unknown', socket.id);
     newClient.socketId = socket.id;
 
     clients.push(newClient);
-    //console.log(clients);
 
     socket.on('setDeviceType', strDeviceType => {
 
@@ -40,6 +38,7 @@ module.exports.register = (server, options, next) => {
 
       if(newClient.type === DeviceTypes.mobile){
         io.to(pairedId).emit('paired', socket.id);
+        socket.emit('paired', pairedId);
       }
 
       newClient.pairedId = pairedId;

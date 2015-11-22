@@ -1,9 +1,9 @@
 {
-  "name": "DevineRoulette",
+  "name": "3DTest",
   "version": "0.1.0",
   "description": "",
   "main": "server.js",
-  "author": "Thorr Stevens",
+  "author": "Charlotte Vanroelen",
   "scripts": {
     "development": "gulp & webpack --watch & npm run serve",
     "production": "webpack -d -p",

@@ -13,9 +13,6 @@ let server = new Hapi.Server({
       files: {
         relativeTo: path.join(__dirname, 'public')
       }
-    },
-    router: {
-      stripTrailingSlash: true
     }
   }
 });
@@ -28,8 +25,8 @@ const pluginHandler = (err) => {
 
 server.register(require('inert'), pluginHandler);
 
-server.register(require('./plugins/'), pluginHandler);
 server.register(require('./routes/'), pluginHandler);
+server.register(require('./plugins/'), pluginHandler);
 
 server.start(err => {
   if(err) console.error(err);

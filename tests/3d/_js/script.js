@@ -1,20 +1,196 @@
 'use strict';
 
 var container;
-var camera, scene, axis, renderer, object3D;
+var camera, scene, renderer, object3D;
 var mouseX = 0, mouseY = 0;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
-var rad = 0;
-init();
-animate();
 
-function init() {
+import {mobileCheck, removeByClassName} from './helpers/util';
+
+//import Video from './modules/Video';
+import Status from '../models/Status';
+let helper;
+let socket, qr, passcode;
+let $video, $meta, $vidElem;
+let blnScanned = false;
+
+
+
+const initSocket = () => {
+
+  passcode = Math.floor((Math.random()*8999)+1000);
+  console.log(passcode);
+  //passcode = 1000;
+  socket = io('http://192.168.0.198:3000');
+
+  if(!mobileCheck()){
+    helper.innerHTML = "initSocket desktop";
+    socket.emit('setDeviceType', 'Desktop');
+    socket.on('connect', setMobile);
+  }else{
+    helper.innerHTML = "initSocket mobile";
+    socket.emit('setDeviceType', 'Mobile');
+    socket.emit('setCode', passcode);
+    socket.on('connect', setComputer);
+  }
+  socket.on('paired', pairedHandler);
+  setStatus(Status.ready);
+
+};
+
+const setMobile = () => {
+  setStatus('searching');
+
+  let main = document.querySelector('.main');
+  main.style.backgroundColor = "lightblue";
+  let input = document.createElement('input');
+  input.type = 'text';
+  input.placeholder = 'Enter code here.';
+  main.appendChild(input);
+  input.addEventListener( 'blur', enteredInput, false );
+
+};
+
+const enteredInput = (e) => {
+  console.log(e.target.value);
+  socket.emit('checkCode', parseInt(e.target.value));
+};
+const setComputer = () => {
+  console.log(socket);
+  helper.innerHTML = `Please fill in this code: ${passcode}`;
+  console.log(`Creating codehtml and code is ${passcode}`);
+  setStatus('searching');
+
+  //socket.on('scannedByPhone', pairedHandler);
+
+};
+
+const pairedHandler = () => {
+
+  console.log('[Desktop] Paired with Phone');
+
+  setStatus('paired');
+  helper.innerHTML = `Paired together!`;
+
+  $meta.innerText = `Socket_ID: ${socket.id} // Paired with phone`;
+
+};
+
+const initScanner = () => {
+
+  console.log('[Mobile] Intialising Scanner');
+
+  setStatus('searching');
+
+  $meta.innerText = `Searching...`;
+
+  qr.decodeFromVideo($vidElem, (err, result) => {
+
+    if (err) throw err;
+
+    // -!- TODO: Implement socketId validation
+    //socket.emit('setPaired', result);
+
+    blnScanned = true;
+
+    $meta.innerText = `Scanned: ${result}`;
+
+  }, true);
+
+  if(blnScanned === false){
+    setTimeout(initScanner, 200);
+  }
+
+};
+
+const setStatus = status => {
+
+  socket.emit('setStatus', status);
+
+};
+
+/*const userStream = stream => {
+
+  //qr = new QCodeDecoder();
+
+  //$meta = document.querySelector('.meta');
+  //$video = new Video(document.querySelector('.you'));
+  //$video.showStream(stream);
+  //$vidElem = $video.getVideoElem();
+
+  //initSocket();
+  initScanner();
+
+};*/
+
+const initBackCamera = (sourceInfos) => {
+
+  let videoSourceID;
+
+  // Loop over videosources to always get the back-camera of the phone
+  for (let i = 0; i !== sourceInfos.length; ++i) {
+    let sourceInfo = sourceInfos[i];
+    if (sourceInfo.kind === 'video') {
+      videoSourceID = sourceInfo.id;
+    }
+  }
+
+  //console.log(videoSourceID);
+
+  navigator.getUserMedia(
+    {video: {optional: [{sourceId: videoSourceID}]}},
+    userStream,
+    console.error
+  );
+
+};
+
+const initMobile = () => {
+
+
+  initSocket();
+  //setStatus('ready');
+
+};
+
+const initDesktop = () => {
+
+  console.log('[Desktop] Intialising for Desktop');
+
+
+  //setStatus('ready');
+
+  initSocket();
+
+};
+
+const init = () => {
+
+
+  helper = document.querySelector('.main p');
+  helper.innerHTML = "initFunction";
+  initSocket();
+  /*if(mobileCheck()){
+    initMobile();
+  }else{
+    initDesktop();
+  }*/
+
+};
+
+init();
+
+function setup3D(){
+  init3D();
+  animate();
+}
+
+function init3D() {
 
   container = document.body.querySelector('.main');
   camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
   camera.position.z = 100;
-  var axis = new THREE.Vector3(0.5,0.5,0);
 
   // scene
   scene = new THREE.Scene();
@@ -38,6 +214,7 @@ function init() {
     }
   };
   var onError = function ( xhr ) {
+    console.log('error: ' + xhr);
   };
 
   //loading the assets: texture
@@ -77,30 +254,29 @@ function init() {
 function onKeyDown(e){
 
   switch (e.keyCode) {
-    case 37:
-      e.preventDefault();
-      console.log('left');
-      break;
-    case 38:
-      e.preventDefault();
-      console.log('up');
-      rotate(.5);
-      break;
-    case 39:
-      e.preventDefault();
-      console.log('right');
-      break;
-    case 40:
-      e.preventDefault();
-      console.log('down');
-      rotate(-.5);
-      break;
-    }
+  case 37:
+    e.preventDefault();
+    console.log('left');
+    break;
+  case 38:
+    e.preventDefault();
+    console.log('up');
+    rotateX(.5);
+    break;
+  case 39:
+    e.preventDefault();
+    console.log('right');
+    break;
+  case 40:
+    e.preventDefault();
+    console.log('down');
+    rotateX(-.5);
+    break;
+  }
 }
 
-function rotate(rot){
+function rotateX(rot){
   console.log('rotating');
-  //object3D.rotateOnAxis(axis,rad);
   object3D.rotation.x += rot;
 }
 

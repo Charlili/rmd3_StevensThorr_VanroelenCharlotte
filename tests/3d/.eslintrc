@@ -192,6 +192,10 @@
   },
 
   "globals": {
+    "io": true,
+    "Peer": true,
+    "QCodeDecoder": true,
+    "$": true,
     "THREE": true
   }
 

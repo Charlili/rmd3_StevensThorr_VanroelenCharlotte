@@ -1,7 +1,6 @@
 'use strict';
 
 let fs = require('fs');
-let validateFileName = require('../modules/validateFileName');
 
 const pluginHandler = (err) => {
   if(err) console.error(err);
@@ -10,7 +9,7 @@ const pluginHandler = (err) => {
 module.exports.register = (server, options, next) => {
 
   fs.readdirSync(__dirname).forEach(file => {
-    if(!validateFileName(file)) return;
+    if (file === 'index.js' || !file.endsWith('.js') || file.startsWith('_')) return;
     server.register(require(`./${file}`), pluginHandler);
   });
 
@@ -19,6 +18,6 @@ module.exports.register = (server, options, next) => {
 };
 
 module.exports.register.attributes = {
-  name: 'plugins',
+  name: 'modules',
   version: '0.1.0'
 };

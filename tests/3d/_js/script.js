@@ -1,25 +1,21 @@
 'use strict';
 
-// some features need the be polyfilled..
-// https://babeljs.io/docs/usage/polyfill/
-
-// import 'babel-core/polyfill';
-// or import specific polyfills
-// import {$} from './helpers/util';
-
-
 var container;
-var camera, scene, renderer;
+var camera, scene, axis, renderer, object3D;
 var mouseX = 0, mouseY = 0;
 var windowHalfX = window.innerWidth / 2;
 var windowHalfY = window.innerHeight / 2;
+var rad = 0;
 init();
 animate();
+
 function init() {
-  container = document.createElement( 'div' );
-  document.body.appendChild( container );
+
+  container = document.body.querySelector('.main');
   camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
   camera.position.z = 100;
+  var axis = new THREE.Vector3(0.5,0.5,0);
+
   // scene
   scene = new THREE.Scene();
   var ambient = new THREE.AmbientLight( 0x101030 );
@@ -27,12 +23,14 @@ function init() {
   var directionalLight = new THREE.DirectionalLight( 0xffeedd );
   directionalLight.position.set( 0, 0, 1 );
   scene.add( directionalLight );
+
   // texture
   var manager = new THREE.LoadingManager();
   manager.onProgress = function ( item, loaded, total ) {
     console.log( item, loaded, total );
   };
   var texture = new THREE.Texture();
+  // texture loading %
   var onProgress = function ( xhr ) {
     if ( xhr.lengthComputable ) {
       var percentComplete = xhr.loaded / xhr.total * 100;
@@ -41,12 +39,14 @@ function init() {
   };
   var onError = function ( xhr ) {
   };
+
+  //loading the assets: texture
   var loader = new THREE.ImageLoader( manager );
   loader.load( 'assets/baby.jpg', ( image ) => {
     texture.image = image;
     texture.needsUpdate = true;
   } );
-  // model
+  //loading the assets: model
   var loader = new THREE.OBJLoader( manager );
   loader.load( 'assets/baby.obj', (object ) => {
     object.traverse( ( child ) => {
@@ -54,30 +54,71 @@ function init() {
         child.material.map = texture;
       }
     } );
-
-
     object.position.y = 0;
+    object3D = object;
+    //add object to WebGL scene
     scene.add( object );
   }, onProgress, onError );
-  //
+
+  //render scene
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio( window.devicePixelRatio );
   renderer.setSize( window.innerWidth, window.innerHeight );
+
+  //add scene to DOM
   container.appendChild( renderer.domElement );
+
+  //event listeners
   document.addEventListener( 'mousemove', onDocumentMouseMove, false );
-  //
   window.addEventListener( 'resize', onWindowResize, false );
+  document.addEventListener('keydown', onKeyDown, false);
 }
+
+function onKeyDown(e){
+
+  switch (e.keyCode) {
+    case 37:
+      e.preventDefault();
+      console.log('left');
+      break;
+    case 38:
+      e.preventDefault();
+      console.log('up');
+      rotate(.5);
+      break;
+    case 39:
+      e.preventDefault();
+      console.log('right');
+      break;
+    case 40:
+      e.preventDefault();
+      console.log('down');
+      rotate(-.5);
+      break;
+    }
+}
+
+function rotate(rot){
+  console.log('rotating');
+  //object3D.rotateOnAxis(axis,rad);
+  object3D.rotation.x += rot;
+}
+
 function onWindowResize() {
+
   windowHalfX = window.innerWidth / 2;
   windowHalfY = window.innerHeight / 2;
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
   renderer.setSize( window.innerWidth, window.innerHeight );
+
 }
+
 function onDocumentMouseMove( event ) {
+
   mouseX = ( event.clientX - windowHalfX ) / 2;
   mouseY = ( event.clientY - windowHalfY ) / 2;
+
 }
 //
 function animate() {
@@ -85,9 +126,9 @@ function animate() {
   render();
 }
 function render() {
+
   camera.position.x += ( mouseX - camera.position.x ) * .05;
-  camera.position.y += ( - mouseY - camera.position.y ) * .05;
+  camera.position.y += ( -mouseY - camera.position.y ) * .05;
   camera.lookAt( scene.position );
   renderer.render( scene, camera );
 }
-init();

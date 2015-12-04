@@ -1,43 +1,40 @@
 'use strict';
 
-// some features need the be polyfilled..
-// https://babeljs.io/docs/usage/polyfill/
-
-// import 'babel-core/polyfill';
-// or import specific polyfills
-// import {$} from './helpers/util';
-
 import {mobileCheck, checkUrlPath, getUrlPaths, redirectToPage} from './helpers/util';
 
 import Video from './modules/Video';
 import Status from '../models/Status';
 import DeviceTypes from '../models/DeviceTypes';
 
-let socket, qr, passcode;
+let socket, qr, passcode, refcode;
 let $video, $meta, $vidElem;
 let blnScanned = false;
 
 const initSocket = () => {
 
-  //console.log('socket:', socket, 'io:', io);
-
-  if(getUrlPaths().length >= 3){
-    passcode = getUrlPaths()[2];
-  }else{
-    passcode = Math.floor((Math.random()*8999)+1000);
-  }
-
-  console.log('Passcode', passcode);
-
-  socket = io('10.254.11.95.:3000');
+  socket = io('192.168.43.35.:3000');
   //socket = io('192.168.0.178:3000');
 
+  let clientDetails;
+
   if(mobileCheck()){
-    socket.emit('setDeviceType', DeviceTypes.mobile);
-    socket.on('connect', initMobile);
+    clientDetails = { deviceType: DeviceTypes.mobile };
+    socket.on('clientConnect', initMobile);
   }else{
-    socket.emit('setDeviceType', DeviceTypes.desktop);
-    socket.on('connect', initDesktop);
+    clientDetails = { deviceType: DeviceTypes.mobile };
+    socket.on('clientConnect', initDesktop);
+  }
+
+  if(getUrlPaths().length >= 3){
+    refcode = getUrlPaths()[2];
+    clientDetails.refcode = refcode;
+    socket.emit('setClient', clientDetails);
+  }else{
+    passcode = Math.floor((Math.random()*8999)+1000);
+    refcode = `s${passcode}`;
+    clientDetails.passcode = passcode;
+    clientDetails.refcode = refcode;
+    socket.emit('createClient', clientDetails);
   }
 
   setStatus(Status.not_ready);
@@ -63,25 +60,29 @@ const initDesktop = () => {
 
   if(checkUrlPath('d')){
 
-    switch(getUrlPaths()[2]){
+    switch(getUrlPaths()[3]){
+
     case 'home':
+
       //stuff
+
       break;
+
     case '':
     default:
+
       createQR();
       setStatus(Status.ready);
+
       break;
+
     }
 
   }else{
 
-    redirectToPage(`d/${passcode}`);
+    redirectToPage(`d/${refcode}`);
 
   }
-
-  //createQR();
-  //setStatus(Status.ready);
 
 };
 
@@ -119,11 +120,31 @@ const initMobile = () => {
 
   console.log('[Mobile] Intialising for Mobile');
 
+  if(checkUrlPath('m')){
 
+    switch(getUrlPaths()[3]){
 
-  $meta = document.querySelector('.meta');
+    case 'home':
 
-  MediaStreamTrack.getSources(initBackCamera);
+      //stuff
+
+      break;
+
+    case '':
+    default:
+
+      $meta = document.querySelector('.meta');
+      MediaStreamTrack.getSources(initBackCamera);
+
+      break;
+
+    }
+
+  }else{
+
+    redirectToPage(`m/${refcode}`);
+
+  }
 
 };
 

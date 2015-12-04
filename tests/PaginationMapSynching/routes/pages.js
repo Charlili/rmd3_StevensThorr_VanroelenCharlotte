@@ -20,7 +20,7 @@ module.exports = [
 
   {
     method: 'GET',
-    path: '/d/{user_id}',
+    path: '/d/{ref_id}',
     handler: (request, reply) => {
       return reply.view('desktop');
     }
@@ -28,7 +28,7 @@ module.exports = [
 
   {
     method: 'GET',
-    path: '/m/{user_id}',
+    path: '/m/{ref_id}',
     handler: (request, reply) => {
       return reply.view('mobile');
     }

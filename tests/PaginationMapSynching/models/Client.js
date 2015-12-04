@@ -8,6 +8,8 @@ class Client {
   constructor(id, strDeviceType, socketid){
     this.id = id;
     this.socketid = socketid;
+    this.refcode = '';
+    this.passcode = '';
     this.pairedid = '';
     this.devicename = `${strDeviceType}_${this.id}`;
     this.type = strDeviceType;

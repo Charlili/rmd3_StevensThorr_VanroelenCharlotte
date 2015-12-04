@@ -3,7 +3,6 @@
 module.exports.register = (server, options, next) => {
 
   let io = require('socket.io')(server.listener);
-  //let url = require('url');
   let Client = require('../models/Client');
   let DeviceTypes = require('../models/DeviceTypes.js');
 
@@ -11,8 +10,6 @@ module.exports.register = (server, options, next) => {
   let prevClients = [];
 
   io.on('connection', socket => {
-
-    console.log(`[Server] New client (${socket.id})`);
 
     let maxID = 0;
     if(clients.length > 0){
@@ -24,17 +21,38 @@ module.exports.register = (server, options, next) => {
     }
 
     let newClient = new Client(maxID + 1, 'Unknown', socket.id);
-    newClient.socketId = socket.id;
 
-    clients.push(newClient);
+    socket.on('createClient', clientInfo => {
 
-    /* --- Re-Pair in case of page change ------------------------------- */
+      console.log(`[Server] New client (${clientInfo.refcode} / ${socket.id})`);
 
-    console.log('Prev Clients:', prevClients);
+      newClient = new Client(maxID + 1, 'Unknown', socket.id);
 
-    socket.on('checkPreviousId', prevId => {
+      newClient.socketId = socket.id;
+      newClient.deviceType = clientInfo.deviceType;
+      newClient.passcode = clientInfo.passcode;
+      newClient.refcode = clientInfo.refcode;
 
-      console.log('Checking previous Id:', prevId);
+      clients[clientInfo.refcode] = newClient;
+      socket.emit('clientConnect');
+
+    });
+
+    socket.on('setClient', clientInfo => {
+
+      newClient = prevClients[clientInfo.refcode];
+
+      prevClients = prevClients.filter(
+        c => c.refcode !== clientInfo.refcode
+      );
+
+      console.log(newClient.socketid);
+      newClient.socketid = socket.id;
+      newClient.deviceType = clientInfo.deviceType;
+      console.log(newClient.socketid);
+
+      clients[clientInfo.refcode] = newClient;
+      socket.emit('clientConnect');
 
     });
 
@@ -68,10 +86,9 @@ module.exports.register = (server, options, next) => {
 
     socket.on('disconnect', () => {
 
-      console.log(`[Server] Client (${socket.id}) has left...`);
+      console.log(`[Server] Client (${newClient.refcode} / ${newClient.socketid}) has left...`);
 
-      //prevClients.push(newClient);
-      prevClients[socket.id] = newClient;
+      prevClients[newClient.refcode] = newClient;
 
       clients = clients.filter(
         c => c.socketId !== socket.id

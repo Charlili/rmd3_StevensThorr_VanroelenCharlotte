@@ -22,7 +22,7 @@ const initSocket = () => {
   passcode = Math.floor((Math.random()*8999)+1000);
   console.log(passcode);
   //passcode = 1000;
-  socket = io('http://192.168.0.200:3000');
+  socket = io('http://192.168.0.178:3000');
 
   if(mobileCheck()){
     helper.innerHTML = 'initSocket mobile';

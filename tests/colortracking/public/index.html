@@ -1,21 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>3D test</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta charset="utf-8">
+  <title>colortracking</title>
+  <!--<link rel="stylesheet" href="assets/demo.css">-->
+
+  <!--<script src="./js/vendor/color_camera_gui.js"></script>-->
+
+  <style>
+  video, canvas {
+    margin-left: 100px;
+    margin-top: 35px;
+    position: absolute;
+  }
+  </style>
 </head>
-<body style="background-color: #ddd;">
-  <div class= 'main'>
+<body>
+
+<div class= 'main'>
   <!--<input type='text' placeholder='0000'/>-->
   <p class='helper'>Nothing</p>
   </div>
-  <!--<script src="/socket.io/socket.io.js"></script>-->
-  <script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.min.js"></script>
 
-  <script src="//cdnjs.cloudflare.com/ajax/libs/three.js/r73/three.min.js"></script>
-  <script src="/js/vendor/OBJLoader.js"></script>
+  <div class="demo-frame">
+    <div class="demo-container">
+      <video id="video" width="600" height="450" preload autoplay loop muted controls></video>
+      <canvas id="canvas" width="600" height="450"></canvas>
+    </div>
+  </div>
+<script src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.7/socket.io.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/tracking.js/1.1.1/tracking-min.js"></script>
   <script src="/js/script.js"></script>
+
 </body>
 </html>
-

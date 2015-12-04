@@ -1,9 +1,9 @@
 {
-  "name": "docent",
+  "name": "3D-Tests",
   "version": "0.1.0",
   "description": "",
   "main": "server.js",
-  "author": "Geoffrey Dhuyvetters",
+  "author": "Charlotte Vanroelen",
   "scripts": {
     "development": "webpack --watch & npm run serve",
     "production": "webpack -d -p",

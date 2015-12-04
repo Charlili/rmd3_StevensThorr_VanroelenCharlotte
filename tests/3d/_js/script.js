@@ -22,7 +22,7 @@ const initSocket = () => {
   passcode = Math.floor((Math.random()*8999)+1000);
   console.log(passcode);
   //passcode = 1000;
-  socket = io('http://192.168.0.200:3000');
+  socket = io('http://172.30.17.143:3000');
 
   if(mobileCheck()){
     helper.innerHTML = 'initSocket mobile';
@@ -33,7 +33,7 @@ const initSocket = () => {
     socket.emit('setDeviceType', 'Desktop');
     socket.emit('setCode', passcode);
     socket.on('connect', setComputer);
-    socket.on('clickedUI',rotateX);
+    socket.on('clickedUI', rotateX);
   }
   socket.on('pairedDesktop', pairedDesktopHandler);
   socket.on('pairedMobile', pairedMobileHandler);

@@ -36,6 +36,14 @@ module.exports = [
 
   {
     method: 'GET',
+    path: '/m/{pairedid}/pair',
+    handler: (request, reply) => {
+      return reply.view('mobile');
+    }
+  },
+
+  {
+    method: 'GET',
     path: '/connect',
     handler: (request, reply) => {
       return reply.view('connect');

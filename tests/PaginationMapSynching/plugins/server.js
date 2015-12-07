@@ -25,15 +25,19 @@ module.exports.register = (server, options, next) => {
     socket.on('createClient', clientInfo => {
 
       console.log(`[Server] New client (${clientInfo.refcode} / ${socket.id})`);
+      console.log(`[Server] Previous Clients(${prevClients.length}): ${prevClients}`);
 
       newClient = new Client(maxID + 1, 'Unknown', socket.id);
 
-      newClient.socketId = socket.id;
-      newClient.deviceType = clientInfo.deviceType;
+      newClient.socketid = socket.id;
+      newClient.type = clientInfo.deviceType;
       newClient.passcode = clientInfo.passcode;
       newClient.refcode = clientInfo.refcode;
 
-      clients[clientInfo.refcode] = newClient;
+      //clients[clientInfo.refcode] = newClient;
+      clients.push(newClient);
+      console.log(`[Server] Clients(${clients.length}): ${clients}`);
+      console.log(`[Server] Previous Clients(${prevClients.length}): ${prevClients}`);
       socket.emit('clientConnect');
 
     });
@@ -42,21 +46,76 @@ module.exports.register = (server, options, next) => {
 
       newClient = prevClients[clientInfo.refcode];
 
-      prevClients = prevClients.filter(
-        c => c.refcode !== clientInfo.refcode
-      );
+      if(typeof newClient === 'undefined'){
 
-      console.log(newClient.socketid);
-      newClient.socketid = socket.id;
-      newClient.deviceType = clientInfo.deviceType;
-      console.log(newClient.socketid);
+        console.log(`[Server] Failed to recycle (${newClient})`);
 
-      clients[clientInfo.refcode] = newClient;
-      socket.emit('clientConnect');
+        socket.emit('createNewClient', true);
+
+      }else{
+
+        console.log(`[Server] Recycled client (${newClient.refcode})`);
+        console.log(`[Server] Previous Clients(${prevClients.length}): ${prevClients}`);
+
+        prevClients = prevClients.filter(
+          c => c.refcode !== clientInfo.refcode
+        );
+
+        newClient.socketid = socket.id;
+        newClient.type = clientInfo.deviceType;
+
+        console.log(`[Server] PairedId: ${newClient.pairedid}`);
+        io.to(newClient.pairedid).emit('PaginationRePair', newClient.refcode);
+
+        //clients[clientInfo.refcode] = newClient;
+        clients.push(newClient);
+        console.log(`[Server] Clients(${clients.length}): ${clients}`);
+        console.log(`[Server] Previous Clients(${prevClients.length}): ${prevClients}`);
+        socket.emit('clientConnect');
+
+      }
 
     });
 
     /* --- Event Handlers ---------------------------------------------- */
+
+    socket.on('rePair', pairedRef => {
+
+      console.log(`[Server] Re - pairing clients {${newClient.refcode} / ${newClient.socketid}} and {${clients[pairedRef].refcode} / ${clients[pairedRef].socketid}}`);
+
+      newClient.pairedid = clients[pairedRef].socketid;
+
+    });
+
+    socket.on('checkCode', codexcode => {
+
+      console.log(`[Server] Checking passcode ${codexcode}`);
+
+      if(clients.length > 0){
+
+        console.log(`[Server] Search match passcode ${codexcode}`);
+
+        clients.forEach( client => {
+
+          console.log(`[Server] Checking Client {${client.refcode} / ${client.socketid} / ${client.passcode}} and {${newClient.refcode} / ${newClient.socketid} / ${codexcode}}`);
+
+          if(client.passcode === codexcode && client.pairedid !== ''){
+
+            console.log('[Server] Right code');
+
+            newClient.pairedid = client.socketid;
+            client.pairedid = newClient.socketid;
+
+            io.to(newClient.pairedid).emit('paired', socket.id);
+            socket.emit('pairedWithCode', socket.id);
+
+          }
+
+        });
+
+      }
+
+    });
 
     socket.on('setDeviceType', strDeviceType => {
 
@@ -72,7 +131,7 @@ module.exports.register = (server, options, next) => {
         socket.emit('paired', pairedId);
       }
 
-      newClient.pairedId = pairedId;
+      newClient.pairedid = pairedId;
 
     });
 

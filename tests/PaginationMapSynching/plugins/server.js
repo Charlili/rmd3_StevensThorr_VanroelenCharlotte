@@ -12,12 +12,13 @@ module.exports.register = (server, options, next) => {
   io.on('connection', socket => {
 
     let maxID = 0;
-    if(clients.length > 0){
-      clients.forEach(client => {
+    if(assocLength(clients) > 0){
+      for(let key in clients){
+        let client = clients[key];
         if(client.id > maxID){
           maxID = client.id;
         }
-      });
+      }
     }
 
     let newClient = new Client(maxID + 1, 'Unknown', socket.id);
@@ -25,7 +26,6 @@ module.exports.register = (server, options, next) => {
     socket.on('createClient', clientInfo => {
 
       console.log(`[Server] New client (${clientInfo.refcode} / ${socket.id})`);
-      console.log(`[Server] Previous Clients(${prevClients.length}): ${prevClients}`);
 
       newClient = new Client(maxID + 1, 'Unknown', socket.id);
 
@@ -34,10 +34,7 @@ module.exports.register = (server, options, next) => {
       newClient.passcode = clientInfo.passcode;
       newClient.refcode = clientInfo.refcode;
 
-      //clients[clientInfo.refcode] = newClient;
-      clients.push(newClient);
-      console.log(`[Server] Clients(${clients.length}): ${clients}`);
-      console.log(`[Server] Previous Clients(${prevClients.length}): ${prevClients}`);
+      clients[clientInfo.refcode] = newClient;
       socket.emit('clientConnect');
 
     });
@@ -55,22 +52,18 @@ module.exports.register = (server, options, next) => {
       }else{
 
         console.log(`[Server] Recycled client (${newClient.refcode})`);
-        console.log(`[Server] Previous Clients(${prevClients.length}): ${prevClients}`);
 
-        prevClients = prevClients.filter(
-          c => c.refcode !== clientInfo.refcode
-        );
+        delete prevClients[newClient.refcode];
 
         newClient.socketid = socket.id;
         newClient.type = clientInfo.deviceType;
 
-        console.log(`[Server] PairedId: ${newClient.pairedid}`);
-        io.to(newClient.pairedid).emit('PaginationRePair', newClient.refcode);
+        if(typeof clients[newClient.pairedref] !== 'undefined'){
+          newClient.pairedid = clients[newClient.pairedref].socketid;
+          //console.log(`[Server] NewClient: {${newClient.refcode} / ${newClient.socketid}} | PairedClient: {${newClient.pairedref} / ${newClient.pairedid}}`);
+        }
 
-        //clients[clientInfo.refcode] = newClient;
-        clients.push(newClient);
-        console.log(`[Server] Clients(${clients.length}): ${clients}`);
-        console.log(`[Server] Previous Clients(${prevClients.length}): ${prevClients}`);
+        clients[clientInfo.refcode] = newClient;
         socket.emit('clientConnect');
 
       }
@@ -79,47 +72,42 @@ module.exports.register = (server, options, next) => {
 
     /* --- Event Handlers ---------------------------------------------- */
 
-    socket.on('rePair', pairedRef => {
-
-      console.log(`[Server] Re - pairing clients {${newClient.refcode} / ${newClient.socketid}} and {${clients[pairedRef].refcode} / ${clients[pairedRef].socketid}}`);
-
-      newClient.pairedid = clients[pairedRef].socketid;
-
-    });
-
     socket.on('checkCode', codexcode => {
 
-      console.log(`[Server] Checking passcode ${codexcode}`);
+      for(let key in clients){
 
-      if(clients.length > 0){
+        let client = clients[key];
 
-        console.log(`[Server] Search match passcode ${codexcode}`);
+        if(client.passcode === codexcode){
 
-        clients.forEach( client => {
+          console.log(`[Server] Right code ${codexcode}`);
 
-          console.log(`[Server] Checking Client {${client.refcode} / ${client.socketid} / ${client.passcode}} and {${newClient.refcode} / ${newClient.socketid} / ${codexcode}}`);
+          newClient.pairedid = client.socketid;
+          client.pairedid = newClient.socketid;
+          newClient.pairedref = client.refcode;
 
-          if(client.passcode === codexcode && client.pairedid !== ''){
+          io.to(newClient.pairedid).emit('paired', socket.id);
+          socket.emit('paired', client.refcode);
 
-            console.log('[Server] Right code');
+          console.log(`[Server] Paired Clients {${client.refcode} / ${client.socketid} / ${client.passcode}} and {${newClient.refcode} / ${newClient.socketid}}`);
 
-            newClient.pairedid = client.socketid;
-            client.pairedid = newClient.socketid;
-
-            io.to(newClient.pairedid).emit('paired', socket.id);
-            socket.emit('pairedWithCode', socket.id);
-
-          }
-
-        });
+        }
 
       }
 
     });
 
-    socket.on('setDeviceType', strDeviceType => {
+    socket.on('setDeviceType', deviceType => {
 
-      newClient.type = strDeviceType;
+      newClient.type = deviceType;
+
+      let strDeviceType = 'Unknown';
+      if(deviceType === DeviceTypes.mobile){
+        strDeviceType = 'Mobile';
+      }else if(deviceType === DeviceTypes.desktop){
+        strDeviceType = 'Desktop';
+      }
+
       newClient.devicename = `${strDeviceType}_${newClient.id}`;
 
     });
@@ -129,6 +117,13 @@ module.exports.register = (server, options, next) => {
       if(newClient.type === DeviceTypes.mobile){
         io.to(pairedId).emit('paired', socket.id);
         socket.emit('paired', pairedId);
+      }
+
+      for(let key in clients){
+        let client = clients[key];
+        if(client.socketid === pairedId){
+          newClient.pairedref = client.refcode;
+        }
       }
 
       newClient.pairedid = pairedId;
@@ -149,13 +144,22 @@ module.exports.register = (server, options, next) => {
 
       prevClients[newClient.refcode] = newClient;
 
-      clients = clients.filter(
-        c => c.socketId !== socket.id
-      );
+      delete clients[newClient.refcode];
 
     });
 
   });
+
+  const assocLength = arr => {
+
+    let arrLength = 0;
+    for(let key in arr){
+      key = key;
+      arrLength++;
+    }
+    return arrLength;
+
+  };
 
   next();
 

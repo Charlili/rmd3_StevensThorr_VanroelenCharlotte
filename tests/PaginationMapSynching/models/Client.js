@@ -11,6 +11,7 @@ class Client {
     this.refcode = '';
     this.passcode = '';
     this.pairedid = '';
+    this.pairedref = '';
     this.devicename = `${strDeviceType}_${this.id}`;
     this.type = strDeviceType;
     this.status = Status.not_ready;

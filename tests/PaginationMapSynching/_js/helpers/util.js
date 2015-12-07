@@ -62,6 +62,18 @@ export const mobileAndTabletCheck = () => {
 
 };
 
+export const hideAdressBar = () =>{
+
+  if(document.height < window.outerHeight){
+    document.body.style.height = `${(window.outerHeight + 50)}px`;
+  }
+
+  setTimeout( () => {
+    window.scrollTo(0, 1);
+  }, 10);
+
+};
+
 export const checkUrlPath = keyword =>{
 
   let hashes = [];

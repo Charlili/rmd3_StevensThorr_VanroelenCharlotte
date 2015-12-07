@@ -1,6 +1,6 @@
 'use strict';
 
-import {mobileCheck, checkUrlPath, getUrlPaths, redirectToPage, numbersFromString, replaceCharAt, createId} from './helpers/util';
+import {mobileCheck, checkUrlPath, getUrlPaths, redirectToPage, numbersFromString, replaceCharAt, createId, hideAdressBar} from './helpers/util';
 
 import Video from './modules/Video';
 import Status from '../models/Status';
@@ -14,8 +14,9 @@ let clientDetails;
 
 const initSocket = () => {
 
-  //socket = io('192.168.43.35.:3000');
-  socket = io('192.168.0.178.:3000');
+  socket = io('192.168.43.35.:3000');
+  //socket = io('192.168.0.178.:3000');
+  //socket = io('172.30.22.38.:3000');
 
   if(mobileCheck()){
     clientDetails = { deviceType: DeviceTypes.mobile };
@@ -37,8 +38,6 @@ const initSocket = () => {
     createNewClient();
   }
 
-  socket.on('PaginationRePair', paginationRePairHandler);
-
 };
 
 const createNewClient = (redirect=false) => {
@@ -53,14 +52,6 @@ const createNewClient = (redirect=false) => {
   blnRedirect = redirect;
 
   socket.emit('createClient', clientDetails);
-
-};
-
-const paginationRePairHandler = pairedRef => {
-
-  console.log('[Script] Re Pairing Clients');
-
-  socket.emit('rePair', pairedRef);
 
 };
 
@@ -82,7 +73,7 @@ const initDesktop = () => {
 
     switch(getUrlPaths()[5]){
 
-    case 'home':
+    case 'mapsynch':
 
       //stuff
 
@@ -122,15 +113,17 @@ const createQR = () => {
 
 };
 
-const phonePairedHandler = pairedId => {
+const phonePairedHandler = pairedid => {
 
   console.log('[Desktop] Paired with Phone');
 
-  socket.emit('setPaired', pairedId);
+  socket.emit('setPaired', pairedid);
 
   setStatus('paired');
 
-  $meta.innerText = `Socket_ID: ${socket.id} // Paired with: ${pairedId}`;
+  $meta.innerText = `Socket_ID: ${socket.id} // Paired with: ${pairedid}`;
+
+  redirectToPage(`d/${refcode}/mapsynch`);
 
 };
 
@@ -142,13 +135,15 @@ const initMobile = () => {
 
   $meta = document.querySelector('.meta');
 
+  hideAdressBar();
+
   if(checkUrlPath('m') && blnRedirect === false){
 
     switch(getUrlPaths()[5]){
 
-    case 'home':
+    case 'mapsynch':
 
-      //stuff
+
 
       break;
 
@@ -165,8 +160,15 @@ const initMobile = () => {
       codexpass = 'XXXX';
 
       for(let i = 0; i < 4; i++){
-        document.getElementsByClassName('upButton')[i].addEventListener('click', evt => { changePassValue(evt, 1); });
-        document.getElementsByClassName('downButton')[i].addEventListener('click', evt => { changePassValue(evt, -1); });
+
+        document.getElementsByClassName('upButton')[i].addEventListener('click', evt => {
+          changePassValue(evt, 1);
+        });
+
+        document.getElementsByClassName('downButton')[i].addEventListener('click', evt => {
+          changePassValue(evt, -1);
+        });
+
       }
 
       MediaStreamTrack.getSources(initBackCamera);
@@ -212,13 +214,8 @@ const changePassValue = (evt, direction) => {
 
   codexpass = replaceCharAt(String(codexpass), index, String(newValue));
 
-  //$meta.innerText = `Incomplete code: ${numbersFromString(codexpass)}`;
-
   if(numbersFromString(codexpass).length === 4){
-    $meta.innerText = `Complete code: ${numbersFromString(codexpass).length}`;
     socket.emit('checkCode', Number(codexpass));
-  }else{
-    $meta.innerText = `Incomplete code: ${numbersFromString(codexpass).length}`;
   }
 
 };
@@ -255,7 +252,6 @@ const backcamStream = stream => {
 
   qr = new QCodeDecoder();
 
-  //$meta = document.querySelector('.meta');
   $video = new Video(document.querySelector('.you'));
   $video.showStream(stream);
   $vidElem = $video.getVideoElem();
@@ -293,9 +289,9 @@ const initQCodeScan = () => {
 
 const desktopPairedHandler = pairedId => {
 
-  //console.log('[Server] Paired 3 ---------');
-
   $meta.innerText = `Paired with: ${pairedId}`;
+
+  redirectToPage(`m/${refcode}/mapsynch`);
 
 };
 

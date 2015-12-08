@@ -62,6 +62,18 @@ export const mobileAndTabletCheck = () => {
 
 };
 
+export const hideAdressBar = () =>{
+
+  if(document.height < window.outerHeight){
+    document.body.style.height = `${(window.outerHeight + 50)}px`;
+  }
+
+  setTimeout( () => {
+    window.scrollTo(0, 1);
+  }, 10);
+
+};
+
 export const checkUrlPath = keyword =>{
 
   let hashes = [];
@@ -76,16 +88,30 @@ export const checkUrlPath = keyword =>{
 
 };
 
-export const getUrlPaths = () =>{
+export const getUrlPaths = (customUrl='') =>{
 
-  return window.location.pathname.split('/');
+  let checkurl;
+  if(customUrl === ''){
+    checkurl = window.location.href;
+  }else{
+    checkurl = customUrl;
+  }
+
+  return checkurl.split('/');
 
 };
 
-export const getUrlVars = () =>{
+export const getUrlVars = (customUrl='') =>{
+
+  let checkurl;
+  if(customUrl === ''){
+    checkurl = window.location.href;
+  }else{
+    checkurl = customUrl;
+  }
 
   let vars = [], hash;
-  let hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+  let hashes = checkurl.slice(checkurl.indexOf('?') + 1).split('&');
   for(let i = 0; i < hashes.length; i++){
     hash = hashes[i].split('=');
     vars.push(hash[0]);
@@ -95,9 +121,57 @@ export const getUrlVars = () =>{
 
 };
 
-export const redirectToPage = path =>{
+export const redirectToPage = path => {
 
-  window.location = `${path}`;
+  let index, baseUrl, redirectUrl;
+
+  if(checkUrlPath('connect')){
+    index = window.location.href.indexOf('/connect');
+  }else if(checkUrlPath('m')){
+    index = window.location.href.indexOf('/m');
+  }else if(checkUrlPath('d')){
+    index = window.location.href.indexOf('/d');
+  }else{
+    index = window.location.href.length;
+  }
+
+  baseUrl = window.location.href.substr(0, index);
+  redirectUrl = `${baseUrl}/${path}`;
+
+  //console.log('BaseUrl', baseUrl);
+  //console.log('RedirectUrl', redirectUrl);
+
+  window.location = redirectUrl;
+  //window.location.href = redirectUrl;
+  //window.location.href = `${path}`;
+
+};
+
+export const numbersFromString = checkString => {
+
+  let nums = checkString.match(/\d/g);
+  return nums.join('');
+
+};
+
+export const replaceCharAt = (str, index, character) => {
+
+  //console.log('[Util]', str, index, character);
+
+  return str.substr(0, index) + character + str.substr(index+character.length);
+
+};
+
+export const createId = idLength => {
+
+  let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  let uniqid = '';
+
+  for(let i = 0; i < idLength; i++){
+    uniqid += possible.charAt(Math.floor(Math.random() * possible.length));
+  }
+
+  return uniqid;
 
 };
 

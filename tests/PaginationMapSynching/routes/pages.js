@@ -2,27 +2,45 @@
 
 module.exports = [
 
-  /*{
+  {
     method: 'GET',
-    path: '/test',
+    path: '/connect',
     handler: (request, reply) => {
-      let students = {
-        students: [
-          {
-            name: 'Thorr',
-            lastname: 'Stevens'
-          }
-        ]
-      };
-      return reply(students);
+      return reply.view('connect');
     }
-  },*/
+  },
+
+  {
+    method: 'GET',
+    path: '/',
+    handler: (request, reply) => reply.redirect('/connect')
+  },
+
+  /* --- Desktop Routing -------------------------------------------- */
 
   {
     method: 'GET',
     path: '/d/{ref_id}',
     handler: (request, reply) => {
       return reply.view('desktop');
+    }
+  },
+
+  {
+    method: 'GET',
+    path: '/d/{ref_id}/mapsynch',
+    handler: (request, reply) => {
+      return reply.view('dMapSynch');
+    }
+  },
+
+  /* --- Mobile Routing -------------------------------------------- */
+
+  {
+    method: 'GET',
+    path: '/m/{paired_id}/pair',
+    handler: (request, reply) => {
+      return reply.view('mobile');
     }
   },
 
@@ -36,16 +54,10 @@ module.exports = [
 
   {
     method: 'GET',
-    path: '/connect',
+    path: '/m/{ref_id}/mapsynch',
     handler: (request, reply) => {
-      return reply.view('connect');
+      return reply.view('mMapSynch');
     }
-  },
-
-  {
-    method: 'GET',
-    path: '/',
-    handler: (request, reply) => reply.redirect('/connect')
   }
 
 ];

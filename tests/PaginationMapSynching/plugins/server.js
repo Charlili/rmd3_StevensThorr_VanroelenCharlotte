@@ -12,12 +12,13 @@ module.exports.register = (server, options, next) => {
   io.on('connection', socket => {
 
     let maxID = 0;
-    if(clients.length > 0){
-      clients.forEach(client => {
+    if(assocLength(clients) > 0){
+      for(let key in clients){
+        let client = clients[key];
         if(client.id > maxID){
           maxID = client.id;
         }
-      });
+      }
     }
 
     let newClient = new Client(maxID + 1, 'Unknown', socket.id);
@@ -28,8 +29,8 @@ module.exports.register = (server, options, next) => {
 
       newClient = new Client(maxID + 1, 'Unknown', socket.id);
 
-      newClient.socketId = socket.id;
-      newClient.deviceType = clientInfo.deviceType;
+      newClient.socketid = socket.id;
+      newClient.type = clientInfo.deviceType;
       newClient.passcode = clientInfo.passcode;
       newClient.refcode = clientInfo.refcode;
 
@@ -42,25 +43,71 @@ module.exports.register = (server, options, next) => {
 
       newClient = prevClients[clientInfo.refcode];
 
-      prevClients = prevClients.filter(
-        c => c.refcode !== clientInfo.refcode
-      );
+      if(typeof newClient === 'undefined'){
 
-      console.log(newClient.socketid);
-      newClient.socketid = socket.id;
-      newClient.deviceType = clientInfo.deviceType;
-      console.log(newClient.socketid);
+        console.log(`[Server] Failed to recycle (${newClient})`);
 
-      clients[clientInfo.refcode] = newClient;
-      socket.emit('clientConnect');
+        socket.emit('createNewClient', true);
+
+      }else{
+
+        console.log(`[Server] Recycled client (${newClient.refcode})`);
+
+        delete prevClients[newClient.refcode];
+
+        newClient.socketid = socket.id;
+        newClient.type = clientInfo.deviceType;
+
+        if(typeof clients[newClient.pairedref] !== 'undefined'){
+          newClient.pairedid = clients[newClient.pairedref].socketid;
+          //console.log(`[Server] NewClient: {${newClient.refcode} / ${newClient.socketid}} | PairedClient: {${newClient.pairedref} / ${newClient.pairedid}}`);
+        }
+
+        clients[clientInfo.refcode] = newClient;
+        socket.emit('clientConnect');
+
+      }
 
     });
 
     /* --- Event Handlers ---------------------------------------------- */
 
-    socket.on('setDeviceType', strDeviceType => {
+    socket.on('checkCode', codexcode => {
 
-      newClient.type = strDeviceType;
+      for(let key in clients){
+
+        let client = clients[key];
+
+        if(client.passcode === codexcode){
+
+          console.log(`[Server] Right code ${codexcode}`);
+
+          newClient.pairedid = client.socketid;
+          client.pairedid = newClient.socketid;
+          newClient.pairedref = client.refcode;
+
+          io.to(newClient.pairedid).emit('paired', socket.id);
+          socket.emit('paired', client.refcode);
+
+          console.log(`[Server] Paired Clients {${client.refcode} / ${client.socketid} / ${client.passcode}} and {${newClient.refcode} / ${newClient.socketid}}`);
+
+        }
+
+      }
+
+    });
+
+    socket.on('setDeviceType', deviceType => {
+
+      newClient.type = deviceType;
+
+      let strDeviceType = 'Unknown';
+      if(deviceType === DeviceTypes.mobile){
+        strDeviceType = 'Mobile';
+      }else if(deviceType === DeviceTypes.desktop){
+        strDeviceType = 'Desktop';
+      }
+
       newClient.devicename = `${strDeviceType}_${newClient.id}`;
 
     });
@@ -72,7 +119,14 @@ module.exports.register = (server, options, next) => {
         socket.emit('paired', pairedId);
       }
 
-      newClient.pairedId = pairedId;
+      for(let key in clients){
+        let client = clients[key];
+        if(client.socketid === pairedId){
+          newClient.pairedref = client.refcode;
+        }
+      }
+
+      newClient.pairedid = pairedId;
 
     });
 
@@ -90,13 +144,22 @@ module.exports.register = (server, options, next) => {
 
       prevClients[newClient.refcode] = newClient;
 
-      clients = clients.filter(
-        c => c.socketId !== socket.id
-      );
+      delete clients[newClient.refcode];
 
     });
 
   });
+
+  const assocLength = arr => {
+
+    let arrLength = 0;
+    for(let key in arr){
+      key = key;
+      arrLength++;
+    }
+    return arrLength;
+
+  };
 
   next();
 

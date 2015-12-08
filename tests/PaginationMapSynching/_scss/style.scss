@@ -61,7 +61,7 @@ video, #trackingCanvas {
   left: 0;
   top: 0;
   color: #fff;
-  background-color: #ffad33;
+  background-color: #52A6E6;
   padding: 5px 10px;
   font-size: 1.5em;
 }
@@ -70,33 +70,121 @@ video, #trackingCanvas {
   opacity: .1;
 }
 
-/* --- Desktop Init ---------------------------------------------------- */
-
-.QRCodeContainer {
+#PassCodex{
 
   position: fixed;
-  width: 200px;
-  height: 200px;
-  left: 50%;
-  top: 50%;
-  margin-left: -100px;
-  margin-top: -100px;
-  background-color: #fff;
-
-}
-
-.QRCode {
-  width: 160px;
-  height: 160px;
-  margin: 20px;
-}
-
-.trackingView {
-
-  background-color: #fff;
+  width: 100%;
+  height: 170px;
+  bottom: 0px;
+  background-color: rgb(244, 244, 244);
   z-index: 100;
 
+  #passCodex1{
+    left: 20%;
+  }
+  #passCodex2{
+    left: 40%;
+  }
+  #passCodex3{
+    left: 60%;
+  }
+  #passCodex4{
+    left: 80%;
+  }
+
+  .codexTicker{
+    position: fixed;
+    width: 40px;
+    height: 140px;
+    bottom: 10px;
+    margin-left: -20px;
+    text-align: center;
+    z-index: 120;
+  }
+
+  span{
+    height: 40px;
+    width: 40px;
+  }
+
+  .rowValue{
+    font-size: 6em;
+    font-family: helvetica, roboto;
+    text-align: center;
+  }
+
+  .upButton, .downButton{
+    display: block;
+    width: 40px;
+    height: 20px;
+    margin: 0px;
+  }
+
+  .upButton{
+    margin-bottom: 20px;
+  }
+
+  .downButton{
+    margin-top: 16px;
+  }
+
+  .upButton:before, .downButton:before{
+    display: block;
+    content: '';
+    height: 0; width: 0;
+    top:0px; left:0px;
+    border: 20px transparent solid;
+    border-bottom-color: #333;
+  }
+
+  .upButton:before{
+    border-top-width: 0;
+  }
+
+  .downButton:before{
+    transform: rotate(180deg);
+    border-top-width: 0;
+  }
+
 }
+
+/* --- Desktop Init ---------------------------------------------------- */
+
+.PairingInfo {
+
+  position: fixed;
+  width: 440px;
+  height: 180px;
+  left: 50%;
+  top: 50%;
+  margin-left: -220px;
+  margin-top: -90px;
+  background-color: rgb(244, 244, 244);
+
+  .QRCode, h1{
+    float: left;
+  }
+
+  .QRCode {
+    width: 150px;
+    height: 150px;
+    margin: 15px;
+  }
+
+  h1{
+    display: block;
+    width: 200px;
+    height: 150px;
+    margin: 40px 10px 15px 10px;
+    font-size: 10em;
+    font-family: helvetica, roboto;
+  }
+
+}
+
+
+
+
 
 
 

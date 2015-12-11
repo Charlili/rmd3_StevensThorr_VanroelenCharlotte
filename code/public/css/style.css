@@ -1,0 +1,296 @@
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+  display: block;
+}
+
+body {
+  line-height: 1;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+blockquote, q {
+  quotes: none;
+}
+
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+main {
+  display: block;
+}
+
+body {
+  font-family: Roboto, Helvetica, Arial, sans-serif;
+  font-size: 62.5%;
+}
+
+.container {
+  margin: 10px;
+}
+
+/* --- Mobile Pairpage ---------------------------------------------------- */
+.mobileView, .trackingView {
+  position: fixed;
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+}
+
+.mobileView:after, .trackingView:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.mobileView {
+  z-index: 10;
+}
+
+a {
+  display: block;
+  font-size: 2em;
+  height: 40px;
+  border: 1px solid #000;
+  padding: 8px;
+  margin-left: 10px;
+  text-decoration: none;
+}
+
+header {
+  margin: 10px;
+  margin-top: 20px;
+  font-size: 3em;
+  color: #000;
+}
+
+.video {
+  position: relative;
+  margin: 0 auto;
+}
+
+video, #trackingCanvas {
+  width: 100%;
+  height: 500px;
+}
+
+.meta {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: #fff;
+  background-color: #52A6E6;
+  padding: 5px 10px;
+  font-size: 1.5em;
+  z-index: 300;
+}
+
+.disabled {
+  opacity: .1;
+}
+
+#PassCodex {
+  position: fixed;
+  width: 100%;
+  height: 170px;
+  bottom: 0px;
+  background-color: #f4f4f4;
+  z-index: 100;
+}
+
+#PassCodex #passCodex1 {
+  left: 20%;
+}
+
+#PassCodex #passCodex2 {
+  left: 40%;
+}
+
+#PassCodex #passCodex3 {
+  left: 60%;
+}
+
+#PassCodex #passCodex4 {
+  left: 80%;
+}
+
+#PassCodex .codexTicker {
+  position: fixed;
+  width: 40px;
+  height: 140px;
+  bottom: 10px;
+  margin-left: -20px;
+  text-align: center;
+  z-index: 120;
+}
+
+#PassCodex span {
+  height: 40px;
+  width: 40px;
+}
+
+#PassCodex .rowValue {
+  font-size: 6em;
+  font-family: helvetica, roboto;
+  text-align: center;
+}
+
+#PassCodex .upButton, #PassCodex .downButton {
+  display: block;
+  width: 40px;
+  height: 20px;
+  margin: 0px;
+}
+
+#PassCodex .upButton {
+  margin-bottom: 20px;
+}
+
+#PassCodex .downButton {
+  margin-top: 16px;
+}
+
+#PassCodex .upButton:before, #PassCodex .downButton:before {
+  display: block;
+  content: '';
+  height: 0;
+  width: 0;
+  top: 0px;
+  left: 0px;
+  border: 20px transparent solid;
+  border-bottom-color: #333;
+}
+
+#PassCodex .upButton:before {
+  border-top-width: 0;
+}
+
+#PassCodex .downButton:before {
+  -webkit-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  transform: rotate(180deg);
+  border-top-width: 0;
+}
+
+/* --- Desktop PairPage ---------------------------------------------------- */
+.desktopView {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+}
+
+.desktopView:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.PairingInfo {
+  position: fixed;
+  width: 440px;
+  height: 180px;
+  left: 50%;
+  top: 50%;
+  margin-left: -220px;
+  margin-top: -90px;
+  background-color: #f4f4f4;
+}
+
+.PairingInfo .QRCode, .PairingInfo h1 {
+  float: left;
+}
+
+.PairingInfo .QRCode {
+  width: 150px;
+  height: 150px;
+  margin: 15px;
+}
+
+.PairingInfo h1 {
+  display: block;
+  width: 200px;
+  height: 150px;
+  margin: 40px 10px 15px 10px;
+  font-size: 10em;
+  font-family: helvetica, roboto;
+}
+
+/* --- Desktop MapSynch ---------------------------------------------------- */
+.bgBlack {
+  background-color: #0a0a0a;
+}
+
+.MapOverlay {
+  position: fixed;
+  width: 1180px;
+  height: 720px;
+  left: 50%;
+  top: 50%;
+  margin-left: -590px;
+  margin-top: -360px;
+  background-color: #f4f4f4;
+  background-image: url("/img/room_dark.jpg");
+  background-size: contain;
+  background-position: center;
+  z-index: 200;
+}
+
+.tracking-frame, .tracking-container {
+  position: fixed;
+  width: 1280px;
+  height: 720px;
+  left: 50%;
+  top: 50%;
+  margin-left: 630px;
+  z-index: 100;
+}
+
+.tracking-frame video, .tracking-container video {
+  width: 1280px;
+  height: 720px;
+}
+
+.tracking-frame canvas, .tracking-container canvas {
+  width: 1280px;
+  height: 720px;
+}

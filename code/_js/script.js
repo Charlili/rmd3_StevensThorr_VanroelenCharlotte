@@ -9,6 +9,8 @@ import DesktopMapSyncPage from './modules/DesktopMapSyncPage';
 import MobilePairPage from './modules/MobilePairPage';
 import MobileMapSyncPage from './modules/MobileMapSyncPage';
 
+import Intro from './modules/1_Intro';
+
 let socket;
 let blnRedirect = false;
 let clientDetails;
@@ -140,8 +142,23 @@ const initMobile = () => {
 };
 
 /* --- Other ------------------------------------------------------ */
-
 const init = () => {
+  console.log(getUrlPaths()[2]);
+
+  if(mobileCheck()){
+    scan();
+  }else{
+    if(checkUrlPath('intro')){
+      console.log(getUrlPaths()[3]);
+      intro = new Intro(document.querySelector('.intro'));
+      intro.init();
+    }else{
+      if(getUrlPaths()[3] === '')redirectToPage('intro');
+      else scan();
+    }
+  }
+};
+const scan = () => {
 
   console.log('[Init] Initialising...');
 

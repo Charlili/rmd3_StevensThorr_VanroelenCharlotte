@@ -2,6 +2,20 @@
 
 module.exports = [
 
+
+
+  {
+    method: 'GET',
+    path: '/intro',
+    handler: (request, reply) => reply.view('intro')
+  },
+
+  {
+    method: 'GET',
+    path: '/scan',
+    handler: (request, reply) => reply.view('connect')
+  },
+
   {
     method: 'GET',
     path: '/connect',
@@ -10,11 +24,11 @@ module.exports = [
     }
   },
 
-  {
+  /*{
     method: 'GET',
     path: '/',
     handler: (request, reply) => reply.redirect('/connect')
-  },
+  },*/
 
   /* --- Desktop Routing -------------------------------------------- */
 

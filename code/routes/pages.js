@@ -28,9 +28,9 @@ module.exports = [
 
   {
     method: 'GET',
-    path: '/d/{ref_id}/mapsynch',
+    path: '/d/{ref_id}/mapsync',
     handler: (request, reply) => {
-      return reply.view('DesktopMapSynchPage');
+      return reply.view('DesktopMapSyncPage');
     }
   },
 
@@ -54,9 +54,9 @@ module.exports = [
 
   {
     method: 'GET',
-    path: '/m/{ref_id}/mapsynch',
+    path: '/m/{ref_id}/mapsync',
     handler: (request, reply) => {
-      return reply.view('MobileMapSynchPage');
+      return reply.view('MobileMapSyncPage');
     }
   }
 

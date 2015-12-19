@@ -151,7 +151,7 @@ export default class MobilePairPage extends SocketPage{
 
     this.$meta.innerText = `Paired with: ${pairedId}`;
 
-    redirectToPage(`m/${this.clientDetails.refcode}/mapsynch`);
+    redirectToPage(`m/${this.clientDetails.refcode}/mapsync`);
 
   }
 

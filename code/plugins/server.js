@@ -70,7 +70,17 @@ module.exports.register = (server, options, next) => {
 
     });
 
-    /* --- Event Handlers ---------------------------------------------- */
+    /* --- MapSync Handlers ---------------------------------------------- */
+
+    socket.on('updateMap', colorPos => {
+
+      if(typeof clients[newClient.pairedref] !== 'undefined'){
+        io.to(clients[newClient.pairedref].socketid).emit('updateMapPos', colorPos);
+      }
+
+    });
+
+    /* --- Pairing Handlers ---------------------------------------------- */
 
     socket.on('checkCode', codexcode => {
 

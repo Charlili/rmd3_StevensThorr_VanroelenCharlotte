@@ -193,6 +193,7 @@
     "io": true,
     "Peer": true,
     "QCodeDecoder": true,
+    "tracking": true,
     "$": true
   }
 

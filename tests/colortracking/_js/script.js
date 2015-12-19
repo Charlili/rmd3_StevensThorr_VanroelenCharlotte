@@ -15,7 +15,7 @@ const initSocket = () => {
   console.log(passcode);
   //passcode = 1000;
   //socket = io('http://172.30.17.125:3000');
-  socket = io('http://192.168.0.178.:3000');
+  socket = io('http://192.168.0.177.:3000');
 
   if(mobileCheck()){
     helper.innerHTML = 'this is a mobile device';
@@ -54,7 +54,7 @@ const setComputer = () => {
       /*if (rect.color === 'custom') {
         rect.color = tracker.customColor;
       }*/
-      rect.color = '#D86198';
+      rect.color = '#FF3FB7';
       context.strokeStyle = rect.color;
       context.strokeRect(rect.x, rect.y, rect.width, rect.height);
       context.font = '11px Helvetica';

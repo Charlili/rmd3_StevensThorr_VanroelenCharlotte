@@ -5,21 +5,25 @@ import {mobileCheck, checkUrlPath, getUrlPaths, redirectToPage, numbersFromStrin
 import DeviceTypes from '../models/DeviceTypes';
 
 import DesktopPairPage from './modules/DesktopPairPage';
+import DesktopMapSyncPage from './modules/DesktopMapSyncPage';
 import MobilePairPage from './modules/MobilePairPage';
+import MobileMapSyncPage from './modules/MobileMapSyncPage';
 
 let socket;
 let blnRedirect = false;
 let clientDetails;
 
 let desktopPairPage, mobilePairPage;
+let desktopMapSyncPage, mobileMapSyncPage;
 
 const initSocket = () => {
 
   //socket = io('192.168.43.35.:3000');
   //socket = io('192.168.0.178.:3000');
   //socket = io('172.30.22.38.:3000');
-  socket = io('172.30.22.16.:3000');
+  //socket = io('172.30.22.16.:3000');
   //socket = io('10.254.11.196.:3000');
+  socket = io('192.168.0.177.:3000');
 
   if(mobileCheck()){
     clientDetails = { deviceType: DeviceTypes.mobile };
@@ -57,21 +61,24 @@ const createNewClient = (redirect=false) => {
 
 const initDesktop = () => {
 
-  console.log('[Desktop] Intialising for Desktop');
-
   if(checkUrlPath('d') && blnRedirect === false){
 
     switch(getUrlPaths()[5]){
 
-    case 'mapsynch':
+    case 'mapsync':
 
-      //stuff
+      console.log('[Desktop] Syncing Maps...', getUrlPaths()[5]);
+
+      desktopMapSyncPage = new DesktopMapSyncPage(socket, clientDetails);
+      desktopMapSyncPage.init();
 
       break;
 
     case 'connect':
     case '':
     default:
+
+      console.log('[Desktop] Intialising...');
 
       desktopPairPage = new DesktopPairPage(socket, clientDetails);
       desktopPairPage.init();
@@ -92,17 +99,16 @@ const initDesktop = () => {
 
 const initMobile = () => {
 
-  //console.log('[Mobile] Intialising for Mobile');
-
   hideAdressBar();
 
   if(checkUrlPath('m') && blnRedirect === false){
 
     switch(getUrlPaths()[5]){
 
-    case 'mapsynch':
+    case 'mapsync':
 
-
+      mobileMapSyncPage = new MobileMapSyncPage(socket, clientDetails);
+      mobileMapSyncPage.init();
 
       break;
 
@@ -115,6 +121,8 @@ const initMobile = () => {
     case 'connect':
     case '':
     default:
+
+      //console.log('[Mobile] Intialising...');
 
       mobilePairPage = new MobilePairPage(socket, clientDetails, navigator);
       mobilePairPage.init();

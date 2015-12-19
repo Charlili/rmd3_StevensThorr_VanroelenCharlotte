@@ -58,7 +58,7 @@ export default class DesktopPairPage extends SocketPage{
 
     this.$meta.innerText = `Socket_ID: ${this.socket.id} // Paired with: ${pairedid}`;
 
-    redirectToPage(`d/${this.clientDetails.refcode}/mapsynch`);
+    redirectToPage(`d/${this.clientDetails.refcode}/mapsync`);
 
   }
 

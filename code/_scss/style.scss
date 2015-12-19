@@ -161,14 +161,11 @@ header {
 
 .PairingInfo {
 
-  position: fixed;
+  position: absolute;
   width: 440px;
   height: 180px;
-  left: 50%;
-  top: 50%;
-  margin-left: -220px;
-  margin-top: -90px;
-  background-color: rgb(244, 244, 244);
+  left: 20.9%;
+  top: 54%;
 
   .QRCode, h1{
     float: left;
@@ -199,24 +196,14 @@ header {
 
 .mapOverlay{
 
-<<<<<<< HEAD
-  //position: fixed;
-  width: 1180px;
-  height: 720px;
-  left: 50%;
-  top: 50%;
-  margin-left: -590px;
-  margin-top: -360px;
-=======
   position: fixed;
   width: 100%;
   height: 100%;
->>>>>>> 65b143d0b9e59351a041ea3ed5c3288297f8ce1b
   background-color: rgb(244, 244, 244);
   background-image: url('/img/room_dark.jpg');
   background-size: cover;
   background-position: center;
-  z-index: 200;
+  z-index: 2;
 
 }
 
@@ -233,7 +220,7 @@ header {
   top: 50%;
   margin-left: -480px;
   margin-top: -360px;
-  z-index: 100;
+  z-index: 1;
 
   video, canvas{
     position: absolute;
@@ -309,16 +296,26 @@ header {
       right: -45px;
       bottom: -50px;
     }
+
+    .instructions {
+      margin:  0;
+      padding: 0;
+      font-size: 1.2em;
+      height: initial;
+      position: relative;
+      top: -210px;
+    }
 }
 
 .inventory {
     background-color: rgba(100,100,100,.7);
-    position: absolute;
+    position: fixed;
     right: 0;
     top: 0;
     width:  200px;
     height: 100%;
     padding:  20px 12px;
+    z-index: 3;
 
     p {
       display:  block;
@@ -351,8 +348,8 @@ header {
 
 .help {
     border: none;
-    position: relative;
-    top: 132px;
+    position: absolute;
+    bottom: 222px;
     background-color: white;
     padding: 14px;
     border-radius:  4px;
@@ -362,6 +359,7 @@ header {
     font-size: 1.4em;
     margin-bottom: 20px;
     line-height: 1.2;
+    z-index: 3;
 }
 
 .help:after {

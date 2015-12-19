@@ -3,7 +3,7 @@
 import SocketPage from './SocketPage';
 import Status from '../../models/Status';
 
-import {redirectToPage} from '../helpers/util';
+import {redirectToPage, getUrlPaths} from '../helpers/util';
 
 export default class DesktopPairPage extends SocketPage{
 
@@ -32,10 +32,17 @@ export default class DesktopPairPage extends SocketPage{
 
     console.log('[DesktopPairPage] Initialising');
 
+    let url = document.querySelector('.link');
+    url.innerHTML = `(${getUrlPaths()[2]})`;
+    //url.innerHTML = "your ip-adress:";
+
+
+
     this.createQR();
     super.setStatus(Status.ready);
 
   }
+
 
   createQR(){
 

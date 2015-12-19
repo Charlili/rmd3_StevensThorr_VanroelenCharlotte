@@ -132,7 +132,7 @@ export const redirectToPage = path => {
   }else if(checkUrlPath('d')){
     index = window.location.href.indexOf('/d');
   }else{
-    index = window.location.href.length;
+    index = window.location.href.indexOf('/');
   }
 
   baseUrl = window.location.href.substr(0, index);

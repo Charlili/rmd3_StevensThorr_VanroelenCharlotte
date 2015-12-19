@@ -7,19 +7,23 @@ import DeviceTypes from '../models/DeviceTypes';
 import DesktopPairPage from './modules/DesktopPairPage';
 import MobilePairPage from './modules/MobilePairPage';
 
+import Intro from './modules/1_Intro';
+
 let socket;
 let blnRedirect = false;
 let clientDetails;
 
 let desktopPairPage, mobilePairPage;
 
+let intro;
+
 const initSocket = () => {
 
   //socket = io('192.168.43.35.:3000');
   //socket = io('192.168.0.178.:3000');
   //socket = io('172.30.22.38.:3000');
-  socket = io('172.30.22.16.:3000');
-  //socket = io('10.254.11.196.:3000');
+  //socket = io('172.30.17.128.:3000');
+  socket = io('192.168.0.198:3000');
 
   if(mobileCheck()){
     clientDetails = { deviceType: DeviceTypes.mobile };
@@ -101,13 +105,9 @@ const initMobile = () => {
     switch(getUrlPaths()[5]){
 
     case 'mapsynch':
-
-
-
       break;
 
     case 'pair':
-
       redirectToPage(`m/${clientDetails.refcode}`);
 
       break;
@@ -132,8 +132,23 @@ const initMobile = () => {
 };
 
 /* --- Other ------------------------------------------------------ */
-
 const init = () => {
+  console.log(getUrlPaths()[2]);
+
+  if(mobileCheck()){
+    scan();
+  }else{
+    if(checkUrlPath('intro')){
+      console.log(getUrlPaths()[3]);
+      intro = new Intro(document.querySelector('.intro'));
+      intro.init();
+    }else{
+      if(getUrlPaths()[3] === '')redirectToPage('intro');
+      else scan();
+    }
+  }
+};
+const scan = () => {
 
   console.log('[Init] Initialising...');
 

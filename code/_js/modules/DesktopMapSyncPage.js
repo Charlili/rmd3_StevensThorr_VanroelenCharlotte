@@ -4,10 +4,10 @@ import SocketPage from './SocketPage';
 
 //import {redirectToPage} from '../helpers/util';
 
-let MIN_WIDTH = 50;
-let MAX_WIDTH = 80;
-let MIN_HEIGHT = 50;
-let MAX_HEIGHT = 80;
+let MIN_WIDTH = 30;
+let MAX_WIDTH = 100;
+let MIN_HEIGHT = 30;
+let MAX_HEIGHT = 100;
 
 export default class DesktopMapSyncPage extends SocketPage{
 
@@ -65,9 +65,31 @@ export default class DesktopMapSyncPage extends SocketPage{
           rect.y > 0 && rect.y <= (canvas.height - rect.height)
         ){
 
-          this.$meta.innerText = 'Found Color';
 
           let colorPos = {};
+
+          this.$meta.innerText = 'Found Color';
+
+          if(
+            rect.width >= 50 && rect.width <= 80 &&
+            rect.height >= 50 && rect.width <= 80
+          ){
+
+            colorPos.distance = 1;
+
+          }else if(rect.width < 50){
+
+            colorPos.distance = rect.width/50;
+
+          }else if(rect.height > 80){
+
+            colorPos.distance = rect.height/80;
+
+          }else{
+
+            colorPos.distance = 1;
+
+          }
 
           colorPos.x = rect.x + rect.width/2;
           colorPos.y = rect.y + rect.height/2;

@@ -53,33 +53,34 @@ export default class MobileMapSyncPage extends SocketPage{
 
   mapUpdateHandler(colorPos){
 
-    //this.$meta.innerText = `New Position: ${colorPos.x}, ${colorPos.y}`;
+    let nX = -2048 + (colorPos.x * 2);
+    let nY = -(colorPos.y * 2);
 
-    let nX = -1080 + colorPos.x;
-    let nY = -colorPos.y;
+    let minX = 0 - window.innerWidth/2;
+    let maxX = -2048 + window.innerWidth/2;
+    let minY = 0 - window.innerHeight/2;
+    let maxY = -1250 + window.innerHeight/2;
 
-    this.$map.style.marginLeft = `${nX}px`;
-    this.$map.style.marginTop = `${nY}px`;
+    if(nX <= minX && nX >= maxX){
+      this.$map.style.marginLeft = `${nX}px`;
+    }
+    if(nY <= minY && nY >= maxY){
+      this.$map.style.marginTop = `${nY}px`;
+    }
 
     if(colorPos.distance < 1){
 
-      this.$meta.innerText = `Move closer to screen (${colorPos.distance * 100}%)`;
-
-      this.$map.style.transform = `scale(${colorPos.distance}, ${colorPos.distance});`;
-      this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, ${(1 - colorPos.distance)*2})`;
+      this.$meta.innerText = `Move Closer (${Math.round(colorPos.distance * 100)}%)`;
+      this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, ${(1 - colorPos.distance) * 1.6})`;
 
     }else if(colorPos.distance > 1){
 
-      this.$meta.innerText = `Move farther away (${Math.round((1 + (1 - colorPos.distance)) * 100) + 20}%)`;
-
-      this.$map.style.transform = `scale(${colorPos.distance}, ${colorPos.distance});`;
-      this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, 0)`;
+      this.$meta.innerText = `Mover Away (${Math.round((1 + (1 - colorPos.distance)) * 100) + 20}%)`;
 
     }else{
 
-      this.$meta.innerText = `Excellent Distance (100%)`;
-
-      this.$map.style.transform = `scale(1, 1);`;
+      this.$meta.innerText = `Good Position (100%)`;
+      //this.$map.style.transform = `scale(1, 1);`;
       this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, 0)`;
 
     }

@@ -303,6 +303,50 @@ header {
   z-index: 100;
 }
 
+.map ul {
+  margin: 0;
+  padding: 0;
+}
+
+.map li {
+  display: block;
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: lightblue;
+  margin: 5px;
+}
+
+.map li:nth-child(1) {
+  right: 250px;
+  top: 108px;
+}
+
+.map li:nth-child(2) {
+  right: 480px;
+  top: 210px;
+}
+
+.map li:nth-child(3) {
+  left: 300px;
+  top: 108px;
+}
+
+.map li:nth-child(4) {
+  right: 50px;
+  bottom: 350px;
+}
+
+.map li:nth-child(5) {
+  left: 330px;
+  bottom: 80px;
+}
+
+.map li:nth-child(6) {
+  right: 285px;
+  bottom: 140px;
+}
+
 .overlay {
   position: relative;
   margin-left: auto;
@@ -396,6 +440,25 @@ header {
 .inventory .girl {
   bottom: 0;
   position: absolute;
+}
+
+.instructions_m {
+  margin: 0;
+  padding: 20px;
+  width: 100%;
+  font-size: 2em;
+  height: initial;
+  position: relative;
+  top: -100px;
+  z-index: 2;
+  text-shadow: 0 0 2px #fff;
+}
+
+.mobileView .man {
+  position: absolute;
+  bottom: 50px;
+  right: 0;
+  z-index: 0;
 }
 
 .help {

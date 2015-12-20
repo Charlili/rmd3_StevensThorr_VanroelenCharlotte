@@ -18,6 +18,7 @@ export default class MobileMapSyncPage extends SocketPage{
     // -- Element Variables ----------
     this.$meta = document.querySelector('.meta');
     this.$map = document.querySelector('.map');
+    this.$objects = document.querySelectorAll('.map li');
 
     // -- Element Manipulation -------
 
@@ -30,9 +31,15 @@ export default class MobileMapSyncPage extends SocketPage{
   init(){
 
     //console.log('[MobileMapSynch] Colortracking Smartphone');
+    /*this.$objects.forEach((index, value)=>{
+      value.addEventListener('click', this.clickedObjectHandler);
+    });*/
+    document.querySelector('.map').addEventListener('click',clickedObjectHandler);
 
+  }
 
-
+  clickedObjectHandler(obj){
+    this.$meta.innerText = 'Clicked an object!';
   }
 
   mapUpdateHandler(colorPos){

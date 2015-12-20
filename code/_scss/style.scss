@@ -247,6 +247,55 @@ header {
   background-position: center;
   z-index: 100;
 
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    display: block;
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: lightblue;
+    margin:  5px;
+  }
+  //op de kast rechts
+  li:nth-child(1) {
+    right: 250px;
+    top: 108px;
+  }
+
+  //op de haard
+  li:nth-child(2) {
+    right: 480px;
+    top: 210px;
+  }
+
+  //op de kast links
+  li:nth-child(3) {
+    left: 300px;
+    top: 108px;
+  }
+
+  //op de kast rechts - midden
+  li:nth-child(4) {
+    right: 50px;
+    bottom: 350px;
+  }
+
+  //bij de hond
+  li:nth-child(5) {
+    left: 330px;
+    bottom: 80px;
+  }
+
+  //bij het vuur
+  li:nth-child(6) {
+    right: 285px;
+    bottom: 140px;
+  }
+
 }
 
 //PAGE 1
@@ -344,6 +393,26 @@ header {
       bottom: 0;
       position: absolute;
     }
+}
+
+.instructions_m {
+  margin:  0;
+  padding: 20px;
+  width: 100%;
+  font-size: 2em;
+  height: initial;
+  position: relative;
+  top: -100px;
+  z-index: 2;
+  text-shadow: 0 0 2px #fff;
+
+}
+
+.mobileView .man {
+  position: absolute;
+  bottom: 50px;
+  right: 0;
+  z-index: 0;
 }
 
 .help {

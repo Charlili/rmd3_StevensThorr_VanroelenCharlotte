@@ -2,8 +2,6 @@
 
 module.exports = [
 
-
-
   {
     method: 'GET',
     path: '/intro',

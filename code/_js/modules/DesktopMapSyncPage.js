@@ -32,13 +32,13 @@ export default class DesktopMapSyncPage extends SocketPage{
 
   init(){
 
-    console.log('[DesktopMapSynch] Colortracking Smartphone');
+    console.log('[DesktopMapSync] Colortracking Smartphone');
 
-    var video = document.getElementById('video');
-    var canvas = document.getElementById('canvas');
+    let video = document.getElementById('video');
+    let canvas = document.getElementById('canvas');
 
-    var context = canvas.getContext('2d');
-    var tracker = new tracking.ColorTracker();
+    let context = canvas.getContext('2d');
+    let tracker = new tracking.ColorTracker();
 
     tracking.track(video, tracker, { camera: true });
 

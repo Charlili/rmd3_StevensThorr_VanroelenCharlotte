@@ -25,7 +25,7 @@ const initSocket = () => {
   //socket = io('172.30.22.38.:3000');
   //socket = io('172.30.22.16.:3000');
   //socket = io('10.254.11.196.:3000');
-  socket = io('192.168.0.177.:3000');
+  socket = io('192.168.0.198.:3000');
 
   if(mobileCheck()){
     clientDetails = { deviceType: DeviceTypes.mobile };

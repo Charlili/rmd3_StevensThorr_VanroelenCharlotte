@@ -33,20 +33,26 @@ export default class MobileMapSyncPage extends SocketPage{
     /*this.$objects.forEach((index, value)=>{
       value.addEventListener('click', (evt) => this.clickedObjectHandler(evt));
     });*/
-    document.querySelector('.map').addEventListener('click', (evt) => this.clickedObjectHandler(evt));
+    document.querySelector('.map').addEventListener('click', (evt) => this.clickedMapHandler(evt));
 
   }
 
-  clickedObjectHandler(evt){
+  clickedMapHandler(evt){
 
     console.log('Clicked:', evt);
     this.$meta.innerText = 'Clicked an object!';
 
+    document.querySelectorAll('.map li').addEventListener('click touchstart', this.clickedObjectHandler);
+
+  }
+
+  clickedObjectHandler(e){
+    e.currentTarget.style.display = 'none';
   }
 
   mapUpdateHandler(colorPos){
 
-    this.$meta.innerText = `New Position: ${colorPos.x}, ${colorPos.y}`;
+    //this.$meta.innerText = `New Position: ${colorPos.x}, ${colorPos.y}`;
 
     let nX = -1080 + colorPos.x;
     let nY = -colorPos.y;

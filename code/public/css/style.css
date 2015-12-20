@@ -69,6 +69,10 @@ body {
   margin: 10px;
 }
 
+.hidden {
+  display: none;
+}
+
 /* --- Mobile Pairpage ---------------------------------------------------- */
 .mobileView, .trackingView {
   width: 100%;
@@ -116,7 +120,7 @@ header {
   background-color: #52A6E6;
   padding: 5px 10px;
   font-size: 1.5em;
-  z-index: 300;
+  z-index: 400;
 }
 
 .disabled {
@@ -261,9 +265,12 @@ header {
   top: 50%;
   margin-left: -590px;
   margin-top: -360px;
+  position: fixed;
+  width: 100%;
+  height: 100%;
   background-color: #f4f4f4;
   background-image: url("/img/room_dark.jpg");
-  background-size: contain;
+  background-size: cover;
   background-position: center;
   z-index: 200;
 }
@@ -290,6 +297,16 @@ header {
 }
 
 /* --- Mobile MapSynch ---------------------------------------------------- */
+.lightOverlay {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  background-image: url("/img/flashlight_overlay.png");
+  background-repeat: none;
+  background-position: center;
+  z-index: 300;
+}
+
 .map {
   position: fixed;
   width: 1180px;
@@ -298,9 +315,123 @@ header {
   top: 50%;
   margin-left: -590px;
   margin-top: -360px;
-  background-color: #f4f4f4;
   background-image: url("/img/room_light.jpg");
   background-size: contain;
   background-position: center;
   z-index: 100;
+}
+
+.overlay {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 200px;
+  width: 750px;
+  height: 400px;
+  background-color: #eee;
+  border: 1px solid #ccc;
+}
+
+.overlay p {
+  text-align: center;
+  font-size: 2.2em;
+  line-height: 1.3em;
+  width: 100%;
+  height: 100%;
+  padding: 100px;
+}
+
+.overlay a {
+  width: 90px;
+  position: absolute;
+  text-align: center;
+  color: #FFF;
+  background-color: #999;
+  border: none;
+  left: calc(50% - 45px);
+  bottom: 50px;
+}
+
+.overlay .girl {
+  position: absolute;
+  width: 170px;
+  height: auto;
+  left: -19px;
+  bottom: 0;
+}
+
+.overlay .man {
+  position: absolute;
+  width: 240px;
+  height: auto;
+  right: -45px;
+  bottom: -50px;
+}
+
+.inventory {
+  background-color: rgba(100, 100, 100, 0.7);
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 200px;
+  height: 100%;
+  padding: 20px 12px;
+}
+
+.inventory p {
+  display: block;
+  width: 100%;
+  font-size: 1.4em;
+  line-height: 1.2;
+  margin-top: 10px;
+  text-align: center;
+  color: white;
+}
+
+.inventory li {
+  display: inline-block;
+  width: 75px;
+  height: 75px;
+  background-color: lightblue;
+  margin: 5px;
+}
+
+.inventory ul {
+  margin: 20px 0px;
+  text-align: center;
+}
+
+.inventory .girl {
+  bottom: 0;
+  position: absolute;
+}
+
+.help {
+  border: none;
+  position: relative;
+  top: 132px;
+  background-color: white;
+  padding: 14px;
+  border-radius: 4px;
+  right: 9px;
+  width: 90% !important;
+  height: initial;
+  font-size: 1.4em;
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.help:after {
+  top: 100%;
+  left: 21%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(196, 199, 213, 0);
+  border-top-color: white;
+  border-width: 9px;
+  margin-left: -9px;
 }

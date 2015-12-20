@@ -143,7 +143,7 @@ const initMobile = () => {
 
 /* --- Other ------------------------------------------------------ */
 const init = () => {
-  console.log(getUrlPaths()[2]);
+  let intro;
 
   if(mobileCheck()){
     scan();

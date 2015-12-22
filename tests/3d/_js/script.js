@@ -139,7 +139,8 @@ const init = () => {
 
   helper = document.querySelector('.main p');
   helper.innerHTML = 'initFunction';
-  initSocket();
+  //initSocket();
+  setup3D();
 
 };
 

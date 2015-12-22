@@ -194,7 +194,8 @@
     "Peer": true,
     "QCodeDecoder": true,
     "tracking": true,
-    "$": true
+    "$": true,
+    "THREE": true
   }
 
 }

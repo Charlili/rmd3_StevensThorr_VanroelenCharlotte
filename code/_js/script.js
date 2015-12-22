@@ -6,6 +6,7 @@ import DeviceTypes from '../models/DeviceTypes';
 
 import DesktopPairPage from './modules/DesktopPairPage';
 import DesktopMapSyncPage from './modules/DesktopMapSyncPage';
+import Desktop3dPage from './modules/Desktop3dPage';
 import MobilePairPage from './modules/MobilePairPage';
 import MobileMapSyncPage from './modules/MobileMapSyncPage';
 
@@ -17,6 +18,7 @@ let clientDetails;
 
 let desktopPairPage, mobilePairPage;
 let desktopMapSyncPage, mobileMapSyncPage;
+let desktop3dPage;
 
 const initSocket = () => {
 
@@ -74,6 +76,13 @@ const initDesktop = () => {
       desktopMapSyncPage = new DesktopMapSyncPage(socket, clientDetails);
       desktopMapSyncPage.init();
 
+      break;
+
+    case '3d':
+      console.log('[Desktop] Syncing Maps...', getUrlPaths()[5]);
+
+      desktop3dPage = new Desktop3dPage(socket, clientDetails);
+      desktop3dPage.init();
       break;
 
     case 'connect':

@@ -70,6 +70,14 @@ module.exports = [
     handler: (request, reply) => {
       return reply.view('MobileMapSyncPage');
     }
+  },
+
+  {
+    method: 'GET',
+    path: '/d/{ref_id}/3d',
+    handler: (request, reply) => {
+      return reply.view('Desktop3dPage');
+    }
   }
 
 ];

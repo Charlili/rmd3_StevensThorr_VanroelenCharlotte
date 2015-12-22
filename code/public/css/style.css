@@ -314,8 +314,8 @@ header {
 
 .map {
   position: fixed;
-  width: 2048px;
-  height: 1250px;
+  width: 1770px;
+  height: 1080px;
   left: 50%;
   top: 50%;
   margin-left: -1024px;
@@ -334,8 +334,8 @@ header {
 .map li {
   display: block;
   position: absolute;
-  width: 50px;
-  height: 50px;
+  width: 4%;
+  height: 7%;
   background-color: lightblue;
   margin: 5px;
 }

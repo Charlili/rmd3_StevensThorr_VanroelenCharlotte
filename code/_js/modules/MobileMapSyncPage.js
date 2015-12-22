@@ -65,13 +65,13 @@ export default class MobileMapSyncPage extends SocketPage{
 
   mapUpdateHandler(colorPos){
 
-    let nX = -2048 + (colorPos.x * 2);
+    let nX = -1770 + (colorPos.x * 2);
     let nY = -(colorPos.y * 2);
 
     let minX = 0 - window.innerWidth/2;
-    let maxX = -2048 + window.innerWidth/2;
+    let maxX = -1770 + window.innerWidth/2;
     let minY = 0 - window.innerHeight/2;
-    let maxY = -1250 + window.innerHeight/2;
+    let maxY = -1080 + window.innerHeight/2;
 
     if(nX <= minX && nX >= maxX){
       this.$map.style.marginLeft = `${nX}px`;

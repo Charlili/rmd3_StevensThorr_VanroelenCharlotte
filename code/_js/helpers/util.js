@@ -151,8 +151,6 @@ export const numbersFromString = checkString => {
 
 export const replaceCharAt = (str, index, character) => {
 
-  //console.log('[Util]', str, index, character);
-
   return str.substr(0, index) + character + str.substr(index+character.length);
 
 };
@@ -171,6 +169,31 @@ export const createId = (idLength, noNums=false) => {
   }
 
   return uniqid;
+
+};
+
+export const httpGet = (theUrl) => {
+
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.open( 'GET', theUrl, false ); // false for synchronous request
+  xmlHttp.send( null );
+  return xmlHttp.responseText;
+
+};
+
+export const httpGetAsync = (theUrl, callback) => {
+
+  var xmlHttp = new XMLHttpRequest();
+  xmlHttp.onreadystatechange = () => {
+
+    if(xmlHttp.readyState === 4 && xmlHttp.status === 200){
+      callback(xmlHttp.responseText);
+    }
+
+  };
+
+  xmlHttp.open('GET', theUrl, true); // true for asynchronous
+  xmlHttp.send(null);
 
 };
 

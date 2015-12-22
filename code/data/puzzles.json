@@ -6,15 +6,15 @@
       "question" : "Nine candles stand burning in a dining room. A strong breeze blows in through and extinguishes two of them. Checking back on the candles later, you notice one more candle has gone out. To make sure no more flames go out, you shut the window. Assuming the wind doesn't extinguish more candles, how many candles do you have left in the end?",
       "answers" : [
         {
-          "1": "5 candles",
+          "answer": "5 candles",
           "correct": false
         },
         {
-          "2": "6 candles",
+          "answer": "6 candles",
           "correct": true
         },
         {
-          "3": "7 candles",
+          "answer": "7 candles",
           "correct": false
         }
       ]
@@ -25,19 +25,19 @@
       "question" : "It's so dark in the shop that I'm having trouble seeing these tiny needles and thread. Can you help me out of this jam, dearie? /n/n There are two threads, A and B. How many needles eyes does thread A pass through?",
       "answers" : [
         {
-          "1": "8 needles",
+          "answer": "8 needles",
           "correct": false
         },
         {
-          "2": "9 needles",
+          "answer": "9 needles",
           "correct": false
         },
         {
-          "3": "10 needles",
+          "answer": "10 needles",
           "correct": true
         },
         {
-          "3": "12 needles",
+          "answer": "12 needles",
           "correct": false
         }
       ]
@@ -48,15 +48,15 @@
       "question" : "Which key opens the door? /n/n As you might expect, the key won't open the door if its shape won't let it pass through the keyhole. /n/n Examine each key carefully and find the one that fits through the lock.",
       "answers" : [
         {
-          "1": "Key A",
+          "answer": "Key A",
           "correct": false
         },
         {
-          "2": "Key B",
+          "answer": "Key B",
           "correct": true
         },
         {
-          "3": "Key C",
+          "answer": "Key C",
           "correct": false
         }
       ]
@@ -67,23 +67,19 @@
       "question" : "\"My village is on a road that leads to no other towns. I look forward to seeing you there.\" /n/n Which village is the speaker from?",
       "answers" : [
         {
-          "1": "Village A",
+          "answer": "Village A",
           "correct": true
         },
         {
-          "2": "Village B",
+          "answer": "Village B",
           "correct": false
         },
         {
-          "3": "Village C",
+          "answer": "Village C",
           "correct": false
         },
         {
-          "4": "Village D",
-          "correct": false
-        },
-        {
-          "5": "Village E",
+          "answer": "Village D",
           "correct": false
         }
       ]
@@ -94,15 +90,15 @@
       "question" : "This analog clock fell off the wall and hit the floor so hard that all the numbers popped off! What a mess... /n/n The clock also stopped working when it hit the ground, but even without the numbers, you can still tell exactly what time it fell. /n/n What time is the clock showing? Don't worry about a.m. and p.m.",
       "answers" : [
         {
-          "1": "9 o'clock",
+          "answer": "9 o'clock",
           "correct": false
         },
         {
-          "2": "12 o'clock",
+          "answer": "12 o'clock",
           "correct": false
         },
         {
-          "3": "6 o'clock",
+          "answer": "6 o'clock",
           "correct": true
         }
       ]
@@ -113,19 +109,19 @@
       "question" : "There are four knights with lances in the photo. One of the lances was broken and then repaired right before the picture was taken. Which one is it? /n/n Ofcourse, before, all the lances were straight.",
       "answers" : [
         {
-          "1": "Lance A",
+          "answer": "Lance A",
           "correct": false
         },
         {
-          "2": "Lance B",
+          "answer": "Lance B",
           "correct": false
         },
         {
-          "3": "Lance C",
+          "answer": "Lance C",
           "correct": true
         },
         {
-          "4": "Lance D",
+          "answer": "Lance D",
           "correct": false
         }
       ]

@@ -314,12 +314,12 @@ header {
 
 .map {
   position: fixed;
-  width: 1180px;
-  height: 720px;
+  width: 2048px;
+  height: 1250px;
   left: 50%;
   top: 50%;
-  margin-left: -590px;
-  margin-top: -360px;
+  margin-left: -1024px;
+  margin-top: -625px;
   background-image: url("/img/room_light.jpg");
   background-size: contain;
   background-position: center;

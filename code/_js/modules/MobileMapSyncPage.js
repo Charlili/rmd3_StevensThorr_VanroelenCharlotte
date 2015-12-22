@@ -32,16 +32,11 @@ export default class MobileMapSyncPage extends SocketPage{
   init(){
 
     //console.log('[MobileMapSynch] Colortracking Smartphone');
-    /*this.$objects.forEach((value, index)=>{
-      value.addEventListener('click', (e) => this.clickedObjectHandler(e));
-    });*/
-    //document.querySelector('.mobileView').addEventListener('click',(e) => this.clickedObjectHandler(e));
-    for(let i = 0;i < 6; i++){
+
+    for(let i = 0; i < 6; i++){
       this.$objects[i].addEventListener('click', (e) => this.clickedObjectHandler(e));
     }
-    /*this.$objects.forEach((index, value)=>{
-      value.addEventListener('click', (evt) => this.clickedObjectHandler(evt));
-    });*/
+
     document.querySelector('.map').addEventListener('click', (evt) => this.clickedMapHandler(evt));
 
   }
@@ -56,45 +51,48 @@ export default class MobileMapSyncPage extends SocketPage{
   }
 
   clickedObjectHandler(e){
+
     e.currentTarget.style.display = 'none';
-    //this.showPuzzle(e.currentTarget.getAttribute('alt'));
+    this.showPuzzle(e.currentTarget.getAttribute('puzzle_id'));
+
   }
 
-  showPuzzle(number){
-    //switch(number)
-      //andere image puzzle tonen in .puzzle
-      //choices aanpassen in .puzzle li
+  showPuzzle(puzzleId){
+
+    this.$meta.text = `Puzzle: ${puzzleId}`;
+
   }
 
   mapUpdateHandler(colorPos){
 
-    //this.$meta.innerText = `New Position: ${colorPos.x}, ${colorPos.y}`;
+    let nX = -2048 + (colorPos.x * 2);
+    let nY = -(colorPos.y * 2);
 
-    let nX = -1080 + colorPos.x;
-    let nY = -colorPos.y;
+    let minX = 0 - window.innerWidth/2;
+    let maxX = -2048 + window.innerWidth/2;
+    let minY = 0 - window.innerHeight/2;
+    let maxY = -1250 + window.innerHeight/2;
 
-    this.$map.style.marginLeft = `${nX}px`;
-    this.$map.style.marginTop = `${nY}px`;
+    if(nX <= minX && nX >= maxX){
+      this.$map.style.marginLeft = `${nX}px`;
+    }
+    if(nY <= minY && nY >= maxY){
+      this.$map.style.marginTop = `${nY}px`;
+    }
 
     if(colorPos.distance < 1){
 
-      this.$meta.innerText = `Move closer to screen (${colorPos.distance * 100}%)`;
-
-      this.$map.style.transform = `scale(${colorPos.distance}, ${colorPos.distance});`;
-      this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, ${(1 - colorPos.distance)*2})`;
+      this.$meta.innerText = `Move Closer (${Math.round(colorPos.distance * 100)}%)`;
+      this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, ${(1 - colorPos.distance) * 1.6})`;
 
     }else if(colorPos.distance > 1){
 
-      this.$meta.innerText = `Move farther away (${Math.round((1 + (1 - colorPos.distance)) * 100) + 20}%)`;
-
-      this.$map.style.transform = `scale(${colorPos.distance}, ${colorPos.distance});`;
-      this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, 0)`;
+      this.$meta.innerText = `Mover Away (${Math.round((1 + (1 - colorPos.distance)) * 100) + 20}%)`;
 
     }else{
 
-      this.$meta.innerText = `Excellent Distance (100%)`;
-
-      this.$map.style.transform = `scale(1, 1);`;
+      this.$meta.innerText = `Good Position (100%)`;
+      //this.$map.style.transform = `scale(1, 1);`;
       this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, 0)`;
 
     }

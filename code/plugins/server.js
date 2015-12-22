@@ -60,7 +60,6 @@ module.exports.register = (server, options, next) => {
 
         if(typeof clients[newClient.pairedref] !== 'undefined'){
           newClient.pairedid = clients[newClient.pairedref].socketid;
-          //console.log(`[Server] NewClient: {${newClient.refcode} / ${newClient.socketid}} | PairedClient: {${newClient.pairedref} / ${newClient.pairedid}}`);
         }
 
         clients[clientInfo.refcode] = newClient;

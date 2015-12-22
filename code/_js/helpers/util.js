@@ -138,12 +138,7 @@ export const redirectToPage = path => {
   baseUrl = window.location.href.substr(0, index);
   redirectUrl = `${baseUrl}/${path}`;
 
-  //console.log('BaseUrl', baseUrl);
-  //console.log('RedirectUrl', redirectUrl);
-
   window.location = redirectUrl;
-  //window.location.href = redirectUrl;
-  //window.location.href = `${path}`;
 
 };
 

@@ -36,7 +36,7 @@ export default class MobileMapSyncPage extends SocketPage{
       value.addEventListener('click', (e) => this.clickedObjectHandler(e));
     });*/
     //document.querySelector('.mobileView').addEventListener('click',(e) => this.clickedObjectHandler(e));
-    for(let i = 0;i < 6; i++){
+    for(let i = 0; i < 6; i++){
       this.$objects[i].addEventListener('click', (e) => this.clickedObjectHandler(e));
     }
     /*this.$objects.forEach((index, value)=>{

@@ -32,16 +32,11 @@ export default class MobileMapSyncPage extends SocketPage{
   init(){
 
     //console.log('[MobileMapSynch] Colortracking Smartphone');
-    /*this.$objects.forEach((value, index)=>{
-      value.addEventListener('click', (e) => this.clickedObjectHandler(e));
-    });*/
-    //document.querySelector('.mobileView').addEventListener('click',(e) => this.clickedObjectHandler(e));
+
     for(let i = 0; i < 6; i++){
       this.$objects[i].addEventListener('click', (e) => this.clickedObjectHandler(e));
     }
-    /*this.$objects.forEach((index, value)=>{
-      value.addEventListener('click', (evt) => this.clickedObjectHandler(evt));
-    });*/
+
     document.querySelector('.map').addEventListener('click', (evt) => this.clickedMapHandler(evt));
 
   }
@@ -56,14 +51,16 @@ export default class MobileMapSyncPage extends SocketPage{
   }
 
   clickedObjectHandler(e){
+
     e.currentTarget.style.display = 'none';
-    //this.showPuzzle(e.currentTarget.getAttribute('alt'));
+    this.showPuzzle(e.currentTarget.getAttribute('puzzle_id'));
+
   }
 
-  showPuzzle(number){
-    //switch(number)
-      //andere image puzzle tonen in .puzzle
-      //choices aanpassen in .puzzle li
+  showPuzzle(puzzleId){
+
+    this.$meta.text = `Puzzle: ${puzzleId}`;
+
   }
 
   mapUpdateHandler(colorPos){

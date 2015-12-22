@@ -391,6 +391,7 @@ header {
   height: 400px;
   background-color: #eee;
   border: 1px solid #ccc;
+  z-index: 5;
 }
 
 .overlay p {
@@ -525,4 +526,11 @@ header {
   border-top-color: white;
   border-width: 9px;
   margin-left: -9px;
+}
+
+.main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
 }

@@ -2,13 +2,14 @@
 
 let container;
 let camera, scene, renderer, object3D;
-let mouseX = 0, mouseY = 0;
+let codexArray, selectedCodex, faceArray;
+let count = -1, dir = 0.01;
 let windowHalfX = window.innerWidth / 2;
 let windowHalfY = window.innerHeight / 2;
 
 import SocketPage from './SocketPage';
 
-//import {redirectToPage} from '../helpers/util';
+import {redirectToPage} from '../helpers/util';
 
 
 export default class DesktopMapSyncPage extends SocketPage{
@@ -38,6 +39,13 @@ export default class DesktopMapSyncPage extends SocketPage{
     this.init3D();
     this.animate();
 
+    document.body.querySelector('.overlay-ok').addEventListener('click', this.clickHandler);
+
+  }
+  clickHandler(e){
+    e.preventDefault();
+    e.currentTarget.parentNode.classList.add('hidden');
+    console.log('Hello');
   }
   init3D(){
 
@@ -47,8 +55,10 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     // scene
     scene = new THREE.Scene();
+    codexArray = [0,1,2,3,4,5];
+    faceArray = [0,0,0,0,0,0];
 
-    var ambient = new THREE.AmbientLight( 0x101030 );
+    var ambient = new THREE.AmbientLight( 0x444444 );
     scene.add( ambient );
     var directionalLight = new THREE.DirectionalLight( 0xffeedd );
     directionalLight.position.set( 0, 0, 1 );
@@ -90,13 +100,21 @@ export default class DesktopMapSyncPage extends SocketPage{
       } );
       object.position.y = 0;
       object.scale.set( .5, .5, .5 );
+
+      let rand = Math.floor((Math.random() * 8));
+      console.log(`rotating ${rand} times`);
+      faceArray[i-1] = rand;
+      object.rotation.x = rand * 0.785398;
       object3D = object;
+      //not using push so that slow-loading objects don't mess up the goddamn volgorde
+      codexArray[i-1] = object;
+
       //add object to WebGL scene
       scene.add( object );
     }, onProgress, onError );
   }
 
-
+    selectedCodex = 0;
 
     //render scene
     renderer = new THREE.WebGLRenderer();
@@ -107,7 +125,6 @@ export default class DesktopMapSyncPage extends SocketPage{
     container.appendChild( renderer.domElement );
 
     //event listeners
-    document.addEventListener( 'mousemove', this.onDocumentMouseMove, false );
     window.addEventListener( 'resize', this.onWindowResize, false );
     document.addEventListener('keydown', this.onKeyDown.bind(this), false);
   }
@@ -116,29 +133,53 @@ export default class DesktopMapSyncPage extends SocketPage{
     switch (e.keyCode) {
     case 37:
       e.preventDefault();
-      console.log('left');
+      //console.log('left');
+      --selectedCodex;
+      if(selectedCodex == -1)selectedCodex = 5;
       break;
     case 38:
       e.preventDefault();
-      console.log('up');
+      //console.log('up');
       this.rotateX(0.785398);
       break;
     case 39:
       e.preventDefault();
-      console.log('right');
+      //console.log('right');
+      ++selectedCodex;
+      if(selectedCodex == 6)selectedCodex = 0;
       break;
     case 40:
       e.preventDefault();
-      console.log('down');
+      //console.log('down');
       this.rotateX(-0.785398);
       break;
     }
+
+    //6.28319rad == 360degrees
+    let solved = false;
+    let rad = 6.28319;
+
   }
 
   rotateX(rot){
     console.log('rotating');
     //gaat redelijk traag?
-    object3D.rotation.x += rot;
+    codexArray[selectedCodex].rotation.x += rot;
+    if(rot > 0)faceArray[selectedCodex] += 1;
+    else faceArray[selectedCodex] -= 1;
+
+    if(faceArray[selectedCodex] === -1)faceArray[selectedCodex] = 7;
+    else if(faceArray[selectedCodex] === 8)faceArray[selectedCodex] = 0;
+
+    console.log(`Codex number ${selectedCodex} now has face value ${faceArray[selectedCodex]}`);
+
+    let succes = faceArray.every(function(n){ return n === faceArray[0] })
+    //.log(succes);
+
+    if(succes){
+      document.body.querySelector('.win').classList.remove('hidden');
+    }
+
     //animate();
   }
 
@@ -152,12 +193,6 @@ export default class DesktopMapSyncPage extends SocketPage{
 
   }
 
-  onDocumentMouseMove( event ) {
-
-    mouseX = ( event.clientX - windowHalfX ) / 2;
-    mouseY = ( event.clientY - windowHalfY ) / 2;
-
-  }
   //
   animate() {
     requestAnimationFrame( this.animate.bind(this));
@@ -165,8 +200,13 @@ export default class DesktopMapSyncPage extends SocketPage{
   }
   render() {
 
-    camera.position.x += ( mouseX - camera.position.x ) * .05;
-    camera.position.y += ( -mouseY - camera.position.y ) * .05;
+
+    count += dir;
+    if(count > 1 || count < -1)dir * -1;
+
+
+    camera.position.x = 50*Math.sin(count);
+    camera.position.y = 50*Math.cos(count) ;
     camera.lookAt( scene.position );
     renderer.render( scene, camera );
   }

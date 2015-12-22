@@ -348,6 +348,7 @@ header {
     height: 400px;
     background-color: #eee;
     border: 1px solid #ccc;
+    z-index: 5;
 
     p {
       text-align: center;
@@ -485,6 +486,12 @@ header {
     margin-left: -9px;
 }
 
+.main {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
 
 
 

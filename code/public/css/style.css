@@ -309,6 +309,7 @@ header {
   -ms-user-select: none;
   /* IE 10+ */
   user-select: none;
+  transition: background-color 1s;
 }
 
 .map {
@@ -322,7 +323,7 @@ header {
   background-image: url("/img/room_light.jpg");
   background-size: contain;
   background-position: center;
-  z-index: 100;
+  z-index: 1;
 }
 
 .map ul {

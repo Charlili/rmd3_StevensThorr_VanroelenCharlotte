@@ -11,7 +11,6 @@ import SocketPage from './SocketPage';
 
 import {redirectToPage} from '../helpers/util';
 
-
 export default class DesktopMapSyncPage extends SocketPage{
 
   constructor(socket, clientDetails){
@@ -128,6 +127,7 @@ export default class DesktopMapSyncPage extends SocketPage{
     window.addEventListener( 'resize', this.onWindowResize, false );
     document.addEventListener('keydown', this.onKeyDown.bind(this), false);
   }
+
   onKeyDown(e){
 
     switch (e.keyCode) {

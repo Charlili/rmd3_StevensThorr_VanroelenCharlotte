@@ -1,7 +1,6 @@
 'use strict';
 
 let Status = require('../models/Status');
-let PuzzleStages = require('../models/PuzzleStages.js');
 
 class Client {
 
@@ -15,7 +14,7 @@ class Client {
     this.devicename = `${strDeviceType}_${this.id}`;
     this.type = strDeviceType;
     this.status = Status.not_ready;
-    this.puzzlestage = PuzzleStages.pairing_omnitool;
+    this.codexPieces = [false, false, false, false, false, false];
   }
 
 }

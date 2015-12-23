@@ -11,8 +11,6 @@ import MobilePairPage from './modules/MobilePairPage';
 import MobileMapSyncPage from './modules/MobileMapSyncPage';
 import Mobile3dPage from './modules/Mobile3dPage';
 
-import Intro from './modules/1_Intro';
-
 let socket;
 let blnRedirect = false;
 let clientDetails;
@@ -161,19 +159,20 @@ const initMobile = () => {
 
 /* --- Other ------------------------------------------------------ */
 const init = () => {
-  let intro;
 
   if(mobileCheck()){
+
     scan();
+
   }else{
-    if(checkUrlPath('intro')){
-      console.log(getUrlPaths()[3]);
-      intro = new Intro(document.querySelector('.intro'));
-      intro.init();
-    }else{
-      if(getUrlPaths()[3] === '')redirectToPage('intro');
+
+    if(!checkUrlPath('intro')){
+
+      if(getUrlPaths()[3] === '') redirectToPage('intro');
       else scan();
+
     }
+
   }
 };
 const scan = () => {

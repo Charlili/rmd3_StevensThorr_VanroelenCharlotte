@@ -87,6 +87,8 @@ module.exports.register = (server, options, next) => {
 
     socket.on('rightAnswer', puzzleId => {
 
+      newClient.codexPieces[puzzleId-1] = true;
+
       io.to(clients[newClient.pairedref].socketid).emit('rightAnswer', puzzleId);
 
     });

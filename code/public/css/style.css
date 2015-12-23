@@ -407,8 +407,15 @@ header {
   display: inline-block;
   width: 75px;
   height: 75px;
-  background-color: lightblue;
+  background-color: #272822;
+  transition-duration: 0.4s;
+  transition-property: background-color;
+  transition-timing-function: ease-in-out;
   margin: 5px;
+}
+
+.inventory li.found {
+  background-color: #A4E300;
 }
 
 .inventory ul {
@@ -433,6 +440,52 @@ header {
   text-shadow: 0 0 2px #fff;
 }
 
+@-webkit-keyframes shakePuzzle {
+  0% {
+    margin-left: -319px;
+  }
+  14% {
+    margin-left: -324px;
+  }
+  28% {
+    margin-left: -329px;
+  }
+  43% {
+    margin-left: -324px;
+  }
+  57% {
+    margin-left: -320px;
+  }
+  71% {
+    margin-left: -324px;
+  }
+  85% {
+    margin-left: -327px;
+  }
+  100% {
+    margin-left: -324px;
+  }
+}
+
+.puzzleInfo.wrongAnswer {
+  -webkit-animation-name: shakePuzzle;
+  -webkit-animation-duration: 350ms;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: linear;
+}
+
+.puzzleInfo.wrongAnswer h2.puzzleTitle {
+  color: #FC2065;
+}
+
+.puzzleInfo.correctAnswer h2.puzzleTitle {
+  color: #A4E300;
+}
+
+.puzzleInfo.correctAnswer img.puzzleImg {
+  opacity: 0;
+}
+
 .puzzleInfo {
   position: fixed;
   width: 648px;
@@ -443,20 +496,50 @@ header {
   margin-top: -154px;
   background-color: #FFF;
   border: 4px solid #FFF;
+  opacity: 1;
+  transition-duration: 0.4s;
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
   z-index: 4;
 }
 
-.puzzleInfo img {
+.puzzleInfo .images {
   width: 300px;
   height: 300px;
   float: left;
+}
+
+.puzzleInfo .images img, .puzzleInfo .images div {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 0;
+  left: 0;
+}
+
+.puzzleInfo img.puzzleImg {
+  opacity: 1;
+  transition-duration: 0.4s;
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
+  z-index: 5;
+}
+
+.puzzleInfo div.correctImg {
+  color: #FFF;
+  padding-top: 100px;
+  padding-left: 24px;
+  font-size: 9em;
+  text-align: center;
+  background-color: #A4E300;
+  z-index: 4;
 }
 
 .puzzleInfo .questionInfo {
   float: left;
 }
 
-.puzzleInfo .questionInfo h2 {
+.puzzleInfo h2.puzzleTitle {
   display: block;
   width: 340px;
   height: 40px;
@@ -465,9 +548,12 @@ header {
   font-size: 2em;
   font-weight: bold;
   font-family: helvetica;
+  transition-duration: 0.4s;
+  transition-property: color;
+  transition-timing-function: ease-out;
 }
 
-.puzzleInfo .questionInfo p.question {
+.puzzleInfo p.question {
   display: block;
   width: 340px;
   height: 240px;

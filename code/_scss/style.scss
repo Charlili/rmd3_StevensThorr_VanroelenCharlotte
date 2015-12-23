@@ -348,8 +348,15 @@ header {
     display: inline-block;
     width: 75px;
     height: 75px;
-    background-color: lightblue;
+    background-color: #272822;
+    transition-duration: 0.4s;
+    transition-property: background-color;
+    transition-timing-function: ease-in-out;
     margin:  5px;
+  }
+
+  li.found {
+    background-color: #A4E300;
   }
 
   ul {
@@ -376,6 +383,42 @@ header {
   text-shadow: 0 0 2px #fff;
 }
 
+@-webkit-keyframes shakePuzzle{
+  0% { margin-left: -319px; }
+  14% { margin-left: -324px; }
+  28% { margin-left: -329px; }
+  43% { margin-left: -324px; }
+  57% { margin-left: -320px; }
+  71% { margin-left: -324px; }
+  85% { margin-left: -327px; }
+  100% { margin-left: -324px; }
+}
+
+.puzzleInfo.wrongAnswer {
+
+  -webkit-animation-name: shakePuzzle;
+  -webkit-animation-duration: 350ms;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: linear;
+
+  h2.puzzleTitle {
+    color: #FC2065;
+  }
+
+}
+
+.puzzleInfo.correctAnswer {
+
+  h2.puzzleTitle {
+    color: #A4E300;
+  }
+
+  img.puzzleImg {
+    opacity: 0;
+  }
+
+}
+
 .puzzleInfo {
 
   position: fixed;
@@ -387,42 +430,75 @@ header {
   margin-top: -154px;
   background-color: #FFF;
   border: 4px solid #FFF;
+  opacity: 1;
+  transition-duration: 0.4s;
+  transition-property: opacity;
+  transition-timing-function: ease-in-out;
   z-index: 4;
 
-  img {
+  .images {
+
     width: 300px;
     height: 300px;
     float: left;
+
+    img, div {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      top: 0;
+      left: 0;
+    }
+
+  }
+
+  img.puzzleImg {
+    opacity: 1;
+    transition-duration: 0.4s;
+    transition-property: opacity;
+    transition-timing-function: ease-in-out;
+    z-index: 5;
+  }
+
+  div.correctImg {
+    color: #FFF;
+    padding-top: 100px;
+    padding-left: 24px;
+    font-size: 9em;
+    text-align: center;
+    background-color: #A4E300;
+    z-index: 4;
   }
 
   .questionInfo {
-
     float: left;
+  }
 
-    h2 {
-      display: block;
-      width: 340px;
-      height: 40px;
-      padding: 20px 25px;
-      color: #4DA5E9;
-      font-size: 2em;
-      font-weight: bold;
-      font-family: helvetica;
-    }
+  h2.puzzleTitle {
+    display: block;
+    width: 340px;
+    height: 40px;
+    padding: 20px 25px;
+    color: #4DA5E9;
+    font-size: 2em;
+    font-weight: bold;
+    font-family: helvetica;
+    transition-duration: 0.4s;
+    transition-property: color;
+    transition-timing-function: ease-out;
+  }
 
-    p.question {
-      display: block;
-      width: 340px;
-      height: 240px;
-      padding: 25px;
-      color: #333333;
-      font-size: 1.2em;
-      font-weight: bold;
-      font-family: helvetica;
-      text-align: justify;
-      line-height: 1.6em;
-    }
-
+  p.question {
+    display: block;
+    width: 340px;
+    height: 240px;
+    padding: 25px;
+    color: #333333;
+    font-size: 1.2em;
+    font-weight: bold;
+    font-family: helvetica;
+    text-align: justify;
+    line-height: 1.6em;
   }
 
 }
@@ -593,7 +669,6 @@ header {
     width: 100%;
     padding: 24px 0px;
     margin-bottom: 2%;
-    //background-color: #4DA5E9;
 
   }
 

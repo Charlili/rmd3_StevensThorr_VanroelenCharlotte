@@ -22,12 +22,6 @@ module.exports = [
     }
   },
 
-  /*{
-    method: 'GET',
-    path: '/',
-    handler: (request, reply) => reply.redirect('/connect')
-  },*/
-
   /* --- Desktop Routing -------------------------------------------- */
 
   {
@@ -43,6 +37,14 @@ module.exports = [
     path: '/d/{ref_id}/mapsync',
     handler: (request, reply) => {
       return reply.view('DesktopMapSyncPage');
+    }
+  },
+
+  {
+    method: 'GET',
+    path: '/d/{ref_id}/3d',
+    handler: (request, reply) => {
+      return reply.view('Desktop3dPage');
     }
   },
 
@@ -70,6 +72,7 @@ module.exports = [
     handler: (request, reply) => {
       return reply.view('MobileMapSyncPage');
     }
+<<<<<<< HEAD
   },
 
   {
@@ -86,6 +89,8 @@ module.exports = [
     handler: (request, reply) => {
       return reply.view('Mobile3dPage');
     }
+=======
+>>>>>>> 486eb49fc00ab3c9dc59175a26ae214862bed81d
   }
 
 ];

@@ -25,6 +25,7 @@ export default class DesktopMapSyncPage extends SocketPage{
     this.$meta = document.querySelector('.meta');
     this.$puzzleInfo = document.querySelector('.puzzleInfo');
     this.$puzzleImage = document.querySelector('.puzzleImg');
+    this.$puzzleTitle = document.querySelector('.puzzleTitle');
     this.$question = document.querySelector('.question');
 
     // -- Element Manipulation -------
@@ -102,6 +103,7 @@ export default class DesktopMapSyncPage extends SocketPage{
   showPuzzle(puzzleJSON){
 
     this.$puzzleImage.setAttribute('src', `../../img/puzzles/${puzzleJSON.image}`);
+    this.$puzzleTitle.innerText = puzzleJSON.title;
     this.$question.innerText = puzzleJSON.question;
     this.$puzzleInfo.className = 'puzzleInfo';
 
@@ -109,65 +111,41 @@ export default class DesktopMapSyncPage extends SocketPage{
 
   wrongAnswerHandler(){
 
-    let interval;
-    let shakeit = element => {
+    this.$puzzleInfo.className = 'puzzleInfo wrongAnswer';
 
-      element.style.display = 'block';
-
-      var x = -1;
-      interval = setInterval(() => {
-
-        if(x === -1){
-
-          element.style.marginLeft = '-319px';
-
-        }else{
-
-          switch(x){
-          case 0 :
-            element.style.marginLeft = '-324px';
-            break;
-          case 1 :
-            element.style.marginLeft = '-329px';
-            break;
-          case 2 :
-            element.style.marginLeft = '-324px';
-            break;
-          case 3 :
-            element.style.marginLeft = '-319px';
-            break;
-          case 4 :
-            element.style.marginLeft = '-324px';
-            break;
-          case 5 :
-            element.style.marginLeft = '-329px';
-            break;
-          default :
-            element.style.marginLeft = '-324px';
-            clearInterval(interval);
-          }
-
-        }
-
-        x++;
-
-      }, 16);
-
-    };
-
-    shakeit(this.$puzzleInfo);
+    setTimeout(() => {
+      this.$puzzleInfo.className = 'puzzleInfo';
+    }, 350);
 
   }
 
   rightAnswerHandler(puzzleId){
 
-    this.$puzzleInfo.className = 'puzzleInfo hidden';
+    let $inventoryCodex = document.querySelector(`.codex${puzzleId}`);
+    $inventoryCodex.className = `${puzzleId} found`;
+
+    this.$puzzleInfo.className = 'puzzleInfo correctAnswer';
+    this.$puzzleTitle.innerText = 'Correct!';
+
+    setTimeout(() => {
+
+      this.$puzzleInfo.className = 'puzzleInfo hidden';
+      this.$puzzleTitle.innerText = 'Solve the Puzzle';
+
+    }, 1200);
+
+    setTimeout(() => {
+
+      if(this.foundCodexes === 6){
+        this.socket.emit('foundAllCodexes');
+        redirectToPage(`d/${this.clientDetails.refcode}/3d`);
+      }
+
+    }, 1500);
+
     this.foundCodexes++;
 
-    if(this.foundCodexes === 6){
-      this.socket.emit('foundAllCodexes');
-      redirectToPage(`d/${this.clientDetails.refcode}/3d`);
-    }
+    this.socket.emit('addCodexPiece', puzzleId);
 
   }
 

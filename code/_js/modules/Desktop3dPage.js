@@ -44,8 +44,11 @@ export default class Desktop3dPage extends SocketPage{
   clickHandler(e){
     e.preventDefault();
     e.currentTarget.parentNode.classList.add('hidden');
+    let dom = e.currentTarget.parentNode;
     //e.currentTarget.parentNode.classList.remove('visible');
-
+    setTimeout( () => {
+      document.body.querySelector('.desktopView').removeChild(dom);
+    }, 1500);
     console.log('Hello');
   }
 
@@ -126,7 +129,6 @@ export default class Desktop3dPage extends SocketPage{
 
     selectedCodex = 0;
 
-
     //render scene
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -139,39 +141,6 @@ export default class Desktop3dPage extends SocketPage{
     window.addEventListener( 'resize', this.onWindowResize, false );
     //document.addEventListener('keydown', this.onKeyDown.bind(this), false);
   }
-
-  /*onKeyDown(e){
-
-    switch (e.keyCode) {
-    case 37:
-      e.preventDefault();
-      //console.log('left');
-      --selectedCodex;
-      if(selectedCodex === -1)selectedCodex = 5;
-      break;
-    case 38:
-      e.preventDefault();
-      //console.log('up');
-      this.rotateX(0.785398);
-      break;
-    case 39:
-      e.preventDefault();
-      //console.log('right');
-      ++selectedCodex;
-      if(selectedCodex === 6)selectedCodex = 0;
-      break;
-    case 40:
-      e.preventDefault();
-      //console.log('down');
-      this.rotateX(-0.785398);
-      break;
-    }
-
-    //6.28319rad == 360degrees
-    //let solved = false;
-    //let rad = 6.28319;
-
-  }*/
 
   changeSelectedCodex(direction){
     switch (direction) {
@@ -213,6 +182,7 @@ export default class Desktop3dPage extends SocketPage{
     });
 
     if(succes){
+      console.log('Succes!');
       document.body.querySelector('.win').classList.remove('hidden');
     }
 

@@ -46,15 +46,23 @@ const setComputer = () => {
   var video = document.getElementById('video');
   var canvas = document.getElementById('canvas');
   var context = canvas.getContext('2d');
-  var tracker = new tracking.ColorTracker();
+  tracking.ColorTracker.registerColor('custom', function(r, g, b) {
+    //rgba(0,174,172)
+    if (r < 40 && g < 190 && g > 150 && b < 190 && b > 150) {
+      return true;
+    }
+    return false;
+  });
+  var tracker = new tracking.ColorTracker('custom');
   tracking.track('#video', tracker, { camera: true });
+
   tracker.on('track', function(event) {
     context.clearRect(0, 0, canvas.width, canvas.height);
     event.data.forEach(function(rect) {
       /*if (rect.color === 'custom') {
         rect.color = tracker.customColor;
       }*/
-      rect.color = '#FF3FB7';
+      rect.color = '#000000';
       context.strokeStyle = rect.color;
       context.strokeRect(rect.x, rect.y, rect.width, rect.height);
       context.font = '11px Helvetica';

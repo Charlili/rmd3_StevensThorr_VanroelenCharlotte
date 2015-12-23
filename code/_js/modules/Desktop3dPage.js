@@ -36,7 +36,6 @@ export default class Desktop3dPage extends SocketPage{
     console.log('[Desktop3d]');
     this.init3D();
     this.animate();
-
     document.body.querySelector('.overlay-ok').addEventListener('click', this.clickHandler);
     this.socket.on('clickedUI', this.rotateX);
     this.socket.on('changeSelectedCodex', this.changeSelectedCodex);
@@ -45,6 +44,8 @@ export default class Desktop3dPage extends SocketPage{
   clickHandler(e){
     e.preventDefault();
     e.currentTarget.parentNode.classList.add('hidden');
+    //e.currentTarget.parentNode.classList.remove('visible');
+
     console.log('Hello');
   }
 

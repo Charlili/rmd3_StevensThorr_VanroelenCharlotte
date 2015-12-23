@@ -22,12 +22,15 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     // -- Element Variables ----------
     this.$meta = document.querySelector('.meta');
+    this.$puzzleInfo = document.querySelector('.puzzleInfo');
+    this.$puzzleImage = document.querySelector('.puzzleImg');
+    this.$question = document.querySelector('.question');
 
     // -- Element Manipulation -------
 
 
     // -- Event Handlers -------------
-
+    this.socket.on('showPuzzle', (puzzleJSON) => this.showPuzzle(puzzleJSON));
 
   }
 
@@ -90,6 +93,14 @@ export default class DesktopMapSyncPage extends SocketPage{
       });
 
     });
+
+  }
+
+  showPuzzle(puzzleJSON){
+
+    this.$puzzleImage.setAttribute('src', `../../img/puzzles/${puzzleJSON.image}`);
+    this.$question.innerText = puzzleJSON.question;
+    this.$puzzleInfo.className = 'puzzleInfo';
 
   }
 

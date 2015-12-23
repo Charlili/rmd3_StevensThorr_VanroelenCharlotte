@@ -22,7 +22,7 @@
     {
       "puzzle_id" : 2,
       "image" : "puzzle2.jpg",
-      "question" : "It's so dark in the shop that I'm having trouble seeing these tiny needles and thread. Can you help me out of this jam, dearie? /n/n There are two threads, A and B. How many needles eyes does thread A pass through?",
+      "question" : "It's so dark in the shop that I'm having trouble seeing these tiny needles and thread. Can you help me out of this jam, dearie? \n\n There are two threads, A and B. How many needles eyes does thread A pass through?",
       "answers" : [
         {
           "answer": "8 needles",
@@ -45,7 +45,7 @@
     {
       "puzzle_id" : 3,
       "image" : "puzzle3.jpg",
-      "question" : "Which key opens the door? /n/n As you might expect, the key won't open the door if its shape won't let it pass through the keyhole. /n/n Examine each key carefully and find the one that fits through the lock.",
+      "question" : "Which key opens the door? \n\n As you might expect, the key won't open the door if its shape won't let it pass through the keyhole. \n\n Examine each key carefully and find the one that fits through the lock.",
       "answers" : [
         {
           "answer": "Key A",
@@ -64,7 +64,7 @@
     {
       "puzzle_id" : 4,
       "image" : "puzzle4.jpg",
-      "question" : "\"My village is on a road that leads to no other towns. I look forward to seeing you there.\" /n/n Which village is the speaker from?",
+      "question" : "\"My village is on a road that leads to no other towns. I look forward to seeing you there.\" \n\n Which village is the speaker from?",
       "answers" : [
         {
           "answer": "Village A",
@@ -87,7 +87,7 @@
     {
       "puzzle_id" : 5,
       "image" : "puzzle5.jpg",
-      "question" : "This analog clock fell off the wall and hit the floor so hard that all the numbers popped off! What a mess... /n/n The clock also stopped working when it hit the ground, but even without the numbers, you can still tell exactly what time it fell. /n/n What time is the clock showing? Don't worry about a.m. and p.m.",
+      "question" : "This analog clock fell off the wall and hit the floor so hard that all the numbers popped off! What a mess... \n\n The clock also stopped working when it hit the ground, but even without the numbers, you can still tell exactly what time it fell. \n\n What time is the clock showing? Don't worry about a.m. and p.m.",
       "answers" : [
         {
           "answer": "9 o'clock",
@@ -106,7 +106,7 @@
     {
       "puzzle_id" : 6,
       "image" : "puzzle6.jpg",
-      "question" : "There are four knights with lances in the photo. One of the lances was broken and then repaired right before the picture was taken. Which one is it? /n/n Ofcourse, before, all the lances were straight.",
+      "question" : "There are four knights with lances in the photo. One of the lances was broken and then repaired right before the picture was taken. Which one is it? \n\n Ofcourse, before, all the lances were straight.",
       "answers" : [
         {
           "answer": "Lance A",

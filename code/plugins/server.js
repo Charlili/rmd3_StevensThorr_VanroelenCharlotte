@@ -79,6 +79,14 @@ module.exports.register = (server, options, next) => {
 
     });
 
+    socket.on('showPuzzle', puzzleJSON => {
+
+      console.log('Showing Map', clients[newClient.pairedref].socketid);
+
+      io.to(clients[newClient.pairedref].socketid).emit('showPuzzle', puzzleJSON);
+
+    });
+
     /* --- Pairing Handlers ---------------------------------------------- */
 
     socket.on('checkCode', codexcode => {

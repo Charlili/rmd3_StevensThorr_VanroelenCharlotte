@@ -44,7 +44,11 @@ export default class MobileMapSyncPage extends SocketPage{
 
     e.currentTarget.style.display = 'none';
 
-    this.showPuzzle(e.currentTarget.getAttribute('puzzleId'));
+    let puzzleId = e.currentTarget.getAttribute('puzzleId');
+
+    //this.socket.emit('showPuzzle', puzzleId);
+
+    this.showPuzzle(puzzleId);
 
   }
 
@@ -61,6 +65,8 @@ export default class MobileMapSyncPage extends SocketPage{
   showAnswers(puzzleJSON){
 
     let logicPuzzle = JSON.parse(puzzleJSON);
+
+    this.socket.emit('showPuzzle', logicPuzzle);
 
     this.$meta.innerText = `puzzleImg: ${logicPuzzle.answers.length}`;
 
@@ -113,7 +119,6 @@ export default class MobileMapSyncPage extends SocketPage{
     }else{
 
       //this.$meta.innerText = `Good Position (100%)`;
-      //this.$map.style.transform = `scale(1, 1);`;
       this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, 0)`;
 
     }

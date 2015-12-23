@@ -70,21 +70,25 @@ body {
 }
 
 .hidden {
+  opacity: 0 !important;
   display: none;
-  opacity: 0;
-  transition: 3s opacity;
+  transition: 0.5s opacity, 0s 0.5s display;
 }
 
 /* --- Intro Page ---------------------------------------------------- */
 .overlay {
+  display: block;
   position: relative;
   margin-left: auto;
   margin-right: auto;
   margin-top: 200px;
   width: 750px;
   height: 400px;
+  opacity: 1;
   background-color: #eee;
   border: 1px solid #ccc;
+  transition: 0.5s opacity, 0s 0.5s display;
+  z-index: 5;
 }
 
 .overlay p {
@@ -415,11 +419,37 @@ header {
 }
 
 .inventory li.found {
-  background-color: #4DA5E9;
+  opacity: 0.4;
+  background-size: contain;
 }
 
 .inventory li.solved {
-  background-color: #A4E300;
+  opacity: 1;
+  background-size: contain;
+}
+
+.inventory li.solved[puzzleId="1"], .inventory li.found[puzzleId="1"] {
+  background-image: url("/img/item_1.png");
+}
+
+.inventory li.solved[puzzleId="2"], .inventory li.found[puzzleId="2"] {
+  background-image: url("/img/item_2.png");
+}
+
+.inventory li.solved[puzzleId="3"], .inventory li.found[puzzleId="3"] {
+  background-image: url("/img/item_3.png");
+}
+
+.inventory li.solved[puzzleId="4"], .inventory li.found[puzzleId="4"] {
+  background-image: url("/img/item_4.png");
+}
+
+.inventory li.solved[puzzleId="5"], .inventory li.found[puzzleId="5"] {
+  background-image: url("/img/item_5.png");
+}
+
+.inventory li.solved[puzzleId="6"], .inventory li.found[puzzleId="6"] {
+  background-image: url("/img/item_6.png");
 }
 
 .inventory ul {
@@ -608,36 +638,40 @@ header {
   position: absolute;
   width: 4%;
   height: 7%;
-  background-color: lightblue;
   margin: 5px;
+  background-size: contain;
 }
 
 .map li:nth-child(1) {
   right: 250px;
   top: 108px;
   right: 21%;
-  top: 14.7%;
+  top: 16%;
+  background-image: url("/img/item_1.png");
 }
 
 .map li:nth-child(2) {
   right: 480px;
   top: 210px;
   right: 41%;
-  top: 29%;
+  top: 29.7%;
+  background-image: url("/img/item_2.png");
 }
 
 .map li:nth-child(3) {
   left: 300px;
   top: 108px;
   left: 25%;
-  top: 14.7%;
+  top: 16%;
+  background-image: url("/img/item_3.png");
 }
 
 .map li:nth-child(4) {
   right: 50px;
   bottom: 350px;
   right: 4%;
-  bottom: 47.8%;
+  bottom: 48.3%;
+  background-image: url("/img/item_4.png");
 }
 
 .map li:nth-child(5) {
@@ -645,25 +679,15 @@ header {
   bottom: 80px;
   left: 28%;
   bottom: 11%;
+  background-image: url("/img/item_5.png");
 }
 
 .map li:nth-child(6) {
   right: 285px;
   bottom: 140px;
   right: 24%;
-  bottom: 19%;
-}
-
-.overlay {
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 200px;
-  width: 750px;
-  height: 400px;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  z-index: 5;
+  bottom: 15%;
+  background-image: url("/img/item_6.png");
 }
 
 .puzzle {

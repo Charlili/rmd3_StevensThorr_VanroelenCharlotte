@@ -11,23 +11,27 @@ body {
 }
 
 .hidden {
+  opacity: 0 !important;
   display: none;
-  opacity: 0;
-  transition: 3s opacity;
+  transition: 0.5s opacity, 0s 0.5s display;
 }
 
 /* --- Intro Page ---------------------------------------------------- */
 
 .overlay {
-
+  display: block;
   position: relative;
   margin-left: auto;
   margin-right: auto;
   margin-top: 200px;
   width: 750px;
   height: 400px;
+  opacity: 1;
   background-color: #eee;
   border: 1px solid #ccc;
+  transition: 0.5s opacity, 0s 0.5s display;
+  z-index: 5;
+
 
   p {
     text-align: center;
@@ -355,12 +359,40 @@ header {
     margin:  5px;
   }
 
+
   li.found {
-    background-color: #4DA5E9;
+    opacity: 0.4;
+    background-size: contain;
   }
 
   li.solved {
-    background-color: #A4E300;
+    opacity: 1;
+    background-size: contain;
+  }
+
+  li.solved[puzzleId = "1"], li.found[puzzleId = "1"] {
+    //background-color: #A4E300;
+    background-image: url('/img/item_1.png');
+  }
+  li.solved[puzzleId = "2"], li.found[puzzleId = "2"] {
+    //background-color: #A4E300;
+    background-image: url('/img/item_2.png');
+  }
+  li.solved[puzzleId = "3"], li.found[puzzleId = "3"] {
+    //background-color: #A4E300;
+    background-image: url('/img/item_3.png');
+  }
+  li.solved[puzzleId = "4"], li.found[puzzleId = "4"] {
+    //background-color: #A4E300;
+    background-image: url('/img/item_4.png');
+  }
+  li.solved[puzzleId = "5"], li.found[puzzleId = "5"] {
+    //background-color: #A4E300;
+    background-image: url('/img/item_5.png');
+  }
+  li.solved[puzzleId = "6"], li.found[puzzleId = "6"] {
+    //background-color: #A4E300;
+    background-image: url('/img/item_6.png');
   }
 
   ul {
@@ -545,8 +577,9 @@ header {
     position: absolute;
     width: 4%;
     height: 7%;
-    background-color: lightblue;
+
     margin:  5px;
+    background-size: contain;
   }
 
   //op de kast rechts
@@ -554,7 +587,8 @@ header {
     right: 250px;
     top: 108px;
     right: 21%;
-    top: 14.7%;
+    top: 16%;
+    background-image: url('/img/item_1.png');
   }
 
   //op de haard
@@ -562,7 +596,8 @@ header {
     right: 480px;
     top: 210px;
     right: 41%;
-    top: 29%;
+    top: 29.7%;
+    background-image: url('/img/item_2.png');
   }
 
   //op de kast links
@@ -570,7 +605,8 @@ header {
     left: 300px;
     top: 108px;
     left: 25%;
-    top: 14.7%;
+    top: 16%;
+    background-image: url('/img/item_3.png');
   }
 
   //op de kast rechts - midden
@@ -578,7 +614,8 @@ header {
     right: 50px;
     bottom: 350px;
     right: 4%;
-    bottom: 47.8%;
+    bottom: 48.3%;
+    background-image: url('/img/item_4.png');
   }
 
   //bij de hond
@@ -587,6 +624,7 @@ header {
     bottom: 80px;
     left: 28%;
     bottom: 11%;
+    background-image: url('/img/item_5.png');
   }
 
   //bij het vuur
@@ -594,22 +632,9 @@ header {
     right: 285px;
     bottom: 140px;
     right: 24%;
-    bottom: 19%;
+    bottom: 15%;
+    background-image: url('/img/item_6.png');
   }
-
-}
-
-.overlay {
-
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 200px;
-  width: 750px;
-  height: 400px;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  z-index: 5;
 
 }
 

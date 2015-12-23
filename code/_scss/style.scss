@@ -325,7 +325,7 @@ header {
 
 .inventory {
 
-  background-color: rgba(100,100,100,.7);
+  background-color: rgba(100, 100, 100, .7);
   position: fixed;
   right: 0;
   top: 0;
@@ -356,6 +356,10 @@ header {
   }
 
   li.found {
+    background-color: #4DA5E9;
+  }
+
+  li.solved {
     background-color: #A4E300;
   }
 

@@ -415,6 +415,10 @@ header {
 }
 
 .inventory li.found {
+  background-color: #4DA5E9;
+}
+
+.inventory li.solved {
   background-color: #A4E300;
 }
 

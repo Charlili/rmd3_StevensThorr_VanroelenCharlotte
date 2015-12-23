@@ -107,6 +107,9 @@ export default class DesktopMapSyncPage extends SocketPage{
     this.$question.innerText = puzzleJSON.question;
     this.$puzzleInfo.className = 'puzzleInfo';
 
+    let $inventoryCodex = document.querySelector(`.codex${puzzleJSON.puzzle_id}`);
+    $inventoryCodex.className = `codex${puzzleJSON.puzzle_id} found`;
+
   }
 
   wrongAnswerHandler(){
@@ -122,7 +125,7 @@ export default class DesktopMapSyncPage extends SocketPage{
   rightAnswerHandler(puzzleId){
 
     let $inventoryCodex = document.querySelector(`.codex${puzzleId}`);
-    $inventoryCodex.className = `${puzzleId} found`;
+    $inventoryCodex.className = `codex${puzzleId} solved`;
 
     this.$puzzleInfo.className = 'puzzleInfo correctAnswer';
     this.$puzzleTitle.innerText = 'Correct!';
@@ -144,8 +147,6 @@ export default class DesktopMapSyncPage extends SocketPage{
     }, 1500);
 
     this.foundCodexes++;
-
-    this.socket.emit('addCodexPiece', puzzleId);
 
   }
 

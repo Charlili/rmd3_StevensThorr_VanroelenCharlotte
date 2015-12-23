@@ -14,7 +14,8 @@ class Client {
     this.devicename = `${strDeviceType}_${this.id}`;
     this.type = strDeviceType;
     this.status = Status.not_ready;
-    this.codexPieces = [false, false, false, false, false, false];
+    this.foundCodexes = [false, false, false, false, false, false];
+    this.solvedCodexes = [false, false, false, false, false, false];
   }
 
 }

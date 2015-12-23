@@ -14,6 +14,7 @@ export default class MobileMapSyncPage extends SocketPage{
     this.clientDetails = clientDetails;
     this.socket = socket;
     this.curPuzzleId = 0;
+    this.tries = 0;
 
     // -- Element Variables ----------
     this.$meta = document.querySelector('.meta');
@@ -120,9 +121,9 @@ export default class MobileMapSyncPage extends SocketPage{
     let nX = -1770 + (colorPos.x * 2);
     let nY = -(colorPos.y * 2);
 
-    let minX = 0 - window.innerWidth/2;
+    let minX = -window.innerWidth/2;
     let maxX = -1770 + window.innerWidth/2;
-    let minY = 0 - window.innerHeight/2;
+    let minY = -window.innerHeight/2;
     let maxY = -1080 + window.innerHeight/2;
 
     if(nX <= minX && nX >= maxX){
@@ -139,7 +140,7 @@ export default class MobileMapSyncPage extends SocketPage{
 
     }else if(colorPos.distance > 1){
 
-      //this.$meta.innerText = `Mover Away (${Math.round((1 + (1 - colorPos.distance)) * 100) + 20}%)`;
+      //this.$meta.innerText = `Move Away (${Math.round((1 + (1 - colorPos.distance)) * 100) + 20}%)`;
       this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, 0)`;
 
     }else{

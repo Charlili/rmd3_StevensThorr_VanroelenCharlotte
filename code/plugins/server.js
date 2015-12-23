@@ -81,13 +81,17 @@ module.exports.register = (server, options, next) => {
 
     socket.on('showPuzzle', puzzleJSON => {
 
+      newClient.foundCodexes[puzzleJSON.puzzle_id-1] = true;
+      console.log('Found', newClient.foundCodexes);
+
       io.to(clients[newClient.pairedref].socketid).emit('showPuzzle', puzzleJSON);
 
     });
 
     socket.on('rightAnswer', puzzleId => {
 
-      newClient.codexPieces[puzzleId-1] = true;
+      newClient.solvedCodexes[puzzleId-1] = true;
+      console.log('Solved', newClient.solvedCodexes);
 
       io.to(clients[newClient.pairedref].socketid).emit('rightAnswer', puzzleId);
 

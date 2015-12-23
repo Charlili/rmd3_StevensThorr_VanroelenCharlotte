@@ -72,15 +72,6 @@ module.exports = [
     handler: (request, reply) => {
       return reply.view('MobileMapSyncPage');
     }
-<<<<<<< HEAD
-  },
-
-  {
-    method: 'GET',
-    path: '/d/{ref_id}/3d',
-    handler: (request, reply) => {
-      return reply.view('Desktop3dPage');
-    }
   },
 
   {
@@ -89,8 +80,6 @@ module.exports = [
     handler: (request, reply) => {
       return reply.view('Mobile3dPage');
     }
-=======
->>>>>>> 486eb49fc00ab3c9dc59175a26ae214862bed81d
   }
 
 ];

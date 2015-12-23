@@ -2,7 +2,7 @@
 
 let container;
 let camera, scene, renderer;
-let codexArray, selectedCodex, faceArray, codexGlow, customMaterial, texture, textureLight;
+let codexArray, selectedCodex, faceArray, texture, textureLight;
 let count = -1, dir = 0.01;
 
 
@@ -103,8 +103,8 @@ export default class Desktop3dPage extends SocketPage{
       loader.load( `../../3d/codex_${i}.obj`, `../../3d/codex_${i}.mtl`, (object ) => {
         object.traverse( ( child ) => {
           if ( child instanceof THREE.Mesh ) {
-            if(i != 1)child.material.map = texture;
-            else child.material.map = textureLight;
+            if(i === 1)child.material.map = textureLight;
+            else child.material.map = texture;
           }
         } );
         object.position.y = 0;
@@ -175,14 +175,14 @@ export default class Desktop3dPage extends SocketPage{
   changeSelectedCodex(direction){
     switch (direction) {
     case 'left':
-      codexArray[selectedCodex].traverse ( function (child) {
+      codexArray[selectedCodex].traverse((child) => {
         if (child instanceof THREE.Mesh)child.material.map = texture;
       });
       --selectedCodex;
       if(selectedCodex === -1)selectedCodex = 5;
       break;
     default:
-      codexArray[selectedCodex].traverse ( function (child) {
+      codexArray[selectedCodex].traverse((child) => {
         if (child instanceof THREE.Mesh)child.material.map = texture;
       });
       ++selectedCodex;
@@ -190,7 +190,7 @@ export default class Desktop3dPage extends SocketPage{
       break;
     }
 
-    codexArray[selectedCodex].traverse ( function (child) {
+    codexArray[selectedCodex].traverse((child) => {
       if (child instanceof THREE.Mesh)child.material.map = textureLight;
     });
   }

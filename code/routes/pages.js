@@ -78,6 +78,14 @@ module.exports = [
     handler: (request, reply) => {
       return reply.view('Desktop3dPage');
     }
+  },
+
+  {
+    method: 'GET',
+    path: '/m/{ref_id}/3d',
+    handler: (request, reply) => {
+      return reply.view('Mobile3dPage');
+    }
   }
 
 ];

@@ -1,17 +1,16 @@
 'use strict';
 
 let container;
-let camera, scene, renderer, object3D;
-let codexArray, selectedCodex, faceArray;
+let camera, scene, renderer;
+let codexArray, selectedCodex, faceArray, codexGlow, customMaterial, texture, textureLight;
 let count = -1, dir = 0.01;
-let windowHalfX = window.innerWidth / 2;
-let windowHalfY = window.innerHeight / 2;
+
 
 import SocketPage from './SocketPage';
 
 //import {redirectToPage} from '../helpers/util';
 
-export default class DesktopMapSyncPage extends SocketPage{
+export default class Desktop3dPage extends SocketPage{
 
   constructor(socket, clientDetails){
 
@@ -39,6 +38,8 @@ export default class DesktopMapSyncPage extends SocketPage{
     this.animate();
 
     document.body.querySelector('.overlay-ok').addEventListener('click', this.clickHandler);
+    this.socket.on('clickedUI', this.rotateX);
+    this.socket.on('changeSelectedCodex', this.changeSelectedCodex);
 
   }
   clickHandler(e){
@@ -46,6 +47,7 @@ export default class DesktopMapSyncPage extends SocketPage{
     e.currentTarget.parentNode.classList.add('hidden');
     console.log('Hello');
   }
+
   init3D(){
 
     container = document.body.querySelector('.main');
@@ -68,7 +70,8 @@ export default class DesktopMapSyncPage extends SocketPage{
     manager.onProgress = function ( item, loaded, total ) {
       console.log( item, loaded, total );
     };
-    var texture = new THREE.Texture();
+    texture = new THREE.Texture();
+    textureLight = new THREE.Texture();
     // texture loading %
     var onProgress = function ( xhr ) {
       if ( xhr.lengthComputable ) {
@@ -82,9 +85,15 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     //loading the assets: texture
     var loader = new THREE.ImageLoader( manager );
-    loader.load( '../../3d/codex_1.png', ( image ) => {
+    loader.load( '../../3d/codex_dark.png', ( image ) => {
       texture.image = image;
       texture.needsUpdate = true;
+    } );
+
+    var loader = new THREE.ImageLoader( manager );
+    loader.load( '../../3d/codex_light.png', ( image ) => {
+      textureLight.image = image;
+      textureLight.needsUpdate = true;
     } );
 
     THREE.Loader.Handlers.add( /\.dds$/i, new THREE.DDSLoader() );
@@ -94,7 +103,8 @@ export default class DesktopMapSyncPage extends SocketPage{
       loader.load( `../../3d/codex_${i}.obj`, `../../3d/codex_${i}.mtl`, (object ) => {
         object.traverse( ( child ) => {
           if ( child instanceof THREE.Mesh ) {
-            child.material.map = texture;
+            if(i != 1)child.material.map = texture;
+            else child.material.map = textureLight;
           }
         } );
         object.position.y = 0;
@@ -104,7 +114,7 @@ export default class DesktopMapSyncPage extends SocketPage{
         console.log(`rotating ${rand} times`);
         faceArray[i-1] = rand;
         object.rotation.x = rand * 0.785398;
-        object3D = object;
+
         //not using push so that slow-loading objects don't mess up the goddamn volgorde
         codexArray[i-1] = object;
 
@@ -114,6 +124,7 @@ export default class DesktopMapSyncPage extends SocketPage{
     }
 
     selectedCodex = 0;
+
 
     //render scene
     renderer = new THREE.WebGLRenderer();
@@ -125,10 +136,10 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     //event listeners
     window.addEventListener( 'resize', this.onWindowResize, false );
-    document.addEventListener('keydown', this.onKeyDown.bind(this), false);
+    //document.addEventListener('keydown', this.onKeyDown.bind(this), false);
   }
 
-  onKeyDown(e){
+  /*onKeyDown(e){
 
     switch (e.keyCode) {
     case 37:
@@ -159,6 +170,29 @@ export default class DesktopMapSyncPage extends SocketPage{
     //let solved = false;
     //let rad = 6.28319;
 
+  }*/
+
+  changeSelectedCodex(direction){
+    switch (direction) {
+    case 'left':
+      codexArray[selectedCodex].traverse ( function (child) {
+        if (child instanceof THREE.Mesh)child.material.map = texture;
+      });
+      --selectedCodex;
+      if(selectedCodex === -1)selectedCodex = 5;
+      break;
+    default:
+      codexArray[selectedCodex].traverse ( function (child) {
+        if (child instanceof THREE.Mesh)child.material.map = texture;
+      });
+      ++selectedCodex;
+      if(selectedCodex === 6)selectedCodex = 0;
+      break;
+    }
+
+    codexArray[selectedCodex].traverse ( function (child) {
+      if (child instanceof THREE.Mesh)child.material.map = textureLight;
+    });
   }
 
   rotateX(rot){
@@ -176,19 +210,15 @@ export default class DesktopMapSyncPage extends SocketPage{
     let succes = faceArray.every((n) => {
       return n === faceArray[0];
     });
-    //.log(succes);
 
     if(succes){
       document.body.querySelector('.win').classList.remove('hidden');
     }
 
-    //animate();
   }
 
   onWindowResize() {
 
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
     camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
     renderer.setSize( window.innerWidth, window.innerHeight );
@@ -204,7 +234,7 @@ export default class DesktopMapSyncPage extends SocketPage{
   render() {
 
     count += dir;
-    if(count > 1 || count < -1)dir * -1;
+    if(count > 1 || count < -1)dir *= -1;
 
     camera.position.x = 50*Math.sin(count);
     camera.position.y = 50*Math.cos(count);

@@ -79,6 +79,7 @@ const initDesktop = () => {
       break;
 
     case '3d':
+
       console.log('[Desktop] Syncing Maps...', getUrlPaths()[5]);
 
       desktop3dPage = new Desktop3dPage(socket, clientDetails);
@@ -130,7 +131,8 @@ const initMobile = () => {
       break;
 
     case '3d':
-      console.log('[Mobile] Syncing 3D...', getUrlPaths()[5]);
+
+      //console.log('[Mobile] Syncing 3D...', getUrlPaths()[5]);
 
       mobile3dPage = new Mobile3dPage(socket, clientDetails);
       mobile3dPage.init();
@@ -174,7 +176,9 @@ const init = () => {
     }
 
   }
+
 };
+
 const scan = () => {
 
   console.log('[Init] Initialising...');

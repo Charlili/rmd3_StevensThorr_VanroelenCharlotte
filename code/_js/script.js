@@ -9,6 +9,7 @@ import DesktopMapSyncPage from './modules/DesktopMapSyncPage';
 import Desktop3dPage from './modules/Desktop3dPage';
 import MobilePairPage from './modules/MobilePairPage';
 import MobileMapSyncPage from './modules/MobileMapSyncPage';
+import Mobile3dPage from './modules/Mobile3dPage';
 
 let socket;
 let blnRedirect = false;
@@ -16,7 +17,7 @@ let clientDetails;
 
 let desktopPairPage, mobilePairPage;
 let desktopMapSyncPage, mobileMapSyncPage;
-let desktop3dPage;
+let desktop3dPage, mobile3dPage;
 
 const initSocket = () => {
 
@@ -126,6 +127,13 @@ const initMobile = () => {
 
       redirectToPage(`m/${clientDetails.refcode}`);
 
+      break;
+
+    case '3d':
+      console.log('[Mobile] Syncing 3D...', getUrlPaths()[5]);
+
+      mobile3dPage = new Mobile3dPage(socket, clientDetails);
+      mobile3dPage.init();
       break;
 
     case 'connect':

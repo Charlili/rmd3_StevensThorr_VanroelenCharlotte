@@ -177,6 +177,18 @@ module.exports.register = (server, options, next) => {
 
     });
 
+    socket.on('clickedUI', increment => {
+      //io.to(newClient.pairedId).emit('clickedUI', increment);
+      io.to(clients[newClient.pairedref].socketid).emit('clickedUI', increment);
+
+    });
+
+    socket.on('changeSelectedCodex', direction => {
+      //io.to(newClient.pairedId).emit('changeSelectedCodex', direction);
+      io.to(clients[newClient.pairedref].socketid).emit('changeSelectedCodex', direction);
+
+    });
+
     socket.on('disconnect', () => {
 
       console.log(`[Server] Client (${newClient.refcode} / ${newClient.socketid}) has left...`);

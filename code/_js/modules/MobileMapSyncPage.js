@@ -24,9 +24,6 @@ export default class MobileMapSyncPage extends SocketPage{
     this.$puzzle = document.querySelector('.puzzle');
     this.$answerList = document.querySelector('.puzzle ul');
 
-    // -- Element Manipulation -------
-
-
     // -- Event Handlers -------------
     this.socket.on('updateMapPos', (colorPos) => this.mapUpdateHandler(colorPos));
     this.socket.on('foundAllCodexes', () => redirectToPage(`m/${this.clientDetails.refcode}/3d`));

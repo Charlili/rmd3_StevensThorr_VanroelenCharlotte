@@ -82,7 +82,6 @@ module.exports.register = (server, options, next) => {
     socket.on('showPuzzle', puzzleJSON => {
 
       newClient.foundCodexes[puzzleJSON.puzzle_id-1] = true;
-      console.log('Found', newClient.foundCodexes);
 
       io.to(clients[newClient.pairedref].socketid).emit('showPuzzle', puzzleJSON);
 
@@ -91,7 +90,6 @@ module.exports.register = (server, options, next) => {
     socket.on('rightAnswer', puzzleId => {
 
       newClient.solvedCodexes[puzzleId-1] = true;
-      console.log('Solved', newClient.solvedCodexes);
 
       io.to(clients[newClient.pairedref].socketid).emit('rightAnswer', puzzleId);
 
@@ -178,13 +176,13 @@ module.exports.register = (server, options, next) => {
     });
 
     socket.on('clickedUI', increment => {
-      //io.to(newClient.pairedId).emit('clickedUI', increment);
+
       io.to(clients[newClient.pairedref].socketid).emit('clickedUI', increment);
 
     });
 
     socket.on('changeSelectedCodex', direction => {
-      //io.to(newClient.pairedId).emit('changeSelectedCodex', direction);
+
       io.to(clients[newClient.pairedref].socketid).emit('changeSelectedCodex', direction);
 
     });

@@ -287,7 +287,7 @@ header {
   font-size: 1.4em;
   margin-bottom: 20px;
   line-height: 1.2;
-  z-index: 3;
+  z-index: 11;
 }
 
 .help:after {
@@ -358,11 +358,42 @@ header {
   background-image: url("/img/room_dark.jpg");
   background-size: cover;
   background-position: center;
+  pointer-events: auto;
   z-index: 2;
+}
+
+.mapOverlay.showVideo {
+  pointer-events: none;
+  background: none;
 }
 
 .hidden {
   opacity: 0;
+}
+
+.colorIndicator {
+  position: fixed;
+  width: 30px;
+  height: 30px;
+  top: 0px;
+  left: 0px;
+  border: 3px solid #FFF;
+  border-radius: 15px;
+  z-index: 1;
+}
+
+.recalibrateInfo {
+  position: fixed;
+  width: 500px;
+  bottom: 30px;
+  left: 50%;
+  padding: 24px;
+  margin-left: -250px;
+  color: #333;
+  font-size: 1.6em;
+  text-align: center;
+  background-color: #FFF;
+  z-index: 1;
 }
 
 .tracking-frame, .tracking-container {
@@ -373,7 +404,7 @@ header {
   top: 50%;
   margin-left: -480px;
   margin-top: -360px;
-  z-index: 1;
+  z-index: 0;
 }
 
 .tracking-frame video, .tracking-frame canvas, .tracking-container video, .tracking-container canvas {
@@ -390,7 +421,7 @@ header {
   width: 200px;
   height: 100%;
   padding: 20px 12px;
-  z-index: 3;
+  z-index: 10;
 }
 
 .inventory p {

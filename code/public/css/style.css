@@ -71,6 +71,8 @@ body {
 
 .hidden {
   display: none;
+  opacity: 0;
+  transition: 3s opacity;
 }
 
 /* --- Intro Page ---------------------------------------------------- */
@@ -439,9 +441,7 @@ header {
   width: 75px;
   height: 75px;
   background-color: #272822;
-  transition-duration: 0.4s;
-  transition-property: background-color;
-  transition-timing-function: ease-in-out;
+  transition: background-color 0.4s ease-in-out;
   margin: 5px;
 }
 
@@ -532,9 +532,7 @@ header {
   background-color: #FFF;
   border: 4px solid #FFF;
   opacity: 1;
-  transition-duration: 0.4s;
-  transition-property: opacity;
-  transition-timing-function: ease-in-out;
+  transition: opacity 0.4s ease-in-out;
   z-index: 4;
 }
 
@@ -554,9 +552,7 @@ header {
 
 .puzzleInfo img.puzzleImg {
   opacity: 1;
-  transition-duration: 0.4s;
-  transition-property: opacity;
-  transition-timing-function: ease-in-out;
+  transition: opacity 0.4s ease-in-out;
   z-index: 5;
 }
 
@@ -583,9 +579,7 @@ header {
   font-size: 2em;
   font-weight: bold;
   font-family: helvetica;
-  transition-duration: 0.4s;
-  transition-property: color;
-  transition-timing-function: ease-out;
+  transition: color 0.4s ease-in-out;
 }
 
 .puzzleInfo p.question {
@@ -735,9 +729,7 @@ header {
   font-weight: bold;
   color: #FFF;
   list-style: none;
-  transition-duration: 0.4s;
-  transition-property: background-color;
-  transition-timing-function: ease-in-out;
+  transition: background-color 0.4s ease-in-out;
 }
 
 .puzzle li.false.showColor {

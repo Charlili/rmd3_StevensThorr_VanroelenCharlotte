@@ -69,7 +69,7 @@ module.exports.register = (server, options, next) => {
 
     });
 
-    /* --- MapSync Handlers ---------------------------------------------- */
+    /* --- MapSync & Puzzle Handlers ---------------------------------------------- */
 
     socket.on('updateMap', colorPos => {
 
@@ -81,9 +81,25 @@ module.exports.register = (server, options, next) => {
 
     socket.on('showPuzzle', puzzleJSON => {
 
-      console.log('Showing Map', clients[newClient.pairedref].socketid);
-
       io.to(clients[newClient.pairedref].socketid).emit('showPuzzle', puzzleJSON);
+
+    });
+
+    socket.on('rightAnswer', puzzleId => {
+
+      io.to(clients[newClient.pairedref].socketid).emit('rightAnswer', puzzleId);
+
+    });
+
+    socket.on('wrongAnswer', () => {
+
+      io.to(clients[newClient.pairedref].socketid).emit('wrongAnswer');
+
+    });
+
+    socket.on('foundAllCodexes', () => {
+
+      io.to(clients[newClient.pairedref].socketid).emit('foundAllCodexes');
 
     });
 

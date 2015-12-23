@@ -2,7 +2,7 @@
 
 import SocketPage from './SocketPage';
 
-import {httpGetAsync} from '../helpers/util';
+import {httpGetAsync, redirectToPage} from '../helpers/util';
 
 export default class MobileMapSyncPage extends SocketPage{
 
@@ -13,6 +13,7 @@ export default class MobileMapSyncPage extends SocketPage{
     // -- Class Variables -------------
     this.clientDetails = clientDetails;
     this.socket = socket;
+    this.curPuzzleId = 0;
 
     // -- Element Variables ----------
     this.$meta = document.querySelector('.meta');
@@ -27,6 +28,7 @@ export default class MobileMapSyncPage extends SocketPage{
 
     // -- Event Handlers -------------
     this.socket.on('updateMapPos', (colorPos) => this.mapUpdateHandler(colorPos));
+    this.socket.on('foundAllCodexes', () => redirectToPage(`m/${this.clientDetails.refcode}/3d`));
 
   }
 
@@ -44,11 +46,11 @@ export default class MobileMapSyncPage extends SocketPage{
 
     e.currentTarget.style.display = 'none';
 
-    let puzzleId = e.currentTarget.getAttribute('puzzleId');
+    this.curPuzzleId = e.currentTarget.getAttribute('puzzleId');
 
     //this.socket.emit('showPuzzle', puzzleId);
 
-    this.showPuzzle(puzzleId);
+    this.showPuzzle(this.curPuzzleId);
 
   }
 
@@ -70,22 +72,46 @@ export default class MobileMapSyncPage extends SocketPage{
 
     this.$meta.innerText = `puzzleImg: ${logicPuzzle.answers.length}`;
 
+    this.$answerList.innerHTML = '';
     for(let i = 0; i < logicPuzzle.answers.length; i++){
 
       let answerJSON = logicPuzzle.answers[i];
       let $answer = document.createElement('li');
 
       if(answerJSON.correct === true){
+
         $answer.className = 'correct';
         this.$meta.innerText = `Correct Answer = ${answerJSON.answer}`;
+        $answer.addEventListener('click', () => this.correctAnswerHandler());
+
       }else{
+
         $answer.className = 'false';
+        $answer.addEventListener('click', () => this.wrongAnswerHandler());
+
       }
 
       $answer.innerText = answerJSON.answer;
       this.$answerList.appendChild($answer);
 
     }
+
+  }
+
+  correctAnswerHandler(){
+
+    this.$puzzle.className = 'puzzle hidden';
+    this.$answerList.innerHTML = '';
+
+    this.socket.emit('rightAnswer', this.curPuzzleId);
+
+    this.curPuzzleId = 0;
+
+  }
+
+  wrongAnswerHandler(){
+
+    this.socket.emit('wrongAnswer');
 
   }
 

@@ -2,7 +2,7 @@
 
 import SocketPage from './SocketPage';
 
-//import {redirectToPage} from '../helpers/util';
+import {redirectToPage} from '../helpers/util';
 
 let MIN_AXIS = 40;
 let MAX_AXIS = 140;
@@ -19,6 +19,7 @@ export default class DesktopMapSyncPage extends SocketPage{
     // -- Class Variables -------------
     this.clientDetails = clientDetails;
     this.socket = socket;
+    this.foundCodexes = 0;
 
     // -- Element Variables ----------
     this.$meta = document.querySelector('.meta');
@@ -31,6 +32,8 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     // -- Event Handlers -------------
     this.socket.on('showPuzzle', (puzzleJSON) => this.showPuzzle(puzzleJSON));
+    this.socket.on('rightAnswer', (puzzleId) => this.rightAnswerHandler(puzzleId));
+    this.socket.on('wrongAnswer', () => this.wrongAnswerHandler());
 
   }
 
@@ -101,6 +104,70 @@ export default class DesktopMapSyncPage extends SocketPage{
     this.$puzzleImage.setAttribute('src', `../../img/puzzles/${puzzleJSON.image}`);
     this.$question.innerText = puzzleJSON.question;
     this.$puzzleInfo.className = 'puzzleInfo';
+
+  }
+
+  wrongAnswerHandler(){
+
+    let interval;
+    let shakeit = element => {
+
+      element.style.display = 'block';
+
+      var x = -1;
+      interval = setInterval(() => {
+
+        if(x === -1){
+
+          element.style.marginLeft = '-319px';
+
+        }else{
+
+          switch(x){
+          case 0 :
+            element.style.marginLeft = '-324px';
+            break;
+          case 1 :
+            element.style.marginLeft = '-329px';
+            break;
+          case 2 :
+            element.style.marginLeft = '-324px';
+            break;
+          case 3 :
+            element.style.marginLeft = '-319px';
+            break;
+          case 4 :
+            element.style.marginLeft = '-324px';
+            break;
+          case 5 :
+            element.style.marginLeft = '-329px';
+            break;
+          default :
+            element.style.marginLeft = '-324px';
+            clearInterval(interval);
+          }
+
+        }
+
+        x++;
+
+      }, 16);
+
+    };
+
+    shakeit(this.$puzzleInfo);
+
+  }
+
+  rightAnswerHandler(puzzleId){
+
+    this.$puzzleInfo.className = 'puzzleInfo hidden';
+    this.foundCodexes++;
+
+    if(this.foundCodexes === 6){
+      this.socket.emit('foundAllCodexes');
+      redirectToPage(`d/${this.clientDetails.refcode}/3d`);
+    }
 
   }
 

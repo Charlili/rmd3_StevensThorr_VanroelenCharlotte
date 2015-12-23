@@ -74,6 +74,7 @@ module.exports.register = (server, options, next) => {
     socket.on('updateMap', colorPos => {
 
       if(typeof clients[newClient.pairedref] !== 'undefined'){
+        //console.log('Updating Map', colorPos);
         io.to(clients[newClient.pairedref].socketid).emit('updateMapPos', colorPos);
       }
 
@@ -82,6 +83,7 @@ module.exports.register = (server, options, next) => {
     socket.on('showPuzzle', puzzleJSON => {
 
       newClient.foundCodexes[puzzleJSON.puzzle_id-1] = true;
+      clients[newClient.pairedref].foundCodexes[puzzleJSON.puzzle_id-1] = true;
 
       io.to(clients[newClient.pairedref].socketid).emit('showPuzzle', puzzleJSON);
 
@@ -90,6 +92,7 @@ module.exports.register = (server, options, next) => {
     socket.on('rightAnswer', puzzleId => {
 
       newClient.solvedCodexes[puzzleId-1] = true;
+      clients[newClient.pairedref].solvedCodexes[puzzleId-1] = true;
 
       io.to(clients[newClient.pairedref].socketid).emit('rightAnswer', puzzleId);
 
@@ -104,6 +107,18 @@ module.exports.register = (server, options, next) => {
     socket.on('foundAllCodexes', () => {
 
       io.to(clients[newClient.pairedref].socketid).emit('foundAllCodexes');
+
+    });
+
+    socket.on('getInventory', () => {
+
+      socket.emit('fillInventory', newClient);
+
+    });
+
+    socket.on('getCodexes', () => {
+
+      socket.emit('showCodexes', newClient);
 
     });
 

@@ -20,12 +20,14 @@ export default class MobileMapSyncPage extends SocketPage{
     this.$meta = document.querySelector('.meta');
     this.$map = document.querySelector('.map');
     this.$lightOverlay = document.querySelector('.lightOverlay');
-    this.$objects = document.querySelectorAll('.map li');
+    this.$codexList = document.querySelector('.codexList');
     this.$puzzle = document.querySelector('.puzzle');
     this.$answerList = document.querySelector('.puzzle ul');
 
     // -- Event Handlers -------------
+    this.socket.on('showCodexes', (clientInfo) => this.showCodexes(clientInfo));
     this.socket.on('updateMapPos', (colorPos) => this.mapUpdateHandler(colorPos));
+    this.socket.on('showPuzzle', (puzzleJSON) => this.showAnswers(puzzleJSON));
     this.socket.on('foundAllCodexes', () => redirectToPage(`m/${this.clientDetails.refcode}/3d`));
 
   }
@@ -34,21 +36,46 @@ export default class MobileMapSyncPage extends SocketPage{
 
     //console.log('[MobileMapSynch] Colortracking Smartphone');
 
-    for(let i = 0; i < 6; i++){
+    this.socket.emit('getCodexes');
+
+    this.$meta.innerText = '[init] getting codexes';
+
+    /*for(let i = 0; i < 6; i++){
       this.$objects[i].addEventListener('click', (e) => this.clickedObjectHandler(e));
+    }*/
+
+  }
+
+  showCodexes(clientInfo){
+
+    for(let i = 0; i < clientInfo.foundCodexes.length; i++){
+
+      let $codexLi = document.createElement('li');
+      $codexLi.setAttribute('puzzleId', i+1);
+
+      if(clientInfo.foundCodexes[i] === false){
+        $codexLi.className = `codex${i+1} found`;
+        $codexLi.addEventListener('click', (e) => this.clickedCodexHandler(e));
+      }else{
+        $codexLi.className = `codex${i+1}`;
+        $codexLi.style.display = 'none';
+      }
+
+      this.$codexList.appendChild($codexLi);
+
     }
 
   }
 
-  clickedObjectHandler(e){
+  clickedCodexHandler(e){
+
+    this.$meta.innerText = '[clickedCodex] clicked codex';
 
     e.currentTarget.style.display = 'none';
 
-    this.curPuzzleId = e.currentTarget.getAttribute('puzzleId');
+    //this.curPuzzleId = e.currentTarget.getAttribute('puzzleId');
 
-    //this.socket.emit('showPuzzle', puzzleId);
-
-    this.showPuzzle(this.curPuzzleId);
+    this.showPuzzle(e.currentTarget.getAttribute('puzzleId'));
 
   }
 
@@ -56,15 +83,16 @@ export default class MobileMapSyncPage extends SocketPage{
 
     this.$meta.innerText = `Showing Logic Puzzle ${puzzleId}`;
 
-    this.$puzzle.className = 'puzzle';
-
     httpGetAsync(`${window.location.href.substr(0, window.location.href.indexOf('/m'))}/api/puzzles/${puzzleId}`, (puzzleJSON) => this.showAnswers(puzzleJSON));
 
   }
 
   showAnswers(puzzleJSON){
 
+    this.$puzzle.className = 'puzzle';
+
     let logicPuzzle = JSON.parse(puzzleJSON);
+    this.curPuzzleId = logicPuzzle.puzzle_id;
 
     this.socket.emit('showPuzzle', logicPuzzle);
 
@@ -114,6 +142,8 @@ export default class MobileMapSyncPage extends SocketPage{
   }
 
   mapUpdateHandler(colorPos){
+
+    this.$meta.innerText = '[mapUpdateHandler] updating map';
 
     let nX = -1770 + (colorPos.x * 2);
     let nY = -(colorPos.y * 2);

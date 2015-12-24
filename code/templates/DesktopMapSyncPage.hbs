@@ -2,12 +2,25 @@
 
   <div class="meta">Searching for sticker on Smartphone</div>
 
+  <div class="overlay fail hidden">
+    <p>Well it's getting a little late. Why don't you run on home?</p>
+    <p class="instructions">Oops! Too many wrong answers.</p>
+    <img class="man" alt="man" src="../../img/character_grandpa.png" width="240px" height="297"/>
+  </div>
+
+
+
   <section class="mapOverlay">
     &nbsp;
   </section>
 
   <section class="inventory">
-    <p>This is your inventory! We can put the pieces together when we have all six!</p>
+    <ul class="score">
+      <li class='life'><i class="icon-star"></i></li>
+      <li class='life'><i class="icon-star"></i></li>
+      <li class='life'><i class="icon-star"></i></li>
+    </ul>
+    <p>This is your inventory. We can put the pieces together when we have all six!</p>
     <ul class="codexList">
       <!-- codex pieces go here -->
     </ul>
@@ -34,5 +47,9 @@
       <canvas id="canvas" width="960" height="720"></canvas>
     </div>
   </section>
+
+  <div class="failed_bg hidden">
+    &nbsp;
+  </div>
 
 </article>

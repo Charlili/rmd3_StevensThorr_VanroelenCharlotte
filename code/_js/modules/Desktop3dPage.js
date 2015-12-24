@@ -40,7 +40,37 @@ export default class Desktop3dPage extends SocketPage{
     this.socket.on('clickedUI', this.rotateX);
     this.socket.on('changeSelectedCodex', this.changeSelectedCodex);
 
+    document.addEventListener('keydown', this.onKeyDown.bind(this), false);
+
+
   }
+  onKeyDown(e){
+
+    if(e.keyCode === 89) {
+      e.preventDefault();
+      let i = 1;
+      console.log('solving puzzle');
+
+      let next = () => {
+        for(let sides = 0; sides < 8; sides++){
+          if(faceArray[i] === faceArray[0]){
+            i++;
+            if(i < 5)setTimeout(next, 100);
+
+          }else{
+            if(i === 6)break;
+            selectedCodex = i;
+            this.rotateX(0.785398);
+
+
+          }
+        }
+      }
+      next();
+
+    }
+  }
+
   clickHandler(e){
     e.preventDefault();
     e.currentTarget.parentNode.classList.add('hidden');

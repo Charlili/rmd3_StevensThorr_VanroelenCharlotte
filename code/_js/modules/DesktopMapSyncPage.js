@@ -256,6 +256,17 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     this.$puzzleInfo.className = 'puzzleInfo wrongAnswer';
 
+    //let score = document.body.querySelectorAll('.score li');
+    //document.body.querySelector('.score').removeChild(score[score.length - 1]);
+
+    let lives = document.body.querySelectorAll('.score .life');
+    if(lives.length === 0){
+      document.body.querySelector('.fail').classList.remove('hidden');
+      document.body.querySelector('.failed_bg').classList.remove('hidden');
+    }else{
+      lives[lives.length - 1].classList.remove('life');
+    }
+
     setTimeout(() => {
       this.$puzzleInfo.className = 'puzzleInfo';
     }, 350);

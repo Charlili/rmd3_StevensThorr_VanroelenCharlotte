@@ -56,6 +56,8 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     console.log('[DesktopMapSync] Colortracking Smartphone');
 
+    //document.querySelector('.overlay a').setAttribute('href', `d/${this.clientDetails.refcode}/mapsynch`);
+
     this.socket.emit('getInventory');
 
     this.context = this.$canvas.getContext('2d');
@@ -275,6 +277,7 @@ export default class DesktopMapSyncPage extends SocketPage{
       let bg = document.createElement('div');
       bg.classList.add('failed_bg');
       document.body.querySelector('.desktopView').appendChild(bg);
+      this.socket.emit('closePuzzle');
     }else{
       lives[lives.length - 1].classList.remove('life');
       heartIcons[lives.length - 1].className = 'fa fa-heart-o';

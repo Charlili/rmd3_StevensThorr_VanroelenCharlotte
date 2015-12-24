@@ -29,6 +29,7 @@ export default class MobileMapSyncPage extends SocketPage{
     this.socket.on('showCodexes', (clientInfo) => this.showCodexes(clientInfo));
     this.socket.on('updateMapPos', (colorPos) => this.mapUpdateHandler(colorPos));
     this.socket.on('showPuzzle', (puzzleJSON) => this.showAnswers(puzzleJSON));
+    this.socket.on('closePuzzle', () => this.closePuzzleAnswers());
     this.socket.on('foundAllCodexes', () => redirectToPage(`m/${this.clientDetails.refcode}/3d`));
 
   }

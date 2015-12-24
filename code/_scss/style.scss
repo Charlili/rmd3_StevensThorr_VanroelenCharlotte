@@ -19,6 +19,7 @@ body {
 /* --- Intro Page ---------------------------------------------------- */
 
 .overlay {
+
   display: block;
   position: relative;
   margin-left: auto;
@@ -31,7 +32,6 @@ body {
   border: 1px solid #ccc;
   transition: 0.5s opacity, 0s 0.5s display;
   z-index: 5;
-
 
   p {
     text-align: center;
@@ -84,7 +84,6 @@ body {
 
 .mobileView, .trackingView {
   @include clearfix;
-  //position: fixed;
   width: 100%;
   height: 500px;
   overflow: hidden;
@@ -211,7 +210,7 @@ header {
 
 .mobileView .man {
   position: absolute;
-  bottom: 50px;
+  bottom: 60px;
   right: 0;
   z-index: 0;
 }
@@ -250,12 +249,10 @@ header {
 /* --- Desktop PairPage ---------------------------------------------------- */
 
 .desktopView {
-
   @include clearfix;
   position: fixed;
   width: 100%;
   height: 100%;
-
 }
 
 .PairingInfo {
@@ -293,6 +290,10 @@ header {
   background-color: rgb(10, 10, 10);
 }
 
+.scoreInfo {
+
+}
+
 .mapOverlay {
   position: fixed;
   width: 100%;
@@ -322,8 +323,6 @@ header {
   left: 0px;
   border: 3px solid #FFF;
   border-radius: 15px;
-  //background-color: #FFF;
-  //opacity: 0;
   z-index: 1;
 }
 
@@ -402,27 +401,21 @@ header {
   }
 
   li.solved[puzzleId = "1"], li.found[puzzleId = "1"] {
-    //background-color: #A4E300;
     background-image: url('/img/item_1.png');
   }
   li.solved[puzzleId = "2"], li.found[puzzleId = "2"] {
-    //background-color: #A4E300;
     background-image: url('/img/item_2.png');
   }
   li.solved[puzzleId = "3"], li.found[puzzleId = "3"] {
-    //background-color: #A4E300;
     background-image: url('/img/item_3.png');
   }
   li.solved[puzzleId = "4"], li.found[puzzleId = "4"] {
-    //background-color: #A4E300;
     background-image: url('/img/item_4.png');
   }
   li.solved[puzzleId = "5"], li.found[puzzleId = "5"] {
-    //background-color: #A4E300;
     background-image: url('/img/item_5.png');
   }
   li.solved[puzzleId = "6"], li.found[puzzleId = "6"] {
-    //background-color: #A4E300;
     background-image: url('/img/item_6.png');
   }
 
@@ -445,7 +438,7 @@ header {
   font-size: 2em;
   height: initial;
   position: relative;
-  top: -100px;
+  top: -90px;
   z-index: 2;
   text-shadow: 0 0 2px #fff;
 }
@@ -608,7 +601,6 @@ header {
     position: absolute;
     width: 4%;
     height: 7%;
-
     margin:  5px;
     background-size: contain;
   }
@@ -678,19 +670,31 @@ header {
   text-align: center;
   z-index: 20;
 
-  h2.puzzleTitle {
+  h2.puzzleTitle, span.closeButton {
     position: relative;
     width: 100%;
-    top: 0px;
     left: 0px;
     text-align: center;
-    font-family: helvetica;
-    font-size: 2em;
     font-weight: bold;
-    padding: 14px 0px;
+    font-family: helvetica;
     color: #FFF;
+  }
+
+  h2.puzzleTitle {
+    top: 0px;
+    font-size: 2em;
+    padding: 14px 0px;
     background-color: rgb(77, 165, 233);
     z-index: 11;
+  }
+
+  div.closeButton {
+    position: fixed;
+    bottom: 0px;
+    font-size: 1.4em;
+    padding: 8px;
+    background-color: rgb(199, 90, 75);
+    z-index: 12;
   }
 
   p {
@@ -768,7 +772,6 @@ header {
 
 .controls {
 
-  //position: absolute;
   top: 0;
   left: 0;
   z-index: 4;

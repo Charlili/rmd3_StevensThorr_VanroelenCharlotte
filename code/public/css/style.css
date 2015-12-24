@@ -275,7 +275,7 @@ header {
 
 .mobileView .man {
   position: absolute;
-  bottom: 50px;
+  bottom: 60px;
   right: 0;
   z-index: 0;
 }
@@ -500,7 +500,7 @@ header {
   font-size: 2em;
   height: initial;
   position: relative;
-  top: -100px;
+  top: -90px;
   z-index: 2;
   text-shadow: 0 0 2px #fff;
 }
@@ -730,19 +730,31 @@ header {
   z-index: 20;
 }
 
-.puzzle h2.puzzleTitle {
+.puzzle h2.puzzleTitle, .puzzle span.closeButton {
   position: relative;
   width: 100%;
-  top: 0px;
   left: 0px;
   text-align: center;
-  font-family: helvetica;
-  font-size: 2em;
   font-weight: bold;
-  padding: 14px 0px;
+  font-family: helvetica;
   color: #FFF;
+}
+
+.puzzle h2.puzzleTitle {
+  top: 0px;
+  font-size: 2em;
+  padding: 14px 0px;
   background-color: #4da5e9;
   z-index: 11;
+}
+
+.puzzle div.closeButton {
+  position: fixed;
+  bottom: 0px;
+  font-size: 1.4em;
+  padding: 8px;
+  background-color: #c75a4b;
+  z-index: 12;
 }
 
 .puzzle p {

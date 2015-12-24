@@ -17,11 +17,11 @@ export default class MobileMapSyncPage extends SocketPage{
     this.tries = 0;
 
     // -- Element Variables ----------
-    this.$meta = document.querySelector('.meta');
     this.$map = document.querySelector('.map');
     this.$lightOverlay = document.querySelector('.lightOverlay');
     this.$codexList = document.querySelector('.codexList');
     this.$puzzle = document.querySelector('.puzzle');
+    this.$puzzleTitle = document.querySelector('.puzzleTitle');
     this.$answerList = document.querySelector('.puzzle ul');
 
     // -- Event Handlers -------------
@@ -34,15 +34,7 @@ export default class MobileMapSyncPage extends SocketPage{
 
   init(){
 
-    //console.log('[MobileMapSynch] Colortracking Smartphone');
-
     this.socket.emit('getCodexes');
-
-    this.$meta.innerText = '[init] getting codexes';
-
-    /*for(let i = 0; i < 6; i++){
-      this.$objects[i].addEventListener('click', (e) => this.clickedObjectHandler(e));
-    }*/
 
   }
 
@@ -69,19 +61,13 @@ export default class MobileMapSyncPage extends SocketPage{
 
   clickedCodexHandler(e){
 
-    this.$meta.innerText = '[clickedCodex] clicked codex';
-
     e.currentTarget.style.display = 'none';
-
-    //this.curPuzzleId = e.currentTarget.getAttribute('puzzleId');
 
     this.showPuzzle(e.currentTarget.getAttribute('puzzleId'));
 
   }
 
   showPuzzle(puzzleId){
-
-    this.$meta.innerText = `Showing Logic Puzzle ${puzzleId}`;
 
     httpGetAsync(`${window.location.href.substr(0, window.location.href.indexOf('/m'))}/api/puzzles/${puzzleId}`, (puzzleJSON) => this.showAnswers(puzzleJSON));
 
@@ -96,7 +82,7 @@ export default class MobileMapSyncPage extends SocketPage{
 
     this.socket.emit('showPuzzle', logicPuzzle);
 
-    this.$meta.innerText = `puzzleImg: ${logicPuzzle.answers.length}`;
+    this.$puzzleTitle.innerText = `${logicPuzzle.title}`;
 
     this.$answerList.innerHTML = '';
     for(let i = 0; i < logicPuzzle.answers.length; i++){
@@ -107,7 +93,6 @@ export default class MobileMapSyncPage extends SocketPage{
       if(answerJSON.correct === true){
 
         $answer.className = 'correct';
-        this.$meta.innerText = `Correct Answer = ${answerJSON.answer}`;
         $answer.addEventListener('click', () => this.correctAnswerHandler());
 
       }else{
@@ -143,8 +128,6 @@ export default class MobileMapSyncPage extends SocketPage{
 
   mapUpdateHandler(colorPos){
 
-    this.$meta.innerText = '[mapUpdateHandler] updating map';
-
     let nX = -1770 + (colorPos.x * 2);
     let nY = -(colorPos.y * 2);
 
@@ -162,17 +145,14 @@ export default class MobileMapSyncPage extends SocketPage{
 
     if(colorPos.distance < 1){
 
-      //this.$meta.innerText = `Move Closer (${Math.round(colorPos.distance * 100)}%)`;
       this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, ${(1 - colorPos.distance) * 1.6})`;
 
     }else if(colorPos.distance > 1){
 
-      //this.$meta.innerText = `Move Away (${Math.round((1 + (1 - colorPos.distance)) * 100) + 20}%)`;
       this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, 0)`;
 
     }else{
 
-      //this.$meta.innerText = `Good Position (100%)`;
       this.$lightOverlay.style.backgroundColor = `rgba(0, 0, 0, 0)`;
 
     }

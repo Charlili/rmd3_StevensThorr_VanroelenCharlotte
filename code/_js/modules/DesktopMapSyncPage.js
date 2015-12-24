@@ -248,6 +248,7 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     let $inventoryCodex = document.querySelector(`.codex${puzzleJSON.puzzle_id}`);
     $inventoryCodex.className = `codex${puzzleJSON.puzzle_id} found`;
+    $inventoryCodex.addEventListener('click', (e) => this.clickedCodexHandler(e));
 
   }
 

@@ -730,6 +730,21 @@ header {
   z-index: 20;
 }
 
+.puzzle h2.puzzleTitle {
+  position: relative;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  text-align: center;
+  font-family: helvetica;
+  font-size: 2em;
+  font-weight: bold;
+  padding: 14px 0px;
+  color: #FFF;
+  background-color: #4da5e9;
+  z-index: 11;
+}
+
 .puzzle p {
   text-align: center;
   font-size: 2.2em;
@@ -742,7 +757,7 @@ header {
 .puzzle ul {
   width: 100%;
   height: 100%;
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .puzzle li {
@@ -778,7 +793,7 @@ header {
   }
   .puzzle li {
     width: 48%;
-    padding: 34px 0px;
+    padding: 32px 0px;
     margin: 1%;
     display: inline-block;
     float: left;

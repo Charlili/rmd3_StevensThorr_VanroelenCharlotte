@@ -2,7 +2,7 @@
 
 import SocketPage from './SocketPage';
 
-import {redirectToPage, rgbToHex} from '../helpers/util';
+import {redirectToPage, rgbToHex, httpGetAsync} from '../helpers/util';
 
 let MIN_AXIS = 40;
 let MAX_AXIS = 140;
@@ -25,11 +25,13 @@ export default class DesktopMapSyncPage extends SocketPage{
     this.trackColor = {};
     this.foundCodexes = 0;
     this.recalibrating = false;
+    this.curPuzzleId = 0;
 
     // -- Element Variables ----------
     this.$meta = document.querySelector('.meta');
     this.$video = document.getElementById('video');
     this.$canvas = document.getElementById('canvas');
+    this.$codexList = document.querySelector('.codexList');
     this.$mapOverlay = document.querySelector('.mapOverlay');
     this.$puzzleInfo = document.querySelector('.puzzleInfo');
     this.$puzzleImage = document.querySelector('.puzzleImg');
@@ -39,6 +41,7 @@ export default class DesktopMapSyncPage extends SocketPage{
     this.$colorIndicator = document.querySelector('.colorIndicator');
 
     // -- Event Handlers -------------
+    this.socket.on('fillInventory', (clientInfo) => this.fillInventory(clientInfo));
     this.socket.on('showPuzzle', (puzzleJSON) => this.showPuzzle(puzzleJSON));
     this.socket.on('rightAnswer', (puzzleId) => this.rightAnswerHandler(puzzleId));
     this.socket.on('wrongAnswer', () => this.wrongAnswerHandler());
@@ -50,6 +53,8 @@ export default class DesktopMapSyncPage extends SocketPage{
   init(){
 
     console.log('[DesktopMapSync] Colortracking Smartphone');
+
+    this.socket.emit('getInventory');
 
     this.context = this.$canvas.getContext('2d');
     this.$canvas.width = this.$video.width;
@@ -68,6 +73,38 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     });
     tracking.track(this.$video, this.tracker, { camera: true });
+
+  }
+
+  fillInventory(clientInfo){
+
+    for(let i = 0; i < clientInfo.foundCodexes.length; i++){
+
+      let $codexLi = document.createElement('li');
+      $codexLi.setAttribute('puzzleId', i+1);
+
+      if(clientInfo.solvedCodexes[i] === true){
+        $codexLi.className = `codex${i+1} solved`;
+      }else if(clientInfo.foundCodexes[i] === true){
+        $codexLi.className = `codex${i+1} found`;
+        $codexLi.addEventListener('click', (e) => this.clickedCodexHandler(e));
+      }else{
+        $codexLi.className = `codex${i+1}`;
+      }
+
+      this.$codexList.appendChild($codexLi);
+
+    }
+
+  }
+
+  clickedCodexHandler(e){
+
+    let puzzleId = e.currentTarget.getAttribute('puzzleId');
+    httpGetAsync(`${window.location.href.substr(0, window.location.href.indexOf('/d'))}/api/puzzles/${puzzleId}`, (puzzleJSON) => {
+      this.socket.emit('showPuzzle', puzzleJSON);
+      this.showPuzzle(puzzleJSON);
+    });
 
   }
 
@@ -211,6 +248,7 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     let $inventoryCodex = document.querySelector(`.codex${puzzleJSON.puzzle_id}`);
     $inventoryCodex.className = `codex${puzzleJSON.puzzle_id} found`;
+    $inventoryCodex.addEventListener('click', (e) => this.clickedCodexHandler(e));
 
   }
 

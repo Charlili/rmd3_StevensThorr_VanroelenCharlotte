@@ -5,10 +5,7 @@ let camera, scene, renderer;
 let codexArray, selectedCodex, faceArray, texture, textureLight;
 let count = -1, dir = 0.01;
 
-
 import SocketPage from './SocketPage';
-
-//import {redirectToPage} from '../helpers/util';
 
 export default class Desktop3dPage extends SocketPage{
 
@@ -22,11 +19,6 @@ export default class Desktop3dPage extends SocketPage{
 
     // -- Element Variables ----------
     this.$meta = document.querySelector('.meta');
-
-    // -- Element Manipulation -------
-
-
-    // -- Event Handlers -------------
 
 
   }
@@ -42,8 +34,8 @@ export default class Desktop3dPage extends SocketPage{
 
     document.addEventListener('keydown', this.onKeyDown.bind(this), false);
 
-
   }
+
   onKeyDown(e){
 
     if(e.keyCode === 89) {
@@ -65,10 +57,12 @@ export default class Desktop3dPage extends SocketPage{
 
           }
         }
-      }
+      };
+
       next();
 
     }
+
   }
 
   clickHandler(e){

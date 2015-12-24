@@ -264,10 +264,8 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     this.$puzzleInfo.className = 'puzzleInfo wrongAnswer';
 
-    //let score = document.body.querySelectorAll('.score li');
-    //document.body.querySelector('.score').removeChild(score[score.length - 1]);
-
     let lives = document.body.querySelectorAll('.score .life');
+    let heartIcons = document.body.querySelectorAll('.score .life i');
     if(lives.length === 0){
       document.body.querySelector('.fail').classList.remove('hidden');
       let bg = document.createElement('div');
@@ -275,6 +273,7 @@ export default class DesktopMapSyncPage extends SocketPage{
       document.body.querySelector('.desktopView').appendChild(bg);
     }else{
       lives[lives.length - 1].classList.remove('life');
+      heartIcons[lives.length - 1].className = 'fa fa-heart-o';
     }
 
     setTimeout(() => {

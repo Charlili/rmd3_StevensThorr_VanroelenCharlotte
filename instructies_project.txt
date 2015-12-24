@@ -1,0 +1,110 @@
+Instructies bij het Grote Codex Mysterie spel (door Charlotte Vanroelen en Thorr Stevens)
+
+1. Plak de fluo-roze sticker op de achterkant van je gsm. Ergens centraal, maar dat maakt niet zoveel uit.  
+2. Open de pagina in je desktop browser via localhost.
+3. Open de pagina in je mobile browser via het ip-adres.
+
+
+
+
+
+
+
+
+
+
+
+
+-----
+
+
+Oei, is de UX toch niet zo duidelijk en heb je dus meer uitleg nodig? Dju. Ok dus:
+
+4. Vul in de juiste cijfer-combo in.
+5. Zoek voor de codex-delen door je gsm voor het scherm te houden. Je zou dezelfde kamer moeten zien, maar verlicht! Beweeg links, rechts, boven en onder met je gsm om meer van de kamer te zien. Je gsm moet ongeveer een halve armbreedte van je scherm zijn. Zo ziet de camera van je computer de sticker. Als je verder of dichter komt, zou je gsm-scherm ook donkerder of lichter moeten worden.
+6. Als je een codex-deel hebt gevonden (op je gsm dus), klik je daar op. Er komt een logica puzzel te voorschijn die je moet oplossen vooraleer je verder mag zoeken. Maar pas op! Als je teveel fout antwoordt is het spel gedaan.
+7. Merk je dat je tracking niet goed verloopt? Zit ten eerste al niet in een donkere kamer. Ah, was dat al? Klik dan op de [desktop] speechbubble rechts om te recalibreren. Hier zie je de videofeed van de camera en kan je zelf aanklikken welke kleur dat de computer moet volgen.
+8. Als je alle codex stukken hebt gevonden, moet je ze nog ineen zetten. Gebruik de pijlen op je gsm scherm om de codex delen te draaien. Met de boven en onder knoppen kan je de geselecteerde codex-deel roteren, met de links en rechts knoppen kan je veranderen van codex-deel.
+
+
+
+
+
+
+
+-----
+
+Ok, en nu een beetje hulp voor als het spel te moeilijk is. Scroll maar naar beneden voor de cheat codes.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+...Zeker van? Echt niet eerst nog eens proberen?
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Ok hier gaat ie dan.
+
+De codex stukken kan je hier vinden:
+- links boven de kast
+- rechts boven de kast
+- in het midden van de rechtse kast
+- boven het vuur
+- rechts van het vuur, dicht bij de poes
+- tussen de hond en de stoel
+
+Als je ze echt niet vind, kan je ook altijd de 'mapsync' in de url veranderen naar '3d'. Dit zowel bij de gsm als bij de computer.
+
+Als je de codex niet kan oplossen, kan je ook sneltoets Y gebruiken om ze juist te roteren.
+
+
+
+
+
+
+
+
+
+
+
+

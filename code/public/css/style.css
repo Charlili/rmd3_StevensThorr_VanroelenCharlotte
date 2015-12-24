@@ -161,6 +161,28 @@ body {
   z-index: 10;
 }
 
+.fail {
+  position: absolute;
+  z-index: 30 !important;
+  left: calc(50% - 375px);
+  top: calc(50% - 400px);
+}
+
+.fail p {
+  margin-top: 40px;
+}
+
+.failed_bg {
+  z-index: 20;
+  background-color: black;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: block;
+  position: absolute;
+}
+
 a {
   display: block;
   font-size: 2em;
@@ -302,6 +324,7 @@ header {
   margin-bottom: 20px;
   line-height: 1.2;
   z-index: 3;
+  cursor: pointer;
 }
 
 .help:after {
@@ -446,6 +469,28 @@ header {
   margin-top: 10px;
   text-align: center;
   color: white;
+}
+
+.inventory .score li {
+  width: 20px;
+  height: 20px;
+  color: white;
+  background-color: white;
+  overflow: visible;
+}
+
+.inventory .score .life {
+  background-color: green;
+}
+
+.inventory .score i {
+  line-height: 20px;
+  color: red;
+  width: 100%;
+  height: 100%;
+  font-size: 10px;
+  display: block;
+  z-index: 10;
 }
 
 .inventory li {
@@ -864,4 +909,8 @@ header {
 .controls li[alt='down'] {
   bottom: 2%;
   left: 40%;
+}
+
+.nextCode {
+  left: 26%;
 }

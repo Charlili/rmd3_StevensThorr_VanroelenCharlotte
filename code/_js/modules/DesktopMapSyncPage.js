@@ -262,7 +262,9 @@ export default class DesktopMapSyncPage extends SocketPage{
     let lives = document.body.querySelectorAll('.score .life');
     if(lives.length === 0){
       document.body.querySelector('.fail').classList.remove('hidden');
-      document.body.querySelector('.failed_bg').classList.remove('hidden');
+      let bg = document.createElement('div');
+      bg.classList.add('failed_bg');
+      document.body.querySelector('.desktopView').appendChild(bg);
     }else{
       lives[lives.length - 1].classList.remove('life');
     }

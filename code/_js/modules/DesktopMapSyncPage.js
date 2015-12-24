@@ -23,6 +23,7 @@ export default class DesktopMapSyncPage extends SocketPage{
     this.clientDetails = clientDetails;
     this.socket = socket;
     this.trackColor = {};
+    this.trackColor.hex = 'magenta';
     this.foundCodexes = 0;
     this.recalibrating = false;
     this.curPuzzleId = 0;
@@ -129,8 +130,6 @@ export default class DesktopMapSyncPage extends SocketPage{
 
       let colorPos = {};
 
-      this.$meta.innerText = 'Tracking Smartphone';
-
       if(checkAxis < PREF_MIN){
         colorPos.distance = checkAxis/PREF_MIN;
       }else if(checkAxis > PREF_MAX){
@@ -161,6 +160,8 @@ export default class DesktopMapSyncPage extends SocketPage{
 
       this.$colorIndicator.style.left = `${mouseX -15}px`;
       this.$colorIndicator.style.top = `${mouseY -15}px`;
+
+      this.$colorIndicator.style.backgroundColor = `${this.extractColor().hex}`;
 
     }
 
@@ -204,6 +205,8 @@ export default class DesktopMapSyncPage extends SocketPage{
 
   changeTrackingColor(){
 
+    this.$meta.innerText = `New trackingColor: ${this.trackColor}`;
+
     this.trackColor = this.extractColor();
     this.tracker.customColor = this.trackColor.hex;
 
@@ -214,9 +217,9 @@ export default class DesktopMapSyncPage extends SocketPage{
     tracking.ColorTracker.registerColor('custom', (r, g, b) => {
 
       if(
-        r < (this.trackColor.r + 30) && r > (this.trackColor.r - 30) &&
-        g < (this.trackColor.g + 30) && g > (this.trackColor.g - 30) &&
-        b < (this.trackColor.b + 30) && b > (this.trackColor.b - 30)
+        r < (this.trackColor.r + 26) && r > (this.trackColor.r - 26) &&
+        g < (this.trackColor.g + 26) && g > (this.trackColor.g - 26) &&
+        b < (this.trackColor.b + 26) && b > (this.trackColor.b - 26)
       ){
         return true;
       }

@@ -18,6 +18,14 @@ body {
 
 /* --- Intro Page ---------------------------------------------------- */
 
+.intro {
+  .instructions {
+    top: -160px !important;
+  }
+  .man {
+    right: 10px !important;
+  }
+}
 .overlay {
 
   display: block;
@@ -228,7 +236,7 @@ header {
   font-size: 1.4em;
   margin-bottom: 20px;
   line-height: 1.2;
-  z-index: 11;
+  z-index: 3;
 }
 
 .help:after {
@@ -286,7 +294,7 @@ header {
 
 /* --- Desktop MapSynch ---------------------------------------------------- */
 
-.bgBlack {
+.bgBlack{
   background-color: rgb(10, 10, 10);
 }
 
@@ -294,7 +302,8 @@ header {
 
 }
 
-.mapOverlay {
+.mapOverlay{
+
   position: fixed;
   width: 100%;
   height: 100%;
@@ -302,16 +311,11 @@ header {
   background-image: url('/img/room_dark.jpg');
   background-size: cover;
   background-position: center;
-  pointer-events: auto;
   z-index: 2;
+
 }
 
-.mapOverlay.showVideo {
-  pointer-events: none;
-  background: none;
-}
-
-.hidden {
+.hidden{
   opacity: 0;
 }
 
@@ -340,7 +344,7 @@ header {
   z-index: 1;
 }
 
-.tracking-frame, .tracking-container {
+.tracking-frame, .tracking-container{
 
   position: fixed;
   width: 960px;
@@ -349,7 +353,7 @@ header {
   top: 50%;
   margin-left: -480px;
   margin-top: -360px;
-  z-index: 0;
+  z-index: 1;
 
   video, canvas{
     position: absolute;
@@ -368,7 +372,7 @@ header {
   width:  200px;
   height: 100%;
   padding:  20px 12px;
-  z-index: 10;
+  z-index: 3;
 
   p {
     display:  block;
@@ -556,6 +560,7 @@ header {
   }
 
 }
+
 
 /* --- Mobile MapSynch ---------------------------------------------------- */
 

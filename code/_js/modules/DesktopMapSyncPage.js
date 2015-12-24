@@ -24,7 +24,7 @@ export default class DesktopMapSyncPage extends SocketPage{
     this.socket = socket;
     this.trackColor = {};
     this.trackColor.hex = 'magenta';
-    this.foundCodexes = 0;
+    this.solvedCodexes = 0;
     this.recalibrating = false;
     this.curPuzzleId = 0;
 
@@ -86,6 +86,7 @@ export default class DesktopMapSyncPage extends SocketPage{
       $codexLi.setAttribute('puzzleId', i+1);
 
       if(clientInfo.solvedCodexes[i] === true){
+        this.solvedCodexes++;
         $codexLi.className = `codex${i+1} solved`;
       }else if(clientInfo.foundCodexes[i] === true){
         $codexLi.className = `codex${i+1} found`;
@@ -217,9 +218,9 @@ export default class DesktopMapSyncPage extends SocketPage{
     tracking.ColorTracker.registerColor('custom', (r, g, b) => {
 
       if(
-        r < (this.trackColor.r + 26) && r > (this.trackColor.r - 26) &&
-        g < (this.trackColor.g + 26) && g > (this.trackColor.g - 26) &&
-        b < (this.trackColor.b + 26) && b > (this.trackColor.b - 26)
+        r < (this.trackColor.r + 35) && r > (this.trackColor.r - 35) &&
+        g < (this.trackColor.g + 35) && g > (this.trackColor.g - 35) &&
+        b < (this.trackColor.b + 35) && b > (this.trackColor.b - 35)
       ){
         return true;
       }
@@ -302,14 +303,14 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     setTimeout(() => {
 
-      if(this.foundCodexes === 6){
+      if(this.solvedCodexes === 6){
         this.socket.emit('foundAllCodexes');
         redirectToPage(`d/${this.clientDetails.refcode}/3d`);
       }
 
     }, 1500);
 
-    this.foundCodexes++;
+    this.solvedCodexes++;
 
   }
 

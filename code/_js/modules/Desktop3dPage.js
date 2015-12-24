@@ -19,7 +19,7 @@ export default class Desktop3dPage extends SocketPage{
 
     // -- Element Variables ----------
     this.$meta = document.querySelector('.meta');
-
+    this.$okButton = document.body.querySelector('.overlay-ok');
 
   }
 
@@ -28,7 +28,7 @@ export default class Desktop3dPage extends SocketPage{
     console.log('[Desktop3d]');
     this.init3D();
     this.animate();
-    document.body.querySelector('.overlay-ok').addEventListener('click', this.clickHandler);
+    this.$okButton.addEventListener('click', (e) => this.clickHandler(e));
     this.socket.on('clickedUI', this.rotateX);
     this.socket.on('changeSelectedCodex', this.changeSelectedCodex);
 
@@ -66,14 +66,16 @@ export default class Desktop3dPage extends SocketPage{
   }
 
   clickHandler(e){
+
     e.preventDefault();
     e.currentTarget.parentNode.classList.add('hidden');
     let dom = e.currentTarget.parentNode;
     //e.currentTarget.parentNode.classList.remove('visible');
+
     setTimeout( () => {
       document.body.querySelector('.desktopView').removeChild(dom);
     }, 1500);
-    console.log('Hello');
+
   }
 
   init3D(){

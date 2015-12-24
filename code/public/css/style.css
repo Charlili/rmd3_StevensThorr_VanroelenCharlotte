@@ -84,14 +84,24 @@ body {
   right: 10px !important;
 }
 
+#winnerOverlay {
+  pointer-events: none;
+}
+
+#initialOverlay {
+  pointer-events: auto;
+  z-index: 100;
+}
+
 .overlay {
   display: block;
-  position: relative;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 200px;
+  position: fixed;
   width: 750px;
   height: 400px;
+  left: 50%;
+  top: 50%;
+  margin-left: -375px;
+  margin-top: -200px;
   opacity: 1;
   background-color: #eee;
   border: 1px solid #ccc;

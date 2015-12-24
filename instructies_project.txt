@@ -93,6 +93,14 @@ De codex stukken kan je hier vinden:
 - rechts van het vuur, dicht bij de poes
 - tussen de hond en de stoel
 
+Antwoorden puzzels:
+- How many needles? 10
+- Which key? B
+- What was the time? 6 o'clock
+- Which lance is broken? Lance C
+- How many candles? 6 candles
+- Which village is he from? Village A
+
 Als je ze echt niet vind, kan je ook altijd de 'mapsync' in de url veranderen naar '3d'. Dit zowel bij de gsm als bij de computer.
 
 Als je de codex niet kan oplossen, kan je ook sneltoets Y gebruiken om ze juist te roteren.

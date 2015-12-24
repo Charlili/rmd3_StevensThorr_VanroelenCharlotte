@@ -43,6 +43,7 @@ export default class DesktopMapSyncPage extends SocketPage{
     // -- Event Handlers -------------
     this.socket.on('fillInventory', (clientInfo) => this.fillInventory(clientInfo));
     this.socket.on('showPuzzle', (puzzleJSON) => this.showPuzzle(puzzleJSON));
+    this.socket.on('closePuzzle', () => this.closePuzzle());
     this.socket.on('rightAnswer', (puzzleId) => this.rightAnswerHandler(puzzleId));
     this.socket.on('wrongAnswer', () => this.wrongAnswerHandler());
     this.$recalibrate.addEventListener('click', () => this.toggleRecalibration());
@@ -103,6 +104,7 @@ export default class DesktopMapSyncPage extends SocketPage{
     let puzzleId = e.currentTarget.getAttribute('puzzleId');
     httpGetAsync(`${window.location.href.substr(0, window.location.href.indexOf('/d'))}/api/puzzles/${puzzleId}`, (puzzleJSON) => {
       this.socket.emit('showPuzzle', puzzleJSON);
+      puzzleJSON = JSON.parse(puzzleJSON);
       this.showPuzzle(puzzleJSON);
     });
 
@@ -241,14 +243,20 @@ export default class DesktopMapSyncPage extends SocketPage{
 
   showPuzzle(puzzleJSON){
 
+    this.$puzzleInfo.className = 'puzzleInfo';
     this.$puzzleImage.setAttribute('src', `../../img/puzzles/${puzzleJSON.image}`);
     this.$puzzleTitle.innerText = puzzleJSON.title;
     this.$question.innerText = puzzleJSON.question;
-    this.$puzzleInfo.className = 'puzzleInfo';
 
     let $inventoryCodex = document.querySelector(`.codex${puzzleJSON.puzzle_id}`);
     $inventoryCodex.className = `codex${puzzleJSON.puzzle_id} found`;
     $inventoryCodex.addEventListener('click', (e) => this.clickedCodexHandler(e));
+
+  }
+
+  closePuzzle(){
+
+    this.$puzzleInfo.className = 'puzzleInfo hidden';
 
   }
 

@@ -21,6 +21,7 @@ export default class MobileMapSyncPage extends SocketPage{
     this.$lightOverlay = document.querySelector('.lightOverlay');
     this.$codexList = document.querySelector('.codexList');
     this.$puzzle = document.querySelector('.puzzle');
+    this.$closeButton = document.querySelector('.closeButton');
     this.$puzzleTitle = document.querySelector('.puzzleTitle');
     this.$answerList = document.querySelector('.puzzle ul');
 
@@ -35,6 +36,7 @@ export default class MobileMapSyncPage extends SocketPage{
   init(){
 
     this.socket.emit('getCodexes');
+    this.$closeButton.addEventListener('click', () => this.closePuzzleAnswers());
 
   }
 
@@ -123,6 +125,13 @@ export default class MobileMapSyncPage extends SocketPage{
   wrongAnswerHandler(){
 
     this.socket.emit('wrongAnswer');
+
+  }
+
+  closePuzzleAnswers(){
+
+    this.$puzzle.className = 'puzzle hidden';
+    this.socket.emit('closePuzzle');
 
   }
 

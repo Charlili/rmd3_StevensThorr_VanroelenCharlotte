@@ -104,6 +104,12 @@ module.exports.register = (server, options, next) => {
 
     });
 
+    socket.on('closePuzzle', () => {
+
+      io.to(clients[newClient.pairedref].socketid).emit('closePuzzle');
+
+    });
+
     socket.on('foundAllCodexes', () => {
 
       io.to(clients[newClient.pairedref].socketid).emit('foundAllCodexes');

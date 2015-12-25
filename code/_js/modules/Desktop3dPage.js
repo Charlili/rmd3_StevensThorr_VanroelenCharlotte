@@ -53,14 +53,10 @@ export default class Desktop3dPage extends SocketPage{
             if(i === 6)break;
             selectedCodex = i;
             this.rotateX(0.785398);
-
-
           }
         }
       };
-
       next();
-
     }
 
   }
@@ -89,7 +85,7 @@ export default class Desktop3dPage extends SocketPage{
     codexArray = [0, 1, 2, 3, 4, 5];
     faceArray = [0, 0, 0, 0, 0, 0];
 
-    var ambient = new THREE.AmbientLight( 0x444444 );
+    var ambient = new THREE.AmbientLight( 0x666666 );
     scene.add( ambient );
     var directionalLight = new THREE.DirectionalLight( 0xffeedd );
     directionalLight.position.set( 0, 0, 1 );

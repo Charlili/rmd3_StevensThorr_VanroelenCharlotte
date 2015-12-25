@@ -1,5 +1,7 @@
 Instructies bij het Grote Codex Mysterie spel (door Charlotte Vanroelen en Thorr Stevens)
 
+0: HEEL BELANGRIJK: Ga naar _js/script.js en verander het ip-adres naar die van jou.
+
 1. Plak de fluo-roze sticker op de achterkant van je gsm. Ergens centraal, maar dat maakt niet zoveel uit.  
 2. Open de pagina in je desktop browser via localhost.
 3. Open de pagina in je mobile browser via het ip-adres.

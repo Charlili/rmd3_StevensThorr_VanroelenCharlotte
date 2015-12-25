@@ -56,8 +56,6 @@ export default class DesktopMapSyncPage extends SocketPage{
 
     console.log('[DesktopMapSync] Colortracking Smartphone');
 
-    //document.querySelector('.overlay a').setAttribute('href', `d/${this.clientDetails.refcode}/mapsynch`);
-
     this.socket.emit('getInventory');
 
     this.context = this.$canvas.getContext('2d');
@@ -65,18 +63,8 @@ export default class DesktopMapSyncPage extends SocketPage{
     this.$canvas.height = this.$video.height;
 
     this.tracker = new tracking.ColorTracker();
-    this.trackingTask = this.tracker.on('track', (event) => {
-
-      this.context.clearRect(0, 0, this.$canvas.width, this.$canvas.height);
-
-      event.data.forEach( (rect) => {
-
-        this.trackResult(rect);
-
-      });
-
-    });
-    tracking.track(this.$video, this.tracker, { camera: true });
+    this.tracker.on('track', (event) => this.trackResult(event));
+    this.trackingTask = tracking.track(this.$video, this.tracker, { camera: true });
 
   }
 
@@ -114,43 +102,50 @@ export default class DesktopMapSyncPage extends SocketPage{
 
   }
 
-  trackResult(rect){
+  trackResult(event){
 
-    rect.color = this.trackColor.hex;
-    this.context.strokeStyle = rect.color;
-    this.context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+    this.context.clearRect(0, 0, this.$canvas.width, this.$canvas.height);
 
-    let checkAxis = rect.height;
-    if(rect.width > rect.height){
-      checkAxis = rect.width;
-    }
+    event.data.forEach( (rect) => {
 
-    if(
-      checkAxis >= MIN_AXIS && checkAxis <= MAX_AXIS &&
-      rect.x > 0 && rect.x <= (this.$canvas.width - rect.width) &&
-      rect.y > 0 && rect.y <= (this.$canvas.height - rect.height)
-    ){
+      rect.color = this.trackColor.hex;
+      this.context.strokeStyle = rect.color;
+      this.context.strokeRect(rect.x, rect.y, rect.width, rect.height);
 
-      let colorPos = {};
-
-      if(checkAxis < PREF_MIN){
-        colorPos.distance = checkAxis/PREF_MIN;
-      }else if(checkAxis > PREF_MAX){
-        colorPos.distance = checkAxis/PREF_MAX;
-      }else{
-        colorPos.distance = 1;
+      let checkAxis = rect.height;
+      if(rect.width > rect.height){
+        checkAxis = rect.width;
       }
 
-      colorPos.x = rect.x + rect.width/2;
-      colorPos.y = rect.y + rect.height/2;
+      if(
+        this.recalibrating === false &&
+        checkAxis >= MIN_AXIS && checkAxis <= MAX_AXIS &&
+        rect.x > 0 && rect.x <= (this.$canvas.width - rect.width) &&
+        rect.y > 0 && rect.y <= (this.$canvas.height - rect.height)
+      ){
 
-      this.socket.emit('updateMap', colorPos);
+        let colorPos = {};
 
-    }else{
+        if(checkAxis < PREF_MIN){
+          colorPos.distance = checkAxis/PREF_MIN;
+        }else if(checkAxis > PREF_MAX){
+          colorPos.distance = checkAxis/PREF_MAX;
+        }else{
+          colorPos.distance = 1;
+        }
 
-      this.$meta.innerText = 'Move phone to center';
+        colorPos.x = rect.x + rect.width/2;
+        colorPos.y = rect.y + rect.height/2;
 
-    }
+        this.socket.emit('updateMap', colorPos);
+
+      }else{
+
+        this.$meta.innerText = 'Move phone to center';
+
+      }
+
+    });
 
   }
 
@@ -175,14 +170,23 @@ export default class DesktopMapSyncPage extends SocketPage{
     let context = this.$canvas.getContext('2d');
     context.drawImage(this.$video, 0, 0, this.$canvas.width, this.$canvas.height);
 
-    let canvasX = mouseX - (window.innerWidth - this.$canvas.width)/2;
-    let canvasY = mouseY + (window.innerHeight - this.$canvas.height) + 22;
+    let canvasX, canvasY;
+    if(window.innerWidth > 960){
+      canvasX = mouseX - (window.innerWidth - 960)/2;
+    }else{
+      canvasX = mouseX + (960 - window.innerWidth)/2;
+    }
+    if(window.innerHeight > 720){
+      canvasY = mouseY - (window.innerHeight - 720)/2;
+    }else{
+      canvasY = mouseY + (720 - window.innerHeight)/2;
+    }
 
     let colorInfo = {};
-
     let p = context.getImageData(canvasX, canvasY, 1, 1).data;
+    let preSlice = `000000${rgbToHex(p[0], p[1], p[2])}`;
 
-    colorInfo.hex = `#${('000000' + rgbToHex(p[0], p[1], p[2])).slice(-6)}`;
+    colorInfo.hex = `#${(preSlice).slice(-6)}`;
     colorInfo.r = p[0];
     colorInfo.g = p[1];
     colorInfo.b = p[2];
@@ -196,10 +200,14 @@ export default class DesktopMapSyncPage extends SocketPage{
     if(this.recalibrating === false){
       this.recalibrating = true;
       document.onmousemove = (e) => this.changeColorIndicator(e);
+      document.body.querySelector('.fail').style.pointerEvents = 'none';
+      this.$colorIndicator.style.zIndex = '50';
       this.$recalibrate.innerText = 'Click here to stop recalibrating.';
       this.$mapOverlay.className = 'mapOverlay showVideo';
     }else{
       this.recalibrating = false;
+      document.body.querySelector('.fail').style.pointerEvents = 'auto';
+      this.$colorIndicator.style.zIndex = '3';
       this.$recalibrate.innerText = 'Having problems with your phone? Click here to recalibrate your tracking sticker.';
       this.$mapOverlay.className = 'mapOverlay';
     }
@@ -208,21 +216,21 @@ export default class DesktopMapSyncPage extends SocketPage{
 
   changeTrackingColor(){
 
-    this.$meta.innerText = `New trackingColor: ${this.trackColor}`;
+    this.$meta.innerText = `New trackingColor: ${this.trackColor.hex}`;
 
     this.trackColor = this.extractColor();
-    this.tracker.customColor = this.trackColor.hex;
 
     tracking.ColorTracker.registerColor(this.trackColor.r, this.trackColor.g, this.trackColor.b);
 
-    this.$meta.innerText = `New trackingColor: ${this.trackColor}`;
+    this.$meta.innerText = `New trackingColor: ${this.trackColor.hex}`;
+    this.$recalibrate.innerText = `Now tracking ${this.trackColor.hex} (1), click here to stop recalibrating`;
 
     tracking.ColorTracker.registerColor('custom', (r, g, b) => {
 
       if(
-        r < (this.trackColor.r + 35) && r > (this.trackColor.r - 35) &&
-        g < (this.trackColor.g + 35) && g > (this.trackColor.g - 35) &&
-        b < (this.trackColor.b + 35) && b > (this.trackColor.b - 35)
+        r < (this.trackColor.r + 30) && r > (this.trackColor.r - 30) &&
+        g < (this.trackColor.g + 30) && g > (this.trackColor.g - 30) &&
+        b < (this.trackColor.b + 30) && b > (this.trackColor.b - 30)
       ){
         return true;
       }
@@ -232,18 +240,10 @@ export default class DesktopMapSyncPage extends SocketPage{
     });
 
     this.tracker = new tracking.ColorTracker('custom');
-    this.tracker.on('track', (event) => {
-
-      this.context.clearRect(0, 0, this.$canvas.width, this.$canvas.height);
-
-      event.data.forEach( (rect) => {
-
-        this.trackResult(rect);
-
-      });
-
-    });
+    this.tracker.on('track', (event) => this.trackResult(event));
     this.trackingTask = tracking.track(this.$video, this.tracker, { camera: true });
+
+    this.$recalibrate.innerText = `Now tracking ${this.trackColor.hex} (2), click here to stop recalibrating`;
 
   }
 

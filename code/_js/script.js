@@ -22,7 +22,7 @@ let desktop3dPage, mobile3dPage;
 const initSocket = () => {
 
   //change this to your own ip-adres! Must work with ip-adres on localhost to connect mobile
-  socket = io('192.168.0.198.:3000');
+  socket = io('192.168.0.178.:3000');
 
 
   if(mobileCheck()){

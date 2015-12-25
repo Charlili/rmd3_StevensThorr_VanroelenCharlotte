@@ -106,6 +106,10 @@ body {
   background-color: #eee;
   border: 1px solid #ccc;
   transition: 0.5s opacity, 0s 0.5s display;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   z-index: 5;
 }
 
@@ -392,6 +396,10 @@ header {
   left: 0px;
   border: 3px solid #FFF;
   border-radius: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
   z-index: 3;
 }
 

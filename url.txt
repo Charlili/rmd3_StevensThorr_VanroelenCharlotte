@@ -1,1 +1,1 @@
-http://codexmysterypuzzle.herokuapp.com/
+https://codexmysterypuzzle.herokuapp.com/
